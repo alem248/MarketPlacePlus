@@ -1,0 +1,89 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
+class AdminProductController extends Controller
+{
+    public function index()
+    {
+        $products = Product::with('user')->orderByDesc('created_at')->paginate(15);
+        return view('admin.products.index', compact('products'));
+    }
+
+    public function create()
+    {
+        return view('admin.products.create');
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'title'       => ['required', 'string', 'max:200'],
+            'description' => ['required', 'string', 'min:10'],
+            'category'    => ['required', 'string'],
+            'location'    => ['required', 'string'],
+            'price'       => ['required', 'numeric', 'min:0'],
+            'image'       => ['nullable', 'image', 'max:5120'],
+        ]);
+
+        if ($request->hasFile('image')) {
+            $data['image_path'] = $request->file('image')->store('products', 'public');
+        }
+        $data['user_id']   = auth()->id();
+        $data['is_active'] = true;
+        unset($data['image']);
+
+        Product::create($data);
+
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Publicación creada correctamente.');
+    }
+
+    public function edit(Product $product)
+    {
+        return view('admin.products.edit', compact('product'));
+    }
+
+    public function update(Request $request, Product $product)
+    {
+        $data = $request->validate([
+            'title'       => ['required', 'string', 'max:200'],
+            'description' => ['required', 'string', 'min:10'],
+            'category'    => ['required', 'string'],
+            'location'    => ['required', 'string'],
+            'price'       => ['required', 'numeric', 'min:0'],
+            'is_active'   => ['nullable', 'boolean'],
+            'image'       => ['nullable', 'image', 'max:5120'],
+        ]);
+
+        if ($request->hasFile('image')) {
+            if ($product->image_path) {
+                Storage::disk('public')->delete($product->image_path);
+            }
+            $data['image_path'] = $request->file('image')->store('products', 'public');
+        }
+        $data['is_active'] = $request->boolean('is_active');
+        unset($data['image']);
+
+        $product->update($data);
+
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Publicación actualizada.');
+    }
+
+    public function destroy(Product $product)
+    {
+        if ($product->image_path) {
+            Storage::disk('public')->delete($product->image_path);
+        }
+        $product->delete();
+
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Publicación eliminada.');
+    }
+}

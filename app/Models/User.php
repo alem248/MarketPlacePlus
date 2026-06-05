@@ -10,6 +10,10 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    // Roles disponibles
+    const ROLE_ADMIN = 'admin';
+    const ROLE_USER  = 'user';
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -18,6 +22,7 @@ class User extends Authenticatable
         'email',
         'phone',
         'password',
+        'role',
     ];
 
     protected $hidden = [
@@ -34,9 +39,22 @@ class User extends Authenticatable
         ];
     }
 
-    // Helper: nombre completo
+    // ─── Helpers ───────────────────────────────────────────────────────────────
+
     public function getFullNameAttribute(): string
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    // ─── Relaciones ────────────────────────────────────────────────────────────
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }
