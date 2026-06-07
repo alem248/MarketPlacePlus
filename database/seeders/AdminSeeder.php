@@ -16,19 +16,22 @@ class AdminSeeder extends Seeder
             [
                 'first_name' => 'Admin',
                 'last_name'  => 'Sistema',
+                'dob'        => '2000-01-01',
+                'gender'     => 'Masculino', // <-- agregar
                 'email'      => 'admin@marketplace.com',
                 'password'   => Hash::make('admin1234'),
                 'role'       => 'admin',
                 'phone'      => '51900000000',
             ]
         );
-
         // Usuario REGULAR de prueba
         User::updateOrCreate(
             ['email' => 'usuario@marketplace.com'],
             [
                 'first_name' => 'Juan',
                 'last_name'  => 'Pérez',
+                'dob'        => '2000-01-01',
+                'gender'     => 'Masculino', // <-- agregar
                 'email'      => 'usuario@marketplace.com',
                 'password'   => Hash::make('user1234'),
                 'role'       => 'user',

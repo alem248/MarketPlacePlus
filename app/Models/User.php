@@ -46,13 +46,13 @@ class User extends Authenticatable
         return "{$this->first_name} {$this->last_name}";
     }
 
-public function isAdmin(): bool
-{
-    return $this->role === 'admin';
-}
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 
-public function products()
-{
-    return $this->hasMany(Product::class);
-}
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
