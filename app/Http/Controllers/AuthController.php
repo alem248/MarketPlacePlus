@@ -34,9 +34,11 @@ class AuthController extends Controller
         ]);
 
         // Iniciar sesión automáticamente tras registrarse
-        Auth::login($user);
+        // Auth::login($user);
 
-        return redirect()->route('home')->with('success', '¡Bienvenido a MarketPlace Plus!');
+        // return redirect()->route('home')->with('success', '¡Bienvenido a MarketPlace Plus!');
+
+        return redirect()->route('login')->with('success', '¡Registro exitoso! Por favor, introduce tus datos para iniciar sesión.');
     }
 
     // ─── Login ─────────────────────────────────────────────────────────────────
@@ -50,22 +52,21 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email'    => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+{
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('home'));
-        }
-
-        return back()->withErrors([
-            'email' => 'Las credenciales no coinciden con nuestros registros.',
-        ])->onlyInput('email');
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        return redirect()->intended('/home');
     }
 
+    return back()->withErrors([
+        'email' => 'Las credenciales no coinciden con nuestros registros.',
+    ])->onlyInput('email');
+}
     public function logout(Request $request)
     {
         Auth::logout();

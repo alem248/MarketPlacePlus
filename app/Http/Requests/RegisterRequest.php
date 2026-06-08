@@ -16,7 +16,7 @@ class RegisterRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:80'],
             'last_name'  => ['required', 'string', 'max:80'],
-            'dob'        => ['required', 'date_format:d/m/Y'],
+            'dob' => 'required|date',
             'gender'     => ['nullable', 'in:male,female,other,prefer_not_to_say'],
             'email'      => ['required', 'email', 'unique:users,email'],
             'phone'      => ['required', 'string', 'max:20'],
