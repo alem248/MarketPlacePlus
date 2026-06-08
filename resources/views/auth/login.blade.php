@@ -172,21 +172,20 @@
         <div class="w-full md:w-[400px] flex flex-col items-center">
             <div class="bg-surface-container-lowest p-gutter rounded-xl custom-shadow border border-outline-variant w-full">
                 <h2 class="font-headline-md text-headline-md text-on-surface mb-gutter text-center md:text-left">Iniciar sesión en MarketPlace Plus</h2>
-                <form method="POST" action="{{ route('login') }}" class="space-y-4">
+                <form action="{{ route('home') }}" method="POST">
                     @csrf
-                    <div class="space-y-1">
-                        <label class="font-label-caps text-label-caps text-on-surface-variant" for="email">Correo electrónico</label>
-                        <input name="email" class="w-full p-3 border border-outline-variant rounded-lg form-input text-body-lg" id="email" placeholder="Ingresa tu correo" type="email" required>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="font-label-caps text-label-caps text-on-surface-variant" for="password">Contraseña</label>
-                        <div class="relative">
-                            <input name="password" class="w-full p-3 border border-outline-variant rounded-lg form-input text-body-lg" id="password" placeholder="Tu contraseña" type="password" required>
+                    <div>
+                        <div class="space-y-1">
+                            <label class="font-label-caps text-label-caps text-on-surface-variant" for="email">Correo electrónico o número celular</label>
+                            <input class="w-full p-3 border border-outline-variant rounded-lg form-input text-body-lg" id="email" placeholder="Ingresa tu correo o teléfono" type="text">
                         </div>
-                    </div>
-                    <button type="submit" class="w-full bg-primary text-on-primary font-headline-md py-3 rounded-lg hover:brightness-110 active:scale-[0.98] transition-all">
-                        Iniciar sesión
-                    </button>
+                        <div class="space-y-1">
+                            <label class="font-label-caps text-label-caps text-on-surface-variant" for="password">Contraseña</label>
+                            <div class="relative">
+                                <input class="w-full p-3 border border-outline-variant rounded-lg form-input text-body-lg" id="password" placeholder="Tu contraseña" type="password">
+                                <button type="submit" class="w-full bg-primary text-on-primary font-headline-md py-3 rounded-lg hover:brightness-110 active:scale-[0.98] transition-all">
+                                    Iniciar sesión
+                                </button>
                 </form>
                 <div class="mt-4 text-center">
                     <a class="text-primary font-body-sm hover:underline" href="#">¿Olvidaste tu contraseña?</a>
@@ -231,7 +230,7 @@
         </p>
     </footer>
     <!-- Registration Modal (Triggered by 'Crear cuenta nueva') -->
-    <div class="fixed inset-0 bg-inverse-surface/60 flex items-center justify-center p-margin-mobile z-50 hidden opacity-0 transition-opacity duration-300" >
+    <div class="fixed inset-0 bg-inverse-surface/60 flex items-center justify-center p-margin-mobile z-50 hidden opacity-0 transition-opacity duration-300">
         <div class="bg-surface-container-lowest rounded-xl custom-shadow w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300">
             <div class="p-gutter border-b border-outline-variant flex justify-between items-start">
                 <div>
