@@ -60,3 +60,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 Route::get('/proximamente', function () {
     return view('proximamente');
 })->name('proximamente');
+
+
+// Zona vendedor
+Route::middleware(['auth'])->group(function () {
+    Route::get('/vendedor/panel', function () {
+        return view('seller.panel');
+    })->name('seller.panel');
+});

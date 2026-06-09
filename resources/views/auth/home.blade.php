@@ -227,10 +227,9 @@
                 </div>
             </div>
             @endauth
-            <button class="w-full py-3 px-4 bg-secondary-container text-on-secondary rounded-xl font-bold flex items-center justify-center gap-2 hover:brightness-110 transition-all active:translate-x-1 duration-200">
-                <span class="material-symbols-outlined" data-icon="cached">cached</span>
+            <a href="{{ route('seller.panel') }}" class="w-full block text-center py-3 px-4 bg-[#003178] text-white rounded-2xl font-bold transition-all hover:brightness-110">
                 Cambiar a Vendedor
-            </button>
+            </a>
             <nav class="flex flex-col gap-1">
                 <a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container font-bold rounded-xl transition-all translate-x-1 duration-200" href="{{ route('proximamente') }}">
                     <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
