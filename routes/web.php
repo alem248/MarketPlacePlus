@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tratos', [TratosController::class, 'index'])->name('tratos.index');
 });
 
+
 // administrador
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {

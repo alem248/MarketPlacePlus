@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="light" lang="es" >
+<html class="light" lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -179,10 +179,17 @@
                     </button>
                 </div>
                 <div class="flex items-center gap-3 border-l pl-6 border-outline-variant">
+                    @auth
                     <img alt="User Profile" class="w-8 h-8 rounded-full border border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKE6DBzVhu_JwP93s-Ym6TVG7tOYSGuYclbZnEH-KDA37hRFacmAPd2A9WnHtIyjWBvGVMTO90Xk0RM3qIpTyB32f6oNhOviuZpzZUm3q1dq-0fbhidDoCkZiThytJL3XYG8DXQ6HZ0KM8TFaM_B74c-Xii2wyl3P_ARGbncPmp0xp6x--QNEqbJQ7LOpDwNXxG4M_d2NoEbPheULCfl7-bxfCYlc2sJTtpV2iWJMZvSg8-y7NLvcpnX0P2tvTnPSFZzdk2PhJyHw">
-                    <span class="text-body-md font-semibold text-on-surface">
-                        {{ auth()->user()?->first_name ?? 'Invitado' }} {{ auth()->user()?->last_name ?? '' }}
+                    <span class="hidden md:block text-label-caps font-label-caps text-primary">
+                        {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
                     </span>
+                    @else
+                    <a href="{{ route('login') }}" class="flex items-center gap-2 text-body-md font-semibold text-primary hover:underline">
+                        <span class="material-symbols-outlined text-base">account_circle</span>
+                        Invitado (Para ver esta zona, inicia sesión)
+                    </a>
+                    @endauth
                 </div>
             </nav>
         </div>
@@ -190,16 +197,36 @@
     <div class="max-w-container-max mx-auto flex">
         <!-- SideNavBar -->
         <aside class="hidden lg:flex flex-col h-[calc(100vh-64px)] w-sidebar-width p-base gap-gutter bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline sticky top-16 overflow-y-auto sidebar-scroll">
+            @auth
             <div class="flex flex-col items-center gap-2 mb-4">
                 <div class="relative">
                     <img alt="User Avatar" class="w-20 h-20 rounded-full border-2 border-primary-container p-0.5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFHNtEgrHwb-LA7yua_F_VPYR8tRwrDM1uKo4U7ZgD2uctNs-dKmA_Dl_HZvJHU8RpBvXZgaVPDh0u1DZJAAKU7Zxx_b25R1nPPPYRERuDHb7TLoFkjc-7CJ1qmPVqzi326FFBSigtwTXuOO00zgSn-ZHmPeRqA2QhRUaOo6h9uvgK4herEbgC4loH3JNWU5YxV_Jye6CjnxkwRjKB4cDnWiI4tjSH6CjQR5xvUxwN8gLp7qXz0CaoCApL-SM8aEcGz-udSKNwjlU">
                     <div class="absolute bottom-1 right-1 w-4 h-4 bg-tertiary-fixed rounded-full border-2 border-surface-container-lowest"></div>
                 </div>
                 <div class="text-center">
-                    <h2 class="text-headline-md font-headline-md font-bold text-primary">Juan Perez</h2>
+                    <h2 class="text-headline-md font-headline-md font-bold text-primary">
+                        {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
+                    </h2>
                     <p class="text-body-sm text-outline">Comprador</p>
                 </div>
             </div>
+            @else
+            <div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant text-center mb-4 custom-shadow">
+                <span class="material-symbols-outlined text-[40px] text-secondary mb-2 inline-block">rocket_launch</span>
+                <h3 class="font-headline-md text-on-surface mb-1 text-sm font-bold">¡Únete a la comunidad!</h3>
+                <p class="text-body-sm text-on-surface-variant mb-4">
+                    Regístrate para publicar productos, gestionar tus compras y conectar de forma segura.
+                </p>
+                <div class="space-y-2">
+                    <a href="{{ route('register') }}" class="block w-full py-2 bg-primary text-on-primary font-semibold rounded-lg text-body-sm hover:brightness-110 transition-all">
+                        Crear cuenta nueva
+                    </a>
+                    <a href="{{ route('login') }}" class="block w-full py-2 bg-surface-container border border-outline-variant text-on-surface font-semibold rounded-lg text-body-sm hover:bg-surface-container-high transition-all">
+                        Ingresar
+                    </a>
+                </div>
+            </div>
+            @endauth
             <button class="w-full py-3 px-4 bg-secondary-container text-on-secondary rounded-xl font-bold flex items-center justify-center gap-2 hover:brightness-110 transition-all active:translate-x-1 duration-200">
                 <span class="material-symbols-outlined" data-icon="cached">cached</span>
                 Cambiar a Vendedor
