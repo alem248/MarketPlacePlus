@@ -175,17 +175,29 @@
         <!-- SideNavBar -->
         <aside class="w-sidebar-width bg-surface-container dark:bg-surface-container-low border-r border-outline-variant flex flex-col p-base space-y-4 hidden md:flex sticky top-16 self-start shrink-0">
             <div class="p-4 bg-surface-container-lowest rounded-2xl mb-4 border border-outline-variant">
-                <div class="flex items-center gap-3 mb-4">
-                    <img alt="Avatar del Vendedor" class="w-12 h-12 rounded-full object-cover border-2 border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvCxKC6QFsObcmdMe3wOEPN9SMZTGsjXOIP0TWzwAS2V2WlvBogh889c-RHPEmYLO20lfueVl7AKShpH55CfOgItKo266nPBSxOnkluozaUkzCBydteYHwUYZSYe7iCRf-hOva0Kw9Nkr65JsS4iua1OWVsd7mYX4AgKOOBmHRNknZyGLzs-nklgw0N76mANjVYlrvLrJIzaL6LgQ7F1oWskUXtTVNsNJ0qMgyHYdq9DyS5lmDkSoWB8cb1ntBDTTt_hQp5BEl8HU">
-                    <div>
-                        <h3 class="font-headline-md text-headline-md text-primary">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</h3>
-                        <p class="text-on-surface-variant font-body-sm text-body-sm">Ventas activas: 12</p>
-                    </div>
-                </div>
-                <button class="w-full py-3 px-4 bg-[#003178] text-white rounded-2xl font-bold font-headline-md text-headline-md transition-all hover:brightness-110">
-                    Cambiar a Cliente
-                </button>
-            </div>
+    <div class="p-4 bg-surface-container-lowest rounded-2xl mb-4 border border-outline-variant">
+    <div class="flex flex-col items-center gap-3 mb-4">
+    <div class="relative">
+        @if(!empty(auth()->user()->foto))
+            <img alt="Avatar del Comprador" class="w-24 h-24 rounded-full object-cover border-2 border-primary" src="{{ asset('storage/' . auth()->user()->foto) }}">
+        @else
+            <img alt="Avatar por defecto" class="w-24 h-24 rounded-full object-cover border-2 border-primary" src="{{ asset('img/icon_default.jpg') }}">
+        @endif
+        <div class="absolute bottom-1 right-1 w-5 h-5 bg-tertiary-fixed rounded-full border-2 border-surface-container-lowest"></div>
+    </div>
+    
+    <div class="text-center mt-1">
+        <h2 class="text-headline-md font-headline-md font-bold text-primary">
+            {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
+        </h2>
+        <p class="text-body-sm text-outline">Comprador</p>
+    </div>
+</div>
+</div>
+    <a href="{{ route('home') }}" class="w-full block text-center py-3 px-4 bg-[#003178] text-white rounded-2xl font-bold font-headline-md text-headline-md transition-all hover:brightness-110">
+        Cambiar a Cliente
+    </a>
+</div>
             <nav class="space-y-1">
                 <a class="bg-secondary-container text-on-secondary-container rounded-xl font-bold flex items-center px-4 py-3" href="#">
                     <span class="material-symbols-outlined mr-3">dashboard</span>

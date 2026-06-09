@@ -198,10 +198,14 @@
         <!-- SideNavBar -->
         <aside class="hidden lg:flex flex-col h-[calc(100vh-64px)] w-sidebar-width p-base gap-gutter bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline sticky top-16 overflow-y-auto sidebar-scroll">
             @auth
-            <div class="flex flex-col items-center gap-2 mb-4">
+            <div class="flex flex-col items-center gap-3 mb-4">
                 <div class="relative">
-                    <img alt="User Avatar" class="w-20 h-20 rounded-full border-2 border-primary-container p-0.5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFHNtEgrHwb-LA7yua_F_VPYR8tRwrDM1uKo4U7ZgD2uctNs-dKmA_Dl_HZvJHU8RpBvXZgaVPDh0u1DZJAAKU7Zxx_b25R1nPPPYRERuDHb7TLoFkjc-7CJ1qmPVqzi326FFBSigtwTXuOO00zgSn-ZHmPeRqA2QhRUaOo6h9uvgK4herEbgC4loH3JNWU5YxV_Jye6CjnxkwRjKB4cDnWiI4tjSH6CjQR5xvUxwN8gLp7qXz0CaoCApL-SM8aEcGz-udSKNwjlU">
-                    <div class="absolute bottom-1 right-1 w-4 h-4 bg-tertiary-fixed rounded-full border-2 border-surface-container-lowest"></div>
+                    @if(!empty(auth()->user()->foto))
+                    <img alt="Avatar del Comprador" class="w-24 h-24 rounded-full object-cover border-2 border-primary" src="{{ asset('storage/' . auth()->user()->foto) }}">
+                    @else
+                    <img alt="Avatar por defecto" class="w-24 h-24 rounded-full object-cover border-2 border-primary" src="{{ asset('img/icon_default.jpg') }}">
+                    @endif
+                    <div class="absolute bottom-1 right-1 w-5 h-5 bg-tertiary-fixed rounded-full border-2 border-surface-container-lowest"></div>
                 </div>
                 <div class="text-center">
                     <h2 class="text-headline-md font-headline-md font-bold text-primary">
