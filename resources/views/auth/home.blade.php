@@ -249,12 +249,14 @@
                     <span class="text-body-lg font-body-lg">Mis Comprobantes</span>
                 </a>
                 <div class="my-4 border-t border-outline-variant"></div>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="flex items-center gap-2 px-4 py-2 text-body-sm text-error hover:bg-error/10 rounded-lg">
-                    <span class="material-symbols-outlined text-base" data-icon="logout">logout</span>
-                    Cerrar sesión
-                </a>
-
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                <form action="{{ route('logout') }}" method="POST" class="w-full">
+                    @csrf
+                    <button type="submit" class="flex items-center gap-2 w-full px-4 py-2 text-body-sm text-error hover:bg-error/10 rounded-lg text-left">
+                        <span class="material-symbols-outlined text-base" data-icon="logout">logout</span>
+                        Cerrar sesión
+                    </button>
+                </form>
+                <form id="logout-form" action="{{ route('login') }}" method="POST" class="hidden">
                     @csrf
                 </form>
             </nav>

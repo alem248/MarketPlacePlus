@@ -53,7 +53,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        dd('El formulario sí llega al controlador', $request->all());
+        // dd('El formulario sí llega al controlador', $request->all());
 
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -62,7 +62,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/home');
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([
@@ -74,6 +74,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('home');
+        return redirect()->route('login');
     }
 }

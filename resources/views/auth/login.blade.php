@@ -172,21 +172,27 @@
         <div class="w-full md:w-[400px] flex flex-col items-center">
             <div class="bg-surface-container-lowest p-gutter rounded-xl custom-shadow border border-outline-variant w-full">
                 <h2 class="font-headline-md text-headline-md text-on-surface mb-gutter text-center md:text-left">Iniciar sesión en MarketPlace Plus</h2>
+                @if ($errors->any())
+                <div class="bg-error-container text-on-error-container p-3 rounded-lg text-body-sm font-semibold mb-4 border border-error text-center">
+                    {{ $errors->first() }}
+                </div>
+                @endif
+
                 <form action="{{ route('login') }}" method="POST">
                     @csrf
-                    <div>
+                    <div class="space-y-4">
                         <div class="space-y-1">
                             <label class="font-label-caps text-label-caps text-on-surface-variant" for="email">Correo electrónico o número celular</label>
-                            <input class="w-full p-3 border border-outline-variant rounded-lg form-input text-body-lg" id="email" placeholder="Ingresa tu correo o teléfono" type="text" name="email">
+                            <input class="w-full p-3 border @error('email') border-error @else border-outline-variant @enderror rounded-lg form-input text-body-lg" id="email" placeholder="Ingresa tu correo o teléfono" type="text" name="email" value="{{ old('email') }}">
                         </div>
                         <div class="space-y-1">
                             <label class="font-label-caps text-label-caps text-on-surface-variant" for="password">Contraseña</label>
-                            <div class="relative">
-                                <input class="w-full p-3 border border-outline-variant rounded-lg form-input text-body-lg" id="password" placeholder="Tu contraseña" type="password" name="password">
-                                <button type="submit" class="w-full bg-primary text-on-primary font-headline-md py-3 rounded-lg hover:brightness-110 active:scale-[0.98] transition-all">
-                                    Iniciar sesión
-                                </button>
-                            </div>
+                            <input class="w-full p-3 border @error('password') border-error @else border-outline-variant @enderror rounded-lg form-input text-body-lg mb-4" id="password" placeholder="Tu contraseña" type="password" name="password">
+                            <button type="submit" class="w-full bg-primary text-on-primary font-headline-md py-3 rounded-lg hover:brightness-110 active:scale-[0.98] transition-all">
+                                Iniciar sesión
+                            </button>
+                        </div>
+                    </div>
                 </form>
                 <div class="mt-4 text-center">
                     <a class="text-primary font-body-sm hover:underline" href="#">¿Olvidaste tu contraseña?</a>
