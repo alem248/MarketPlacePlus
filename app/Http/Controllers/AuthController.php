@@ -52,29 +52,35 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+
 public function login(Request $request)
-{
-    $credentials = $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
-
-    try {
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->route('home');
-        }
-
-        return back()->withErrors([
-            'email' => 'Las credenciales no coinciden.',
-        ])->onlyInput('email');
-
-    } catch (QueryException $e) {
-        return back()->withErrors([
-            'server_error' => 'El servidor de la base de datos está temporalmente fuera de línea.',
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
+
+        try {
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+
+                if (Auth::user()->role === 'admin') {
+                    return redirect()->route('admin.dashboard');
+                }
+
+                return redirect()->route('home');
+            }
+
+            return back()->withErrors([
+                'email' => 'Las credenciales no coinciden con nuestros registros.',
+            ])->onlyInput('email');
+
+        } catch (QueryException $e) {
+            return back()->withErrors([
+                'server_error' => 'El servidor de la base de datos está apagado.',
+            ]);
+        }
     }
-}
     public function logout(Request $request)
     {
         Auth::logout();

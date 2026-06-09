@@ -28,8 +28,15 @@ Route::middleware(['auth'])->group(function () {
 
 
 // administrador
-
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/dashboard', function () {
+        if (data_get(auth()->user(), 'role') !== 'admin') {
+            return redirect()->route('home');
+        }
+        return view('admin.dashboard');
+    })->name('dashboard');
+
     Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [AdminProductController::class, 'create'])->name('products.create');
     Route::post('/products', [AdminProductController::class, 'store'])->name('products.store');

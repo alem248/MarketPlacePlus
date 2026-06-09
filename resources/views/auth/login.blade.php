@@ -184,10 +184,16 @@
                         <div class="space-y-1">
                             <label class="font-label-caps text-label-caps text-on-surface-variant" for="email">Correo electrónico o número celular</label>
                             <input class="w-full p-3 border @error('email') border-error @else border-outline-variant @enderror rounded-lg form-input text-body-lg" id="email" placeholder="Ingresa tu correo o teléfono" type="text" name="email" value="{{ old('email') }}">
+                            @error('email')
+                            <p class="text-error text-body-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="space-y-1">
                             <label class="font-label-caps text-label-caps text-on-surface-variant" for="password">Contraseña</label>
                             <input class="w-full p-3 border @error('password') border-error @else border-outline-variant @enderror rounded-lg form-input text-body-lg mb-4" id="password" placeholder="Tu contraseña" type="password" name="password">
+                            @error('server_error')
+                            <p class="text-error text-body-sm mb-3 text-center">{{ $message }}</p>
+                            @enderror
                             <button type="submit" class="w-full bg-primary text-on-primary font-headline-md py-3 rounded-lg hover:brightness-110 active:scale-[0.98] transition-all">
                                 Iniciar sesión
                             </button>
