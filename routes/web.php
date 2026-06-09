@@ -54,3 +54,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.updateRole');
 });
+
+// interfaz para botones predefinidos
+
+Route::get('/proximamente', function () {
+    return view('proximamente');
+})->name('proximamente');

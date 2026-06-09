@@ -232,19 +232,19 @@
                 Cambiar a Vendedor
             </button>
             <nav class="flex flex-col gap-1">
-                <a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container font-bold rounded-xl transition-all translate-x-1 duration-200" href="#">
+                <a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container font-bold rounded-xl transition-all translate-x-1 duration-200" href="{{ route('proximamente') }}">
                     <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
                     <span class="text-body-lg font-body-lg">Panel</span>
                 </a>
-                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="#">
+                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="{{ route('proximamente') }}">
                     <span class="material-symbols-outlined" data-icon="handshake">handshake</span>
                     <span class="text-body-lg font-body-lg">Mis Tratos</span>
                 </a>
-                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="#">
+                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="{{ route('proximamente') }}">
                     <span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
                     <span class="text-body-lg font-body-lg">Delivery</span>
                 </a>
-                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="#">
+                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="{{ route('proximamente') }}">
                     <span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
                     <span class="text-body-lg font-body-lg">Mis Comprobantes</span>
                 </a>
@@ -459,17 +459,17 @@
             <div>
                 <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Enlaces Rápidos</h4>
                 <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Comprar producto</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Mis tratos</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Rastrear pedido</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Comprar producto</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Mis tratos</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Rastrear pedido</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Soporte</h4>
                 <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Ayuda al cliente</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Sobre nosotros</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Términos y condiciones</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Ayuda al cliente</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Sobre nosotros</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Términos y condiciones</a></li>
                 </ul>
             </div>
 
