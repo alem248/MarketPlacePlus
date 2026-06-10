@@ -15,30 +15,37 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'category' => 'required|string',
-            'location' => 'required|string',
-            'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'title'       => ['required', 'string', 'max:200'],
+            'category'    => ['required', 'string'],
+            'location'    => ['required', 'string'],
+            'description' => ['required', 'string', 'min:20'],
+            'price'       => ['required', 'numeric', 'min:0'],
+            'image_path'  => ['required', 'array'], // Validamos que sea un arreglo
+            'image_path.*' => ['image', 'max:5120'], // Validamos cada imagen dentro
         ]);
 
-        $product = new Product();
-        $product->user_id = auth()->id();
-        $product->title = $request->title;
-        $product->category = $request->category;
-        $product->location = $request->location;
-        $product->description = $request->description;
-        $product->price = $request->price;
-
-        if ($request->hasFile('image')) {
-            $product->image_path = $request->file('image')->store('products', 'public');
+        $path = null;
+        if ($request->hasFile('image_path')) {
+            $files = $request->file('image_path');
+            if (isset($files[0])) {
+                // Guardamos la primera imagen en el disco público
+                $path = $files[0]->store('products', 'public');
+            }
         }
 
-        $product->is_active = true;
-        $product->save();
+        Product::create([
+            'user_id'     => auth()->id(),
+            'title'       => $request->title,
+            'category'    => $request->category,
+            'location'    => $request->location,
+            'description' => $request->description,
+            'price'       => $request->price,
+            'image_path'  => $path,
+            'is_active'   => true,
+        ]);
 
-        return redirect()->back()->with('success', '¡Publicación creada exitosamente!');
+        return redirect()->route('seller.products.create')
+            ->with('success', '¡Producto publicado correctamente!');
     }
 
     public function dashboard()

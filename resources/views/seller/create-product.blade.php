@@ -219,157 +219,171 @@
             </nav>
         </aside>
         <!-- Main Content -->
-       <main class="flex-1 md:ml-sidebar-width p-gutter bg-background custom-scrollbar min-h-screen">
-    <div class="max-w-6xl mx-auto space-y-gutter">
-        
-        <header class="mb-8">
-            <h1 class="font-headline-lg text-headline-lg text-primary">Publicar Nuevo Producto</h1>
-            <p class="text-on-surface-variant font-body-lg text-body-lg mt-2">Completa los detalles para listar tu producto en el marketplace.</p>
-        </header>
+        <main class="flex-1 md:ml-sidebar-width p-gutter bg-background custom-scrollbar min-h-screen">
+            <div class="max-w-6xl mx-auto space-y-gutter">
 
-        <form action="{{ route('seller.products.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-gutter items-start">
-            @csrf
+                <header class="mb-8">
+                    <h1 class="font-headline-lg text-headline-lg text-primary">Publicar Nuevo Producto</h1>
+                    <p class="text-on-surface-variant font-body-lg text-body-lg mt-2">Completa los detalles para listar tu producto en el marketplace.</p>
+                </header>
 
-            <div class="lg:col-span-2 space-y-gutter">
-                
-                <section class="bg-surface-container-lowest p-gutter rounded-xl border border-outline-variant shadow-sm">
-                    <div class="flex items-center gap-2 mb-6 text-primary">
-                        <span class="material-symbols-outlined">info</span>
-                        <h2 class="font-headline-md text-headline-md">Información Básica</h2>
-                    </div>
-                    
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">TÍTULO DEL PRODUCTO</label>
-                            <input name="title" class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent bg-white text-on-surface font-body-lg" placeholder="Ej: Smartphone Samsung Galaxy S23 Ultra" type="text" required>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <form action="{{ route('seller.products.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-gutter items-start">
+                    @csrf
+
+                    <div class="lg:col-span-2 space-y-gutter">
+
+                        <section class="bg-surface-container-lowest p-gutter rounded-xl border border-outline-variant shadow-sm">
+                            <div class="flex items-center gap-2 mb-6 text-primary">
+                                <span class="material-symbols-outlined">info</span>
+                                <h2 class="font-headline-md text-headline-md">Información Básica</h2>
+                            </div>
+
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">TÍTULO DEL PRODUCTO</label>
+                                    <input name="title" class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent bg-white text-on-surface font-body-lg" placeholder="Ej: Smartphone Samsung Galaxy S23 Ultra" type="text" required>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">CATEGORÍA</label>
+                                        <select name="category" class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg" required>
+                                            <option value="">Seleccionar categoría</option>
+                                            <option value="Tecnología">Tecnología</option>
+                                            <option value="Hogar">Hogar</option>
+                                            <option value="Moda">Moda</option>
+                                            <option value="Vehículos">Vehículos</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">UBICACIÓN</label>
+                                        <select name="location" class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg" required>
+                                            <option value="">Seleccionar ubicación</option>
+                                            <option value="Lima">Lima</option>
+                                            <option value="Santa Anita">Santa Anita</option>
+                                            <option value="Arequipa">Arequipa</option>
+                                            <option value="Cusco">Cusco</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">DESCRIPCIÓN</label>
+                                    <textarea name="description" class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg" placeholder="Describe las características principales, garantía, etc." rows="4" required></textarea>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="bg-surface-container-lowest p-gutter rounded-xl border border-outline-variant shadow-sm">
+                            <div class="flex items-center gap-2 mb-6 text-primary">
+                                <span class="material-symbols-outlined">payments</span>
+                                <h2 class="font-headline-md text-headline-md">Precio</h2>
+                            </div>
                             <div>
-                                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">CATEGORÍA</label>
-                                <select name="category" class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg" required>
-                                    <option value="">Seleccionar categoría</option>
-                                    <option value="Tecnología">Tecnología</option>
-                                    <option value="Hogar">Hogar</option>
-                                    <option value="Moda">Moda</option>
-                                    <option value="Vehículos">Vehículos</option>
-                                </select>
+                                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">PRECIO (S/.)</label>
+                                <div class="relative">
+                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">S/.</span>
+                                    <input name="price" class="w-full pl-12 p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg" placeholder="0.00" type="number" step="0.01" required>
+                                </div>
                             </div>
-                            
-                            <div>
-                                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">UBICACIÓN</label>
-                                <select name="location" class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg" required>
-                                    <option value="">Seleccionar ubicación</option>
-                                    <option value="Lima">Lima</option>
-                                    <option value="Santa Anita">Santa Anita</option>
-                                    <option value="Arequipa">Arequipa</option>
-                                    <option value="Cusco">Cusco</option>
-                                </select>
+                        </section>
+
+                        <section class="bg-surface-container-lowest p-gutter rounded-xl border border-outline-variant shadow-sm">
+                            <div class="flex items-center gap-2 mb-6 text-primary">
+                                <span class="material-symbols-outlined">photo_library</span>
+                                <h2 class="font-headline-md text-headline-md">Multimedia</h2>
                             </div>
-                        </div>
-                        
-                        <div>
-                            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">DESCRIPCIÓN</label>
-                            <textarea name="description" class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg" placeholder="Describe las características principales, garantía, etc." rows="4" required></textarea>
-                        </div>
-                    </div>
-                </section>
 
-                <section class="bg-surface-container-lowest p-gutter rounded-xl border border-outline-variant shadow-sm">
-                    <div class="flex items-center gap-2 mb-6 text-primary">
-                        <span class="material-symbols-outlined">payments</span>
-                        <h2 class="font-headline-md text-headline-md">Precio</h2>
-                    </div>
-                    <div>
-                        <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">PRECIO (S/.)</label>
-                        <div class="relative">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">S/.</span>
-                            <input name="price" class="w-full pl-12 p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg" placeholder="0.00" type="number" step="0.01" required>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="bg-surface-container-lowest p-gutter rounded-xl border border-outline-variant shadow-sm">
-                    <div class="flex items-center gap-2 mb-6 text-primary">
-                        <span class="material-symbols-outlined">photo_library</span>
-                        <h2 class="font-headline-md text-headline-md">Multimedia</h2>
-                    </div>
-                    <label for="image-input" class="border-2 border-dashed border-outline-variant rounded-xl p-12 text-center hover:bg-surface-container-low transition-colors cursor-pointer group block">
-                        <input type="file" id="image-input" name="image_path" accept="image/*" class="hidden" required>
-                        <span class="material-symbols-outlined text-4xl text-outline-variant group-hover:text-primary transition-colors">cloud_upload</span>
-                        <p class="mt-4 font-body-lg text-body-lg font-bold text-on-surface">Haz clic para subir una imagen</p>
-                        <p class="text-on-surface-variant text-sm mt-1">Soporta JPG, PNG (Max. 5MB)</p>
-                    </label>
-                </section>
-
-                <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                    <button type="button" class="flex-1 bg-white border border-outline text-on-surface font-bold py-4 rounded-xl hover:bg-surface-container-high transition-all">
-                        Guardar Borrador
-                    </button>
-                    <button type="submit" class="flex-1 bg-secondary-container text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg active:scale-95">
-                        Publicar Producto
-                        <span class="material-symbols-outlined">arrow_forward</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="space-y-gutter">
-                
-                <div class="bg-white rounded-xl border border-outline-variant overflow-hidden shadow-sm">
-                    <div class="p-4 bg-surface-container text-center border-b border-outline-variant">
-                        <h3 class="font-label-caps text-label-caps text-on-surface-variant">VISTA PREVIA</h3>
-                    </div>
-                    <div class="aspect-square bg-surface-container-high flex items-center justify-center relative">
-                        <span id="preview-placeholder" class="material-symbols-outlined text-6xl text-outline-variant">inventory_2</span>
-                        <img id="preview-img" class="w-full h-full object-cover hidden absolute inset-0" alt="Vista previa">
-                    </div>
-                    <div class="p-4 space-y-3">
-                        <div class="flex text-secondary text-sm">
-                            <span class="material-symbols-outlined text-sm">star</span>
-                            <span class="material-symbols-outlined text-sm">star</span>
-                            <span class="material-symbols-outlined text-sm">star</span>
-                            <span class="material-symbols-outlined text-sm">star</span>
-                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0">star</span>
-                        </div>
-                        <h4 class="font-headline-md text-headline-md leading-tight h-14 overflow-hidden">Título del producto aparecerá aquí</h4>
-                        <p class="font-price-display text-price-display text-primary">S/. 0.00</p>
-                        <div class="flex items-center justify-between pt-4 border-t border-outline-variant">
-                            <div class="flex items-center gap-2">
-                                <div class="w-8 h-8 rounded-full bg-surface-container-high"></div>
-                                <span class="text-sm font-bold">Vendedor</span>
+                            <div id="gallery-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                                <label id="upload-box" for="image-input" class="border-2 border-dashed border-outline-variant rounded-xl aspect-square flex flex-col items-center justify-center text-center hover:bg-surface-container-low transition-colors cursor-pointer group p-4">
+                                    <input type="file" id="image-input" name="image_path[]" accept="image/*" class="hidden" multiple>
+                                    <span id="upload-icon" class="material-symbols-outlined text-3xl text-outline-variant group-hover:text-primary transition-colors">cloud_upload</span>
+                                    <p id="upload-text" class="mt-2 text-xs font-bold text-on-surface">Subir imágenes</p>
+                                    <p id="upload-subtext" class="text-on-surface-variant text-[10px] mt-0.5">JPG, PNG (Max. 5MB)</p>
+                                </label>
                             </div>
-                            <button type="button" class="bg-secondary p-2 rounded-lg text-white">
-                                <span class="material-symbols-outlined">handshake</span>
+                        </section>
+
+                        <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                            <button type="button" class="flex-1 bg-white border border-outline text-on-surface font-bold py-4 rounded-xl hover:bg-surface-container-high transition-all">
+                                Guardar Borrador
+                            </button>
+                            <button type="submit" class="flex-1 bg-secondary-container text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg active:scale-95">
+                                Publicar Producto
+                                <span class="material-symbols-outlined">arrow_forward</span>
                             </button>
                         </div>
                     </div>
-                </div>
 
-                <div class="bg-primary-fixed p-gutter rounded-xl border border-primary-fixed-dim shadow-sm">
-                    <div class="flex items-center gap-2 mb-4 text-on-primary-fixed">
-                        <span class="material-symbols-outlined">lightbulb</span>
-                        <h3 class="font-bold">Consejos de Vendedor</h3>
+                    <div class="space-y-gutter">
+
+                        <div class="bg-white rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+                            <div class="p-4 bg-surface-container text-center border-b border-outline-variant">
+                                <h3 class="font-label-caps text-label-caps text-on-surface-variant">VISTA PREVIA</h3>
+                            </div>
+                            <div class="aspect-square bg-surface-container-high flex items-center justify-center relative">
+                                <span id="preview-placeholder" class="material-symbols-outlined text-6xl text-outline-variant">inventory_2</span>
+                                <img id="preview-img" class="w-full h-full object-cover hidden absolute inset-0" alt="Vista previa">
+                            </div>
+                            <div class="p-4 space-y-3">
+                                <div class="flex text-secondary text-sm">
+                                    <span class="material-symbols-outlined text-sm">star</span>
+                                    <span class="material-symbols-outlined text-sm">star</span>
+                                    <span class="material-symbols-outlined text-sm">star</span>
+                                    <span class="material-symbols-outlined text-sm">star</span>
+                                    <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0">star</span>
+                                </div>
+                                <h4 class="font-headline-md text-headline-md leading-tight h-14 overflow-hidden">Título del producto aparecerá aquí</h4>
+                                <p class="font-price-display text-price-display text-primary">S/. 0.00</p>
+                                <div class="flex items-center justify-between pt-4 border-t border-outline-variant">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-full bg-surface-container-high"></div>
+                                        <span class="text-sm font-bold">Vendedor</span>
+                                    </div>
+                                    <button type="button" class="bg-secondary p-2 rounded-lg text-white">
+                                        <span class="material-symbols-outlined">handshake</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-primary-fixed p-gutter rounded-xl border border-primary-fixed-dim shadow-sm">
+                            <div class="flex items-center gap-2 mb-4 text-on-primary-fixed">
+                                <span class="material-symbols-outlined">lightbulb</span>
+                                <h3 class="font-bold">Consejos de Vendedor</h3>
+                            </div>
+                            <ul class="space-y-3 text-sm text-on-primary-fixed-variant">
+                                <li class="flex gap-2">
+                                    <span class="text-primary">•</span>
+                                    <span>Usa títulos claros y específicos.</span>
+                                </li>
+                                <li class="flex gap-2">
+                                    <span class="text-primary">•</span>
+                                    <span>Sube al menos 3 fotos de alta calidad.</span>
+                                </li>
+                                <li class="flex gap-2">
+                                    <span class="text-primary">•</span>
+                                    <span>Describe honestamente el estado del producto.</span>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
-                    <ul class="space-y-3 text-sm text-on-primary-fixed-variant">
-                        <li class="flex gap-2">
-                            <span class="text-primary">•</span>
-                            <span>Usa títulos claros y específicos.</span>
-                        </li>
-                        <li class="flex gap-2">
-                            <span class="text-primary">•</span>
-                            <span>Sube al menos 3 fotos de alta calidad.</span>
-                        </li>
-                        <li class="flex gap-2">
-                            <span class="text-primary">•</span>
-                            <span>Describe honestamente el estado del producto.</span>
-                        </li>
-                    </ul>
-                </div>
-
+                </form>
             </div>
-        </form>
-    </div>
-</main>
+        </main>
+        @if(session('success'))
+        <div id="success-alert" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 transform transition-all duration-300 translate-y-[-20px] opacity-0">
+            <div class="bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-xl flex items-center gap-3 border border-emerald-500">
+                <span class="material-symbols-outlined animate-bounce">check_circle</span>
+                <span class="font-body-lg font-bold text-sm sm:text-base">{{ session('success') }}</span>
+                <button type="button" onclick="closeAlert()" class="ml-4 hover:opacity-70 transition-opacity flex items-center">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            </div>
+        </div>
+        @endif
     </div>
     <!-- Footer -->
     <footer class="w-full mt-gutter bg-inverse-surface dark:bg-surface-container-lowest relative z-50">
@@ -440,13 +454,110 @@
         </button>
     </div>
     <script>
+        const imageInput = document.getElementById('image-input');
+        const galleryContainer = document.getElementById('gallery-container');
+        const uploadBox = document.getElementById('upload-box');
+        const uploadIcon = document.getElementById('upload-icon');
+        const uploadText = document.getElementById('upload-text');
+        const uploadSubtext = document.getElementById('upload-subtext');
+
+        const previewImg = document.getElementById('preview-img');
+        const previewPlaceholder = document.getElementById('preview-placeholder');
+
+        // Array interno para almacenar los archivos seleccionados de forma acumulativa
+        let selectedFiles = [];
+
+        imageInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+
+            files.forEach(file => {
+                // Evitar duplicados exactos por nombre y tamaño
+                if (!selectedFiles.some(f => f.name === file.name && f.size === file.size)) {
+                    selectedFiles.push(file);
+                    renderThumbnail(file);
+                }
+            });
+
+            updateInterface();
+        });
+
+        function renderThumbnail(file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                // Crear el contenedor de la miniatura
+                const thumbDiv = document.createElement('div');
+                thumbDiv.className = "relative aspect-square rounded-xl overflow-hidden border border-outline-variant group bg-surface-container-high animate-fade-in";
+
+                // Imagen miniatura
+                const img = document.createElement('img');
+                img.src = event.target.result;
+                img.className = "w-full h-full object-cover";
+
+                // Botón para eliminar miniatura
+                const removeBtn = document.createElement('button');
+                removeBtn.type = "button";
+                removeBtn.className = "absolute top-1 right-1 bg-error text-white rounded-full p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center hover:scale-110";
+                removeBtn.innerHTML = '<span class="material-symbols-outlined text-sm">delete</span>';
+
+                // Evento para remover la imagen del flujo
+                removeBtn.addEventListener('click', () => {
+                    selectedFiles = selectedFiles.filter(f => f !== file);
+                    thumbDiv.remove();
+                    updateInterface();
+                });
+
+                thumbDiv.appendChild(img);
+                thumbDiv.appendChild(removeBtn);
+
+                // Insertar la miniatura antes de la caja de subida
+                galleryContainer.insertBefore(thumbDiv, uploadBox);
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function updateInterface() {
+            if (selectedFiles.length > 0) {
+                // Rediseñar la caja de subida para que actúe como un botón "Agregar más" compacto
+                uploadBox.className = "border-2 border-dashed border-primary/40 rounded-xl aspect-square flex flex-col items-center justify-center text-center hover:bg-primary-container/10 transition-colors cursor-pointer group p-2 bg-surface-container-lowest";
+                uploadIcon.className = "material-symbols-outlined text-2xl text-primary";
+                uploadText.textContent = "Añadir más";
+                uploadText.className = "mt-1 text-xs font-bold text-primary";
+                uploadSubtext.classList.add('hidden');
+
+                // Actualizar la Vista Previa principal con la primera imagen del arreglo
+                const firstReader = new FileReader();
+                firstReader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewImg.classList.remove('hidden');
+                    if (previewPlaceholder) previewPlaceholder.classList.add('hidden');
+                }
+                firstReader.readAsDataURL(selectedFiles[0]);
+
+            } else {
+                // Reestablecer la caja de subida a su estado original de diseño completo
+                uploadBox.className = "border-2 border-dashed border-outline-variant rounded-xl aspect-square flex flex-col items-center justify-center text-center hover:bg-surface-container-low transition-colors cursor-pointer group p-4 w-full";
+                uploadIcon.className = "material-symbols-outlined text-4xl text-outline-variant group-hover:text-primary transition-colors";
+                uploadText.textContent = "Haz clic para subir una imagen";
+                uploadText.className = "mt-4 font-body-lg text-body-lg font-bold text-on-surface";
+                uploadSubtext.classList.remove('hidden');
+
+                // Limpiar Vista Previa principal
+                previewImg.src = "";
+                previewImg.classList.add('hidden');
+                if (previewPlaceholder) previewPlaceholder.classList.remove('hidden');
+            }
+
+            // Sincronizar los archivos del array con el objeto FileList real del input
+            const dataTransfer = new DataTransfer();
+            selectedFiles.forEach(file => dataTransfer.items.add(file));
+            imageInput.files = dataTransfer.files;
+        }
+
+        // Código existente para actualizar textos de título y precio...
         const titleInput = document.querySelector('input[name="title"]');
         const priceInput = document.querySelector('input[name="price"]');
         const previewTitle = document.querySelector('h4');
         const previewPrice = document.querySelector('.font-price-display');
-        const imageInput = document.getElementById('image-input');
-        const previewImg = document.getElementById('preview-img');
-        const previewPlaceholder = document.getElementById('preview-placeholder');
 
         if (titleInput && previewTitle) {
             titleInput.addEventListener('input', (e) => {
@@ -460,19 +571,30 @@
             });
         }
 
-        if (imageInput && previewImg) {
-            imageInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        previewImg.src = event.target.result;
-                        previewImg.classList.remove('hidden');
-                        if (previewPlaceholder) previewPlaceholder.classList.add('hidden');
-                    }
-                    reader.readAsDataURL(file);
-                }
-            });
+        // Manejo de la Alerta de Éxito
+        document.addEventListener('DOMContentLoaded', () => {
+            const alert = document.getElementById('success-alert');
+            if (alert) {
+                // Pequeño delay para activar la animación de entrada
+                setTimeout(() => {
+                    alert.classList.remove('translate-y-[-20px]', 'opacity-0');
+                    alert.classList.add('translate-y-0', 'opacity-100');
+                }, 100);
+
+                // Auto-cierre después de 4 segundos
+                setTimeout(() => {
+                    closeAlert();
+                }, 4000);
+            }
+        });
+
+        function closeAlert() {
+            const alert = document.getElementById('success-alert');
+            if (alert) {
+                alert.classList.remove('translate-y-0', 'opacity-100');
+                alert.classList.add('translate-y-[-20px]', 'opacity-0');
+                setTimeout(() => alert.remove(), 300);
+            }
         }
     </script>
 </body>
