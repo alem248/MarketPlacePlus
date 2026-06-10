@@ -175,43 +175,46 @@
         <!-- SideNavBar -->
         <aside class="w-sidebar-width bg-surface-container dark:bg-surface-container-low border-r border-outline-variant flex flex-col p-base space-y-4 hidden md:flex sticky top-16 self-start shrink-0">
             <div class="p-4 bg-surface-container-lowest rounded-2xl mb-4 border border-outline-variant">
-    <div class="p-4 bg-surface-container-lowest rounded-2xl mb-4 border border-outline-variant">
-    <div class="flex flex-col items-center gap-3 mb-4">
-    <div class="relative">
-        @if(!empty(auth()->user()->foto))
-            <img alt="Avatar del Comprador" class="w-24 h-24 rounded-full object-cover border-2 border-primary" src="{{ asset('storage/' . auth()->user()->foto) }}">
-        @else
-            <img alt="Avatar por defecto" class="w-24 h-24 rounded-full object-cover border-2 border-primary" src="{{ asset('img/icon_default.jpg') }}">
-        @endif
-        <div class="absolute bottom-1 right-1 w-5 h-5 bg-tertiary-fixed rounded-full border-2 border-surface-container-lowest"></div>
-    </div>
-    
-    <div class="text-center mt-1">
-        <h2 class="text-headline-md font-headline-md font-bold text-primary">
-            {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
-        </h2>
-        <p class="text-body-sm text-outline">Comprador</p>
-    </div>
-</div>
-</div>
-    <a href="{{ route('home') }}" class="w-full block text-center py-3 px-4 bg-[#003178] text-white rounded-2xl font-bold font-headline-md text-headline-md transition-all hover:brightness-110">
-        Cambiar a Cliente
-    </a>
-</div>
+                <div class="p-4 bg-surface-container-lowest rounded-2xl mb-4 border border-outline-variant">
+                    <div class="flex flex-col items-center gap-3 mb-4">
+                        <div class="relative">
+                            @if(!empty(auth()->user()->foto))
+                            <img alt="Avatar del Comprador" class="w-24 h-24 rounded-full object-cover border-2 border-primary" src="{{ asset('storage/' . auth()->user()->foto) }}">
+                            @else
+                            <img alt="Avatar por defecto" class="w-24 h-24 rounded-full object-cover border-2 border-primary" src="{{ asset('img/icon_default.jpg') }}">
+                            @endif
+                            <div class="absolute bottom-1 right-1 w-5 h-5 bg-tertiary-fixed rounded-full border-2 border-surface-container-lowest"></div>
+                        </div>
+
+                        <div class="text-center mt-1">
+                            <h2 class="text-headline-md font-headline-md font-bold text-primary">
+                                {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
+                            </h2>
+                            <p class="text-body-sm text-outline">Comprador</p>
+                        </div>
+                    </div>
+                </div>
+                <a href="{{ route('home') }}" class="w-full block text-center py-3 px-4 bg-[#003178] text-white rounded-2xl font-bold font-headline-md text-headline-md transition-all hover:brightness-110">
+                    Cambiar a Cliente
+                </a>
+            </div>
             <nav class="space-y-1">
-                <a class="bg-secondary-container text-on-secondary-container rounded-xl font-bold flex items-center px-4 py-3" href="#">
+                <a class="bg-secondary-container text-on-secondary-container rounded-xl font-bold flex items-center px-4 py-3" href="{{ route('proximamente') }}">
                     <span class="material-symbols-outlined mr-3">dashboard</span>
                     <span class="font-body-lg text-body-lg">Panel</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all" href="#">
+                <a href="{{ route('seller.products.create') }}"
+                    @class([ 'flex items-center px-4 py-3 rounded-xl transition-all' , 'bg-secondary-container text-on-secondary-container font-bold'=> request()->routeIs('seller.products.create'),
+                    'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' => !request()->routeIs('seller.products.create')
+                    ])>
                     <span class="material-symbols-outlined mr-3">add_circle</span>
                     <span class="font-body-lg text-body-lg">Crear Publicación</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all" href="#">
+                <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all" href="{{ route('proximamente') }}">
                     <span class="material-symbols-outlined mr-3">handshake</span>
                     <span class="font-body-lg text-body-lg">Mis Tratos</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all" href="#">
+                <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all" href="{{ route('proximamente') }}">
                     <span class="material-symbols-outlined mr-3">receipt_long</span>
                     <span class="font-body-lg text-body-lg">Mis Comprobantes</span>
                 </a>
@@ -416,17 +419,17 @@
             <div>
                 <h4 class="text-label-caps font-bold mb-6 uppercase tracking-wider">Enlaces Rápidos</h4>
                 <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="#">Comprar producto</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="#">Mis tratos</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="#">Rastrear pedido</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Comprar producto</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Mis tratos</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Rastrear pedido</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="text-label-caps font-bold mb-6 uppercase tracking-wider">Soporte</h4>
                 <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="#">Ayuda al cliente</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="#">Sobre nosotros</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="#">Términos y condiciones</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Ayuda al cliente</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Sobre nosotros</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Términos y condiciones</a></li>
                 </ul>
             </div>
             <div>

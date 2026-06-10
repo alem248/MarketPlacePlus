@@ -68,3 +68,12 @@ Route::middleware(['auth'])->group(function () {
         return view('seller.panel');
     })->name('seller.panel');
 });
+
+// Publicacion del prodcuto 
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/seller/products/create', [ProductController::class, 'create'])->name('seller.products.create');
+    Route::post('/seller/products/store', [ProductController::class, 'store'])->name('seller.products.store');
+});
+
+Route::view('/crear-producto', 'create-product')->name('products.create');

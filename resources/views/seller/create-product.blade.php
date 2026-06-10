@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Crear Publicación - Market Place Plus</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e1e3e4;
+            border-radius: 10px;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f8f9fa",
+                        "surface-container": "#edeeef",
+                        "tertiary": "#003f0b",
+                        "surface-variant": "#e1e3e4",
+                        "tertiary-fixed": "#a3f69c",
+                        "surface-dim": "#d9dadb",
+                        "surface": "#f8f9fa",
+                        "tertiary-fixed-dim": "#88d982",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#ffb786",
+                        "on-secondary-fixed": "#311300",
+                        "on-primary-container": "#a1bbff",
+                        "surface-bright": "#f8f9fa",
+                        "on-surface-variant": "#434652",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#0d47a1",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-tertiary-fixed-variant": "#005312",
+                        "on-primary-fixed-variant": "#00429c",
+                        "inverse-primary": "#b0c6ff",
+                        "tertiary-container": "#005914",
+                        "secondary-fixed": "#ffdcc6",
+                        "primary": "#003178",
+                        "surface-tint": "#2b5bb5",
+                        "on-primary-fixed": "#001945",
+                        "outline": "#737783",
+                        "secondary-container": "#fc820c",
+                        "on-tertiary-container": "#7ecf79",
+                        "on-tertiary-fixed": "#002204",
+                        "primary-fixed-dim": "#b0c6ff",
+                        "on-secondary-container": "#5e2c00",
+                        "primary-fixed": "#d9e2ff",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary": "#964900",
+                        "on-surface": "#191c1d",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c3c6d4",
+                        "inverse-on-surface": "#f0f1f2",
+                        "error": "#ba1a1a",
+                        "on-background": "#191c1d",
+                        "on-secondary-fixed-variant": "#723600",
+                        "inverse-surface": "#2e3132",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "sidebar-width": "280px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "price-display": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {
+                            "lineHeight": "16px",
+                            "letterSpacing": "0.05em",
+                            "fontWeight": "700"
+                        }],
+                        "body-sm": ["14px", {
+                            "lineHeight": "20px",
+                            "fontWeight": "400"
+                        }],
+                        "body-lg": ["16px", {
+                            "lineHeight": "24px",
+                            "fontWeight": "400"
+                        }],
+                        "price-display": ["24px", {
+                            "lineHeight": "24px",
+                            "fontWeight": "700"
+                        }],
+                        "headline-md": ["20px", {
+                            "lineHeight": "28px",
+                            "fontWeight": "600"
+                        }],
+                        "headline-lg-mobile": ["24px", {
+                            "lineHeight": "32px",
+                            "fontWeight": "700"
+                        }],
+                        "headline-lg": ["32px", {
+                            "lineHeight": "40px",
+                            "letterSpacing": "-0.02em",
+                            "fontWeight": "700"
+                        }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background text-on-surface min-h-screen flex flex-col">
+    <!-- TopNavBar -->
+    <header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline fixed top-0 w-full z-50">
+        <div class="flex justify-between items-center px-gutter py-base w-full max-w-container-max mx-auto h-16">
+            <div class="flex items-center gap-4">
+                <span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Market Place Plus</span>
+                <span class="hidden md:block text-on-surface-variant font-body-sm italic ml-4">¿Qué vamos a vender hoy?</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="hidden md:flex items-center gap-2 bg-secondary-container text-on-secondary-container px-4 py-2 rounded-xl font-bold hover:bg-surface-container-high transition-colors scale-95 active:transition-all">
+                    <span class="material-symbols-outlined">add</span>
+                    <span class="">Crear Publicación</span>
+                </button>
+                <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+                    <span class="material-symbols-outlined text-on-surface-variant">person</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    @if(session('success'))
+    <div class="mb-4 p-4 bg-tertiary-fixed text-tertiary rounded-2xl font-bold flex items-center gap-2">
+        <span class="material-symbols-outlined">check_circle</span>
+        {{ session('success') }}
+    </div>
+    @endif
+
+    @if($errors->any())
+    <div class="mb-4 p-4 bg-error-container text-on-error-container rounded-2xl font-bold">
+        <ul class="list-disc pl-5">
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+    <div class="flex flex-1 pt-16">
+        <!-- SideNavBar -->
+        <aside class="fixed left-0 w-sidebar-width bg-surface-container dark:bg-surface-container-low border-r border-outline-variant hidden md:flex flex-col p-base space-y-4 bottom-0 top-16" style="height: calc(-64px + 100vh); z-index: 40;">
+            <div class="p-4 mb-4">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary">
+                        <img alt="Avatar del Vendedor" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACXVJp-gJ6DffvC1s-8gBPt5RQaavs37T4IQFGrNkMxFtlF89AKx-b581fo-x74mnym3HTzsMiCnE2ZRNmcNnzYRpkrDC-x_kAOOWqLnqTIkkIPgSvhORX1loAdcWJYD1uuj7WlrMvNOLXB5edxLsxDIToOaCg3cwh-U5zFa_ZPTEqRhXQ4wJsd8fHHmnO2oJPrnEzpbn42kV9KaEvdYOdRC2eEFTv43suoFAu_2VY3ZZIOA0tgyxUUU4ncwQHAHQXXFqyMPD9n-s">
+                    </div>
+                    <div>
+                        <p class="font-headline-md text-headline-md text-primary">Modo Vendedor</p>
+                        <p class="text-on-surface-variant text-sm">Ventas activas: 12</p>
+                    </div>
+                </div>
+                <button class="w-full mt-4 bg-outline-variant text-on-surface-variant font-bold py-2 rounded-xl hover:bg-surface-variant transition-all">
+                    Cambiar a Cliente
+                </button>
+            </div>
+            <nav class="space-y-1"><a class="bg-secondary-container text-on-secondary-container rounded-xl font-bold flex items-center px-4 py-3" href="#">
+                    <span class="material-symbols-outlined mr-3">add</span>
+                    <span class="font-body-lg text-body-lg">Crear Publicación</span>
+                </a>
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all translate-x-1 duration-200" href="#">
+                    <span class="material-symbols-outlined mr-3">dashboard</span>
+                    <span class="font-body-lg text-body-lg">Panel</span>
+                </a>
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="#"><span class="material-symbols-outlined mr-3">handshake</span>
+                    <span class="font-body-lg text-body-lg">Mis Tratos</span></a>
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="#">
+                    <span class="material-symbols-outlined mr-3">local_shipping</span>
+                    <span class="font-body-lg text-body-lg">Delivery</span>
+                </a>
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="#">
+                    <span class="material-symbols-outlined mr-3">receipt_long</span>
+                    <span class="font-body-lg text-body-lg">Mis Comprobantes</span>
+                </a>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+       <main class="flex-1 md:ml-sidebar-width p-gutter bg-background custom-scrollbar min-h-screen">
+    <div class="max-w-6xl mx-auto space-y-gutter">
+        
+        <header class="mb-8">
+            <h1 class="font-headline-lg text-headline-lg text-primary">Publicar Nuevo Producto</h1>
+            <p class="text-on-surface-variant font-body-lg text-body-lg mt-2">Completa los detalles para listar tu producto en el marketplace.</p>
+        </header>
+
+        <form action="{{ route('seller.products.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-gutter items-start">
+            @csrf
+
+            <div class="lg:col-span-2 space-y-gutter">
+                
+                <section class="bg-surface-container-lowest p-gutter rounded-xl border border-outline-variant shadow-sm">
+                    <div class="flex items-center gap-2 mb-6 text-primary">
+                        <span class="material-symbols-outlined">info</span>
+                        <h2 class="font-headline-md text-headline-md">Información Básica</h2>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">TÍTULO DEL PRODUCTO</label>
+                            <input name="title" class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent bg-white text-on-surface font-body-lg" placeholder="Ej: Smartphone Samsung Galaxy S23 Ultra" type="text" required>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">CATEGORÍA</label>
+                                <select name="category" class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg" required>
+                                    <option value="">Seleccionar categoría</option>
+                                    <option value="Tecnología">Tecnología</option>
+                                    <option value="Hogar">Hogar</option>
+                                    <option value="Moda">Moda</option>
+                                    <option value="Vehículos">Vehículos</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">UBICACIÓN</label>
+                                <select name="location" class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg" required>
+                                    <option value="">Seleccionar ubicación</option>
+                                    <option value="Lima">Lima</option>
+                                    <option value="Santa Anita">Santa Anita</option>
+                                    <option value="Arequipa">Arequipa</option>
+                                    <option value="Cusco">Cusco</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">DESCRIPCIÓN</label>
+                            <textarea name="description" class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg" placeholder="Describe las características principales, garantía, etc." rows="4" required></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-surface-container-lowest p-gutter rounded-xl border border-outline-variant shadow-sm">
+                    <div class="flex items-center gap-2 mb-6 text-primary">
+                        <span class="material-symbols-outlined">payments</span>
+                        <h2 class="font-headline-md text-headline-md">Precio</h2>
+                    </div>
+                    <div>
+                        <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">PRECIO (S/.)</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">S/.</span>
+                            <input name="price" class="w-full pl-12 p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg" placeholder="0.00" type="number" step="0.01" required>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-surface-container-lowest p-gutter rounded-xl border border-outline-variant shadow-sm">
+                    <div class="flex items-center gap-2 mb-6 text-primary">
+                        <span class="material-symbols-outlined">photo_library</span>
+                        <h2 class="font-headline-md text-headline-md">Multimedia</h2>
+                    </div>
+                    <label for="image-input" class="border-2 border-dashed border-outline-variant rounded-xl p-12 text-center hover:bg-surface-container-low transition-colors cursor-pointer group block">
+                        <input type="file" id="image-input" name="image_path" accept="image/*" class="hidden" required>
+                        <span class="material-symbols-outlined text-4xl text-outline-variant group-hover:text-primary transition-colors">cloud_upload</span>
+                        <p class="mt-4 font-body-lg text-body-lg font-bold text-on-surface">Haz clic para subir una imagen</p>
+                        <p class="text-on-surface-variant text-sm mt-1">Soporta JPG, PNG (Max. 5MB)</p>
+                    </label>
+                </section>
+
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <button type="button" class="flex-1 bg-white border border-outline text-on-surface font-bold py-4 rounded-xl hover:bg-surface-container-high transition-all">
+                        Guardar Borrador
+                    </button>
+                    <button type="submit" class="flex-1 bg-secondary-container text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg active:scale-95">
+                        Publicar Producto
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-gutter">
+                
+                <div class="bg-white rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+                    <div class="p-4 bg-surface-container text-center border-b border-outline-variant">
+                        <h3 class="font-label-caps text-label-caps text-on-surface-variant">VISTA PREVIA</h3>
+                    </div>
+                    <div class="aspect-square bg-surface-container-high flex items-center justify-center relative">
+                        <span id="preview-placeholder" class="material-symbols-outlined text-6xl text-outline-variant">inventory_2</span>
+                        <img id="preview-img" class="w-full h-full object-cover hidden absolute inset-0" alt="Vista previa">
+                    </div>
+                    <div class="p-4 space-y-3">
+                        <div class="flex text-secondary text-sm">
+                            <span class="material-symbols-outlined text-sm">star</span>
+                            <span class="material-symbols-outlined text-sm">star</span>
+                            <span class="material-symbols-outlined text-sm">star</span>
+                            <span class="material-symbols-outlined text-sm">star</span>
+                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0">star</span>
+                        </div>
+                        <h4 class="font-headline-md text-headline-md leading-tight h-14 overflow-hidden">Título del producto aparecerá aquí</h4>
+                        <p class="font-price-display text-price-display text-primary">S/. 0.00</p>
+                        <div class="flex items-center justify-between pt-4 border-t border-outline-variant">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-surface-container-high"></div>
+                                <span class="text-sm font-bold">Vendedor</span>
+                            </div>
+                            <button type="button" class="bg-secondary p-2 rounded-lg text-white">
+                                <span class="material-symbols-outlined">handshake</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-primary-fixed p-gutter rounded-xl border border-primary-fixed-dim shadow-sm">
+                    <div class="flex items-center gap-2 mb-4 text-on-primary-fixed">
+                        <span class="material-symbols-outlined">lightbulb</span>
+                        <h3 class="font-bold">Consejos de Vendedor</h3>
+                    </div>
+                    <ul class="space-y-3 text-sm text-on-primary-fixed-variant">
+                        <li class="flex gap-2">
+                            <span class="text-primary">•</span>
+                            <span>Usa títulos claros y específicos.</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-primary">•</span>
+                            <span>Sube al menos 3 fotos de alta calidad.</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-primary">•</span>
+                            <span>Describe honestamente el estado del producto.</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</main>
+    </div>
+    <!-- Footer -->
+    <footer class="w-full mt-gutter bg-inverse-surface dark:bg-surface-container-lowest relative z-50">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-gutter py-12 max-w-container-max mx-auto">
+            <div class="md:col-span-1">
+                <span class="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary">MarketPlace Plus</span>
+                <p class="text-body-sm text-surface-variant dark:text-on-surface-variant mt-4">La plataforma líder para conectar compradores y vendedores de forma directa y segura.</p>
+            </div>
+            <div>
+                <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Enlaces Rápidos</h4>
+                <ul class="flex flex-col gap-3">
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Comprar producto</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Mis tratos</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Rastrear pedido</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Soporte</h4>
+                <ul class="flex flex-col gap-3">
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Ayuda al cliente</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Sobre nosotros</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Términos y condiciones</a></li>
+                </ul>
+            </div>
+            <div class="md:col-span-1">
+                <h4 class="text-label-caps font-label-caps mb-6 uppercase tracking-wider text-white">RECOMENDACIONES PARA TUS TRATOS</h4>
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-white" style="font-size: 20px;">check_circle</span>
+                        <p class="text-body-sm leading-tight text-white">Verifica la reputación del vendedor</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-white" style="font-size: 20px;">location_on</span>
+                        <p class="text-body-sm leading-tight text-white">Realiza tus tratos en lugares públicos</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-white" style="font-size: 20px;">chat</span>
+                        <p class="text-body-sm leading-tight text-white">Usa WhatsApp para mayor seguridad</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-white" style="font-size: 20px;">security</span>
+                        <p class="text-body-sm leading-tight text-white">No compartas datos bancarios sensibles</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-outline/30 py-6 px-gutter max-w-container-max mx-auto text-center">
+            <p class="text-body-sm text-surface-variant/60">Market Place Plus - eCommerce Template © 2026. Design by Templatecookie</p>
+        </div>
+    </footer>
+    <!-- Mobile Nav Bar (Hidden on Desktop) -->
+    <div class="md:hidden fixed bottom-0 w-full bg-surface border-t border-outline-variant flex justify-around py-2 z-50">
+        <button class="flex flex-col items-center p-2 text-on-surface-variant">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="text-[10px] mt-1">Panel</span>
+        </button>
+        <button class="flex flex-col items-center p-2 text-primary font-bold">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">add_circle</span>
+            <span class="text-[10px] mt-1">Vender</span>
+        </button>
+        <button class="flex flex-col items-center p-2 text-on-surface-variant">
+            <span class="material-symbols-outlined">handshake</span>
+            <span class="text-[10px] mt-1">Tratos</span>
+        </button>
+        <button class="flex flex-col items-center p-2 text-on-surface-variant">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-[10px] mt-1">Perfil</span>
+        </button>
+    </div>
+    <script>
+        const titleInput = document.querySelector('input[name="title"]');
+        const priceInput = document.querySelector('input[name="price"]');
+        const previewTitle = document.querySelector('h4');
+        const previewPrice = document.querySelector('.font-price-display');
+        const imageInput = document.getElementById('image-input');
+        const previewImg = document.getElementById('preview-img');
+        const previewPlaceholder = document.getElementById('preview-placeholder');
+
+        if (titleInput && previewTitle) {
+            titleInput.addEventListener('input', (e) => {
+                previewTitle.textContent = e.target.value || "Título del producto aparecerá aquí";
+            });
+        }
+
+        if (priceInput && previewPrice) {
+            priceInput.addEventListener('input', (e) => {
+                previewPrice.textContent = e.target.value ? `S/. ${parseFloat(e.target.value).toFixed(2)}` : "S/. 0.00";
+            });
+        }
+
+        if (imageInput && previewImg) {
+            imageInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        previewImg.src = event.target.result;
+                        previewImg.classList.remove('hidden');
+                        if (previewPlaceholder) previewPlaceholder.classList.add('hidden');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
@@ -13,19 +14,36 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title'       => ['required', 'string', 'max:200'],
-            'category'    => ['required', 'string'],
-            'location'    => ['required', 'string'],
-            'description' => ['required', 'string', 'min:20'],
-            'price'       => ['required', 'numeric', 'min:0'],
-            'images.*'    => ['nullable', 'image', 'max:5120'], // máx 5MB c/u
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'required|string',
+            'location' => 'required|string',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:5120',
         ]);
 
-        // TODO: guardar en base de datos cuando tengas el modelo Product
-        // Product::create([...$validated, 'user_id' => auth()->id()]);
+        $product = new Product();
+        $product->user_id = auth()->id();
+        $product->title = $request->title;
+        $product->category = $request->category;
+        $product->location = $request->location;
+        $product->description = $request->description;
+        $product->price = $request->price;
 
-        return redirect()->route('seller.products.create')
-            ->with('success', '¡Producto publicado correctamente!');
+        if ($request->hasFile('image')) {
+            $product->image_path = $request->file('image')->store('products', 'public');
+        }
+
+        $product->is_active = true;
+        $product->save();
+
+        return redirect()->back()->with('success', '¡Publicación creada exitosamente!');
+    }
+
+    public function dashboard()
+    {
+        $products = Product::where('user_id', auth()->id())->get();
+        return view('seller.dashboard', compact('products'));
     }
 }
