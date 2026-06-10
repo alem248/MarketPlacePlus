@@ -64,9 +64,12 @@ Route::get('/proximamente', function () {
 
 // Zona vendedor
 Route::middleware(['auth'])->group(function () {
-    Route::get('/vendedor/panel', function () {
-        return view('seller.panel');
-    })->name('seller.panel');
+    Route::get('/vendedor/panel', [ProductController::class, 'dashboard'])->name('seller.panel');
+    Route::get('/seller/products/create', [ProductController::class, 'create'])->name('seller.products.create');
+    Route::post('/seller/products/store', [ProductController::class, 'store'])->name('seller.products.store');
+
+    Route::get('/seller/products/{id}/edit', [ProductController::class, 'edit'])->name('seller.products.edit');
+    Route::put('/seller/products/{id}', [ProductController::class, 'update'])->name('seller.products.update');
 });
 
 // Publicacion del prodcuto 

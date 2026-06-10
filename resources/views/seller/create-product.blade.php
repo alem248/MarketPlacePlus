@@ -187,11 +187,17 @@
             <div class="p-4 mb-4">
                 <div class="flex items-center gap-3 mb-2">
                     <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary">
-                        <img alt="Avatar del Vendedor" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACXVJp-gJ6DffvC1s-8gBPt5RQaavs37T4IQFGrNkMxFtlF89AKx-b581fo-x74mnym3HTzsMiCnE2ZRNmcNnzYRpkrDC-x_kAOOWqLnqTIkkIPgSvhORX1loAdcWJYD1uuj7WlrMvNOLXB5edxLsxDIToOaCg3cwh-U5zFa_ZPTEqRhXQ4wJsd8fHHmnO2oJPrnEzpbn42kV9KaEvdYOdRC2eEFTv43suoFAu_2VY3ZZIOA0tgyxUUU4ncwQHAHQXXFqyMPD9n-s">
+                        @if(!empty(auth()->user()->foto))
+                        <img alt="Avatar del Vendedor" class="w-full h-full object-cover" src="{{ asset('storage/' . auth()->user()->foto) }}">
+                        @else
+                        <img alt="Avatar por defecto" class="w-full h-full object-cover" src="{{ asset('img/icon_default.jpg') }}">
+                        @endif
                     </div>
                     <div>
-                        <p class="font-headline-md text-headline-md text-primary">Modo Vendedor</p>
-                        <p class="text-on-surface-variant text-sm">Ventas activas: 12</p>
+                        <p class="font-headline-md text-headline-md text-primary">
+                            {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
+                        </p>
+                        <p class="text-on-surface-variant text-sm">Ventas activas: {{ auth()->user()->products()->count() }}</p>
                     </div>
                 </div>
                 <button class="w-full mt-4 bg-outline-variant text-on-surface-variant font-bold py-2 rounded-xl hover:bg-surface-variant transition-all">
@@ -202,7 +208,7 @@
                     <span class="material-symbols-outlined mr-3">add</span>
                     <span class="font-body-lg text-body-lg">Crear Publicación</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all translate-x-1 duration-200" href="#">
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all translate-x-1 duration-200" href="{{ route('seller.panel') }}">
                     <span class="material-symbols-outlined mr-3">dashboard</span>
                     <span class="font-body-lg text-body-lg">Panel</span>
                 </a>

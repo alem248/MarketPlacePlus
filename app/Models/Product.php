@@ -25,6 +25,7 @@ class Product extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'price' => 'decimal:2',
+        'image_path' => 'array',
     ];
 
     public function user(): BelongsTo

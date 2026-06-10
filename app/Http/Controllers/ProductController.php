@@ -15,21 +15,19 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'       => ['required', 'string', 'max:200'],
-            'category'    => ['required', 'string'],
-            'location'    => ['required', 'string'],
-            'description' => ['required', 'string', 'min:20'],
-            'price'       => ['required', 'numeric', 'min:0'],
-            'image_path'  => ['required', 'array'], // Validamos que sea un arreglo
-            'image_path.*' => ['image', 'max:5120'], // Validamos cada imagen dentro
+            'title'        => ['required', 'string', 'max:200'],
+            'category'     => ['required', 'string'],
+            'location'     => ['required', 'string'],
+            'description'  => ['required', 'string', 'min:20'],
+            'price'        => ['required', 'numeric', 'min:0'],
+            'image_path'   => ['required', 'array'],
+            'image_path.*' => ['image', 'max:5120'],
         ]);
 
-        $path = null;
+        $paths = [];
         if ($request->hasFile('image_path')) {
-            $files = $request->file('image_path');
-            if (isset($files[0])) {
-                // Guardamos la primera imagen en el disco público
-                $path = $files[0]->store('products', 'public');
+            foreach ($request->file('image_path') as $file) {
+                $paths[] = $file->store('products', 'public');
             }
         }
 
@@ -40,7 +38,7 @@ class ProductController extends Controller
             'location'    => $request->location,
             'description' => $request->description,
             'price'       => $request->price,
-            'image_path'  => $path,
+            'image_path'  => $paths,
             'is_active'   => true,
         ]);
 
@@ -48,9 +46,45 @@ class ProductController extends Controller
             ->with('success', '¡Producto publicado correctamente!');
     }
 
-    public function dashboard()
-    {
-        $products = Product::where('user_id', auth()->id())->get();
-        return view('seller.dashboard', compact('products'));
+   public function dashboard()
+{
+    $products = Product::where('user_id', auth()->id())->get();
+    return view('seller.panel', compact('products'));
+}
+
+public function edit($id)
+{
+    $product = Product::where('user_id', auth()->id())->findOrFail($id);
+    return view('seller.products.edit', compact('product'));
+}
+
+public function update(Request $request, $id)
+{
+    $product = Product::where('user_id', auth()->id())->findOrFail($id);
+
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'category' => 'required|string|max:255',
+        'price' => 'required|numeric|min:0',
+        'location' => 'required|string|max:255',
+        'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+    ]);
+
+    $product->title = $request->title;
+    $product->category = $request->category;
+    $product->price = $request->price;
+    $product->location = $request->location;
+
+    if ($request->hasFile('images')) {
+        $images = [];
+        foreach ($request->file('images') as $file) {
+            $images[] = $file->store('products', 'public');
+        }
+        $product->image_path = $images;
     }
+
+    $product->save();
+
+    return redirect()->route('seller.panel')->with('success', 'Producto actualizado con éxito.');
+}
 }

@@ -199,7 +199,7 @@
                 </a>
             </div>
             <nav class="space-y-1">
-                <a class="bg-secondary-container text-on-secondary-container rounded-xl font-bold flex items-center px-4 py-3" href="{{ route('proximamente') }}">
+                <a class="bg-secondary-container text-on-secondary-container rounded-xl font-bold flex items-center px-4 py-3" href="{{ route('seller.panel') }}">
                     <span class="material-symbols-outlined mr-3">dashboard</span>
                     <span class="font-body-lg text-body-lg">Panel</span>
                 </a>
@@ -246,167 +246,179 @@
                                 <h2 class="font-headline-lg text-headline-lg text-on-surface">Gestionar Publicaciones</h2>
                                 <button class="text-primary font-bold hover:underline">Ver todas</button>
                             </div>
+
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <!-- Product Card 1 -->
+                                @forelse($products as $product)
                                 <div class="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden group hover:shadow-lg transition-all">
                                     <div class="h-48 overflow-hidden relative">
-                                        <img class="w-full h-full object-cover transition-transform group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH8VbE_szHnwG3V6BpVceglpg7-vwQ9Qu4aqyifSA6jswNT30EtHqcOlsDXB0dieH_kr7g0l8RDD2NrkPmCVskiIevnZ5SX-dG3O2YfyQVyKcvBlCZp8cV6_5qMuI0wyksrABT1mRSxzr2Dc-9Cnx6Q7GrJItxnaEDHajaqy-qQGgbtbT4UGivTxZF1xUHCrNl-_Jrui91qV5XRdM41GcsHL3gMzr9BP1naQ0L94Wj5R3JrAH9d9yLsNlTAGeMJwGfVkyiREKiCYU">
-                                        <div class="absolute top-2 right-2 flex gap-1">
-                                            <button class="p-2 bg-white/90 rounded-full hover:bg-white text-primary transition-colors"><span class="material-symbols-outlined text-sm">edit</span></button>
-                                            <button class="p-2 bg-white/90 rounded-full hover:bg-white text-error transition-colors"><span class="material-symbols-outlined text-sm">delete</span></button>
-                                        </div>
-                                    </div>
-                                    <div class="p-4">
-                                        <span class="font-label-caps text-label-caps text-on-surface-variant">SMARTPHONES</span>
-                                        <h3 class="font-headline-md text-headline-md mb-2">iPhone 13 Pro Max - 256GB</h3>
-                                        <p class="font-price-display text-price-display text-primary">S/. 850.00</p>
-                                        <div class="mt-4 pt-4 border-t border-outline-variant flex justify-between items-center">
-                                            <button class="bg-secondary text-on-secondary px-4 py-2 rounded-lg font-bold text-sm">Trato Directo</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Product Card 2 -->
-                                <div class="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden group hover:shadow-lg transition-all">
-                                    <div class="h-48 overflow-hidden relative">
-                                        <img class="w-full h-full object-cover transition-transform group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwYA38Fa_-NBn1_bwhvDDy4APnjmx-FMv40PiUxshh-AgBnBqB69THPUleKuab6FACZHmbKavZH_RmSaoTauIc5tqDJ4Q4D-lbWtQu0KV536ubxyWIquQBH64RIOLXtB9GXMjJQOPCugPQv1XUmlYgTRiqzLjBKdTcG7K6OML55N95rVusJexfUTPlCtT7hIlX3ae7U5P2XCLeH6J3L3qPNSPpcYo4dLlaHN6pTbGH1Ib8jS_QFGbs1yBWT8D4yYXcDt9N3UOCq-g">
-                                        <div class="absolute top-2 right-2 flex gap-1">
-                                            <button class="p-2 bg-white/90 rounded-full hover:bg-white text-primary transition-colors"><span class="material-symbols-outlined text-sm">edit</span></button>
-                                            <button class="p-2 bg-white/90 rounded-full hover:bg-white text-error transition-colors"><span class="material-symbols-outlined text-sm">delete</span></button>
-                                        </div>
-                                    </div>
-                                    <div class="p-4">
-                                        <span class="font-label-caps text-label-caps text-on-surface-variant">LAPTOPS</span>
-                                        <h3 class="font-headline-md text-headline-md mb-2">MacBook Air M2 2023</h3>
-                                        <p class="font-price-display text-price-display text-primary">S/. 1,100.00</p>
-                                        <div class="mt-4 pt-4 border-t border-outline-variant flex justify-between items-center">
-                                            <button class="bg-secondary text-on-secondary px-4 py-2 rounded-lg font-bold text-sm">Trato Directo</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Mis Comentarios Section (Restored Styles) -->
-                        <div class="space-y-6">
-                            <div class="flex justify-between items-center">
-                                <h2 class="font-headline-lg text-headline-lg text-on-surface">Mis Comentarios</h2>
-                                <button class="text-primary font-bold hover:underline">Ver todos</button>
-                            </div>
-                            <div class="space-y-4">
-                                <!-- Testimonial 1 -->
-                                <div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-2xl hover:shadow-md transition-shadow">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h4 class="font-bold text-on-surface">Carlos Ruiz</h4>
-                                        <div class="flex text-secondary-container">
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"Excelente vendedor, el producto llegó en perfectas condiciones y el trato fue muy profesional. Totalmente recomendado."</p>
-                                </div>
-                                <!-- Testimonial 2 -->
-                                <div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-2xl hover:shadow-md transition-shadow">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h4 class="font-bold text-on-surface">Lucía Torres</h4>
-                                        <div class="flex text-secondary-container">
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm">star</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"Muy buena comunicación. Hubo un pequeño retraso en el envío pero siempre estuvo pendiente. El iPhone está impecable."</p>
-                                </div>
-                                <!-- Testimonial 3 -->
-                                <div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-2xl hover:shadow-md transition-shadow">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h4 class="font-bold text-on-surface">Marco Peña</h4>
-                                        <div class="flex text-secondary-container">
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"La MacBook Air funciona de maravilla. El empaque era muy seguro. Gran experiencia de compra."</p>
-                                </div>
-                                <!-- Testimonial 4 -->
-                                <div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-2xl hover:shadow-md transition-shadow">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h4 class="font-bold text-on-surface">Sofía Mendoza</h4>
-                                        <div class="flex text-secondary-container">
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"Puntual y honesto. Me explicó todo sobre la garantía del equipo. Volveré a comprarle sin duda."</p>
-                                </div>
-                                <!-- Testimonial 5 -->
+                                        @if(is_array($product->image_path) && isset($product->image_path[0]))
+                                        <img class="w-full h-full object-cover transition-transform group-hover:scale-110" src="{{ asset('storage/' . $product->image_path[0]) }}" alt="{{ $product->title }}">
+                                        @else
+                                        <img class="w-full h-full object-cover transition-transform group-hover:scale-110" src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->title }}">
+                                        @endif
 
-                                <!-- Testimonial 6 -->
+                                        <div class="absolute top-2 right-2 flex gap-1">
+                                            <a href="{{ route('seller.products.edit', $product->id) }}" class="p-2 bg-white/90 rounded-full hover:bg-white text-primary transition-colors">
+                                                <span class="material-symbols-outlined text-sm">edit</span>
+                                            </a>
+                                            <button class="p-2 bg-white/90 rounded-full hover:bg-white text-error transition-colors">
+                                                <span class="material-symbols-outlined text-sm">delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
 
+                                    <div class="p-4">
+                                        <span class="font-label-caps text-label-caps text-on-surface-variant">{{ strtoupper($product->category) }}</span>
+                                        <h3 class="font-headline-md text-headline-md mb-2 line-clamp-1">{{ $product->title }}</h3>
+                                        <p class="font-price-display text-price-display text-primary">S/. {{ number_format($product->price, 2) }}</p>
+
+                                        <div class="mt-4 pt-4 border-t border-outline-variant flex justify-between items-center">
+                                            <span class="inline-flex items-center gap-1 bg-secondary text-on-secondary px-3 py-1.5 rounded-lg font-bold text-xs">
+                                                <span class="material-symbols-outlined text-xs">location_on</span>
+                                                {{ $product->location }}
+                                            </span>
+
+                                            <span class="text-xs font-bold {{ $product->is_active ? 'text-emerald-600' : 'text-error' }}">
+                                                {{ $product->is_active ? 'Activo' : 'Inactivo' }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                @empty
+                                <div class="col-span-full text-center py-12 bg-surface-container-lowest border border-dashed border-outline-variant rounded-2xl p-6 flex flex-col items-center justify-center">
+                                    <span class="material-symbols-outlined text-4xl text-outline-variant mb-2">inventory_2</span>
+                                    <p class="font-bold text-on-surface mb-1">No tienes publicaciones activas</p>
+                                    <p class="text-xs text-on-surface-variant mb-4">Los productos que registres en el sistema aparecerán en esta zona.</p>
+                                    <a href="{{ route('seller.products.create') }}" class="bg-primary text-on-primary px-4 py-2 rounded-xl text-xs font-bold hover:bg-primary/90 transition-colors shadow-sm">
+                                        Crear publicación
+                                    </a>
+                                </div>
+                                @endforelse
                             </div>
                         </div>
                     </div>
-                    <!-- Right Column (Proposals Inbox) -->
+                    <!-- Mis Comentarios Section (Restored Styles) -->
                     <div class="space-y-6">
-                        <h2 class="font-headline-lg text-headline-lg text-on-surface">Bandeja de Propuestas</h2>
+                        <div class="flex justify-between items-center">
+                            <h2 class="font-headline-lg text-headline-lg text-on-surface">Mis Comentarios</h2>
+                            <button class="text-primary font-bold hover:underline">Ver todos</button>
+                        </div>
                         <div class="space-y-4">
-                            <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
-                                <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
-                                <div class="flex-1">
-                                    <p class="text-sm font-bold text-on-surface mb-1">Carlos Ruiz solicita este producto</p>
-                                    <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 2 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
+                            <!-- Testimonial 1 -->
+                            <div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-2xl hover:shadow-md transition-shadow">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-bold text-on-surface">Carlos Ruiz</h4>
+                                    <div class="flex text-secondary-container">
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                    </div>
                                 </div>
+                                <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"Excelente vendedor, el producto llegó en perfectas condiciones y el trato fue muy profesional. Totalmente recomendado."</p>
                             </div>
-                            <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
-                                <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
-                                <div class="flex-1">
-                                    <p class="text-sm font-bold text-on-surface mb-1">Lucía Torres solicita este producto</p>
-                                    <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 5 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
+                            <!-- Testimonial 2 -->
+                            <div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-2xl hover:shadow-md transition-shadow">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-bold text-on-surface">Lucía Torres</h4>
+                                    <div class="flex text-secondary-container">
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm">star</span>
+                                    </div>
                                 </div>
+                                <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"Muy buena comunicación. Hubo un pequeño retraso en el envío pero siempre estuvo pendiente. El iPhone está impecable."</p>
                             </div>
-                            <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
-                                <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
-                                <div class="flex-1">
-                                    <p class="text-sm font-bold text-on-surface mb-1">Marco Peña solicita este producto</p>
-                                    <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 15 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
+                            <!-- Testimonial 3 -->
+                            <div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-2xl hover:shadow-md transition-shadow">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-bold text-on-surface">Marco Peña</h4>
+                                    <div class="flex text-secondary-container">
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                    </div>
                                 </div>
+                                <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"La MacBook Air funciona de maravilla. El empaque era muy seguro. Gran experiencia de compra."</p>
                             </div>
-                            <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
-                                <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
-                                <div class="flex-1">
-                                    <p class="text-sm font-bold text-on-surface mb-1">Sofía Mendoza solicita este producto</p>
-                                    <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 30 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
+                            <!-- Testimonial 4 -->
+                            <div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-2xl hover:shadow-md transition-shadow">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-bold text-on-surface">Sofía Mendoza</h4>
+                                    <div class="flex text-secondary-container">
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                    </div>
                                 </div>
+                                <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"Puntual y honesto. Me explicó todo sobre la garantía del equipo. Volveré a comprarle sin duda."</p>
                             </div>
-                            <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
-                                <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
-                                <div class="flex-1">
-                                    <p class="text-sm font-bold text-on-surface mb-1">Alejandro G. solicita este producto</p>
-                                    <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 45 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
-                                </div>
+                            <!-- Testimonial 5 -->
+
+                            <!-- Testimonial 6 -->
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Right Column (Proposals Inbox) -->
+                <div class="space-y-6">
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface">Bandeja de Propuestas</h2>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
+                            <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-on-surface mb-1">Carlos Ruiz solicita este producto</p>
+                                <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 2 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
                             </div>
-                            <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
-                                <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
-                                <div class="flex-1">
-                                    <p class="text-sm font-bold text-on-surface mb-1">Valentina R. solicita este producto</p>
-                                    <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 1 hora</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
-                                </div>
+                        </div>
+                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
+                            <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-on-surface mb-1">Lucía Torres solicita este producto</p>
+                                <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 5 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
+                            <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-on-surface mb-1">Marco Peña solicita este producto</p>
+                                <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 15 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
+                            <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-on-surface mb-1">Sofía Mendoza solicita este producto</p>
+                                <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 30 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
+                            <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-on-surface mb-1">Alejandro G. solicita este producto</p>
+                                <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 45 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
+                            <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-on-surface mb-1">Valentina R. solicita este producto</p>
+                                <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 1 hora</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </main>
-            <!-- Corrected Dark Footer -->
         </div>
+        </main>
+        <!-- Corrected Dark Footer -->
+    </div>
     </div>
     <footer class="w-full bg-[#191c1d] text-white">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-gutter py-12 max-w-container-max mx-auto">
