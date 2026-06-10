@@ -26,6 +26,7 @@ class Product extends Model
         'is_active' => 'boolean',
         'price' => 'decimal:2',
         'image_path' => 'array',
+        'deleted_images_log' => 'array',
     ];
 
     public function user(): BelongsTo

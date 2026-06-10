@@ -46,44 +46,68 @@ class ProductController extends Controller
             ->with('success', '¡Producto publicado correctamente!');
     }
 
-   public function dashboard()
-{
-    $products = Product::where('user_id', auth()->id())->get();
-    return view('seller.panel', compact('products'));
-}
+    public function dashboard()
+    {
+        $products = Product::where('user_id', auth()->id())->get();
+        return view('seller.panel', compact('products'));
+    }
 
-public function edit($id)
-{
-    $product = Product::where('user_id', auth()->id())->findOrFail($id);
-    return view('seller.products.edit', compact('product'));
-}
+    public function edit($id)
+    {
+        $product = Product::where('user_id', auth()->id())->findOrFail($id);
+        return view('seller.products.edit', compact('product'));
+    }
 
 public function update(Request $request, $id)
 {
+    // 1. Buscamos el producto asegurando que pertenece al usuario
     $product = Product::where('user_id', auth()->id())->findOrFail($id);
 
+    // 2. Validación
     $request->validate([
         'title' => 'required|string|max:255',
         'category' => 'required|string|max:255',
         'price' => 'required|numeric|min:0',
         'location' => 'required|string|max:255',
-        'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+        'removed_images' => 'nullable|array',
+        'image_path.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
     ]);
 
-    $product->title = $request->title;
-    $product->category = $request->category;
-    $product->price = $request->price;
-    $product->location = $request->location;
+    // 3. Obtenemos las imágenes actuales (usando los casts del modelo si los tienes)
+    $activeImages = is_array($product->image_path) ? $product->image_path : (json_decode($product->image_path, true) ?? []);
+    $deletedLog = is_array($product->deleted_images_log) ? $product->deleted_images_log : (json_decode($product->deleted_images_log, true) ?? []);
 
-    if ($request->hasFile('images')) {
-        $images = [];
-        foreach ($request->file('images') as $file) {
-            $images[] = $file->store('products', 'public');
+    // 4. Lógica de INHABILITACIÓN (sin borrar físicamente nada)
+    if ($request->has('removed_images')) {
+        foreach ($request->removed_images as $imageToRemove) {
+            // Quitamos la imagen de las activas
+            $activeImages = array_diff($activeImages, [$imageToRemove]);
+            
+            // La guardamos en el log de auditoría si no existe ya
+            if (!in_array($imageToRemove, $deletedLog)) {
+                $deletedLog[] = $imageToRemove;
+            }
         }
-        $product->image_path = $images;
     }
 
-    $product->save();
+    // 5. Lógica de ADICIÓN de nuevas imágenes
+    if ($request->hasFile('image_path')) {
+        foreach ($request->file('image_path') as $file) {
+            $path = $file->store('products', 'public');
+            $activeImages[] = $path;
+        }
+    }
+
+    // 6. Guardamos los cambios
+    // array_values() es fundamental para resetear los índices y evitar errores en la columna JSON
+    $product->update([
+        'title' => $request->title,
+        'category' => $request->category,
+        'price' => $request->price,
+        'location' => $request->location,
+        'image_path' => array_values($activeImages),
+        'deleted_images_log' => array_values($deletedLog)
+    ]);
 
     return redirect()->route('seller.panel')->with('success', 'Producto actualizado con éxito.');
 }

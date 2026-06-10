@@ -257,22 +257,24 @@
                             <div class="space-y-6">
                                 <div>
                                     <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">TÍTULO DEL PRODUCTO</label>
-                                    <input name="name" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-transparent" type="text" value="{{ old('name', $product->name) }}" />
+                                    <input id="form-title" name="title" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-transparent" type="text" value="{{ old('title', $product->title) }}" />
                                 </div>
+
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">CATEGORÍA</label>
-                                        <select name="category" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary">
+                                        <select id="form-category" name="category" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary">
                                             <option value="Tecnología" {{ old('category', $product->category) == 'Tecnología' ? 'selected' : '' }}>Tecnología</option>
                                             <option value="Hogar" {{ old('category', $product->category) == 'Hogar' ? 'selected' : '' }}>Hogar</option>
                                             <option value="Moda" {{ old('category', $product->category) == 'Moda' ? 'selected' : '' }}>Moda</option>
                                         </select>
                                     </div>
+
                                     <div>
                                         <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">UBICACIÓN</label>
                                         <div class="relative">
                                             <span class="material-symbols-outlined absolute left-3 top-3 text-on-surface-variant">location_on</span>
-                                            <select name="location" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 pl-10 focus:ring-2 focus:ring-primary">
+                                            <select id="form-location" name="location" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 pl-10 focus:ring-2 focus:ring-primary">
                                                 <option value="Lima" {{ old('location', $product->location) == 'Lima' ? 'selected' : '' }}>Lima</option>
                                                 <option value="Arequipa" {{ old('location', $product->location) == 'Arequipa' ? 'selected' : '' }}>Arequipa</option>
                                                 <option value="Cusco" {{ old('location', $product->location) == 'Cusco' ? 'selected' : '' }}>Cusco</option>
@@ -280,9 +282,10 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div>
                                     <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">DESCRIPCIÓN</label>
-                                    <textarea name="description" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary" rows="6">{{ old('description', $product->description) }}</textarea>
+                                    <textarea id="form-price" name="description" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary" rows="6">{{ old('description', $product->description) }}</textarea>
                                 </div>
                             </div>
                         </section>
@@ -294,30 +297,24 @@
                             </div>
 
                             <div id="gallery-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                                @if(!empty($product->image_path) && (is_array($product->image_path) || $product->image_path instanceof \Countable))
-                                @foreach($product->image_path as $index => $path)
-                                <div class="aspect-square rounded-xl overflow-hidden {{ $index === 0 ? 'border-2 border-primary' : 'border border-outline-variant' }} relative group existing-image-card" data-path="{{ $path }}">
-                                    <img class="w-full h-full object-cover" src="{{ asset('storage/' . $path) }}" />
-                                    <div class="absolute inset-0 bg-primary/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button type="button" class="bg-error text-on-error p-2 rounded-full shadow-lg btn-delete-existing">
+                                @foreach((array)$product->image_path as $image)
+                                <div class="aspect-square rounded-xl overflow-hidden border border-outline-variant relative group existing-image">
+                                    <img class="w-full h-full object-cover" src="{{ asset('storage/' . $image) }}">
+                                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button type="button" onclick="removeImage(this, '{{ $image }}')" class="bg-error text-on-error p-2 rounded-full shadow-lg">
                                             <span class="material-symbols-outlined">delete</span>
                                         </button>
                                     </div>
-                                    @if($index === 0)
-                                    <span class="absolute top-2 left-2 bg-primary text-on-primary text-[10px] px-2 py-0.5 rounded font-bold uppercase">Principal</span>
-                                    @endif
                                 </div>
                                 @endforeach
-                                @endif
 
                                 <label id="upload-box" for="image-input" class="border-2 border-dashed border-outline-variant rounded-xl aspect-square flex flex-col items-center justify-center text-center hover:bg-surface-container-low transition-colors cursor-pointer group p-4">
                                     <input type="file" id="image-input" name="image_path[]" accept="image/*" class="hidden" multiple>
-                                    <span id="upload-icon" class="material-symbols-outlined text-3xl text-outline-variant group-hover:text-primary transition-colors">cloud_upload</span>
-                                    <p id="upload-text" class="mt-2 text-xs font-bold text-on-surface">Subir imágenes</p>
-                                    <p id="upload-subtext" class="text-on-surface-variant text-[10px] mt-0.5">JPG, PNG (Max. 5MB)</p>
+                                    <span class="material-symbols-outlined text-3xl text-outline-variant group-hover:text-primary transition-colors">cloud_upload</span>
+                                    <p class="mt-2 text-xs font-bold text-on-surface">Subir imágenes</p>
+                                    <p class="text-on-surface-variant text-[10px] mt-0.5">JPG, PNG (Max. 5MB)</p>
                                 </label>
                             </div>
-                            <div id="deleted-images-container"></div>
                         </section>
                         <!-- Price & State Section -->
                         <section class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant">
@@ -331,10 +328,9 @@
                                 </div>
                                 <div>
                                     <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">ESTADO</label>
-                                    <input type="hidden" name="condition" id="condition_input" value="{{ old('condition', $product->condition ?? 'Usado') }}">
                                     <div class="flex gap-2">
-                                        <button type="button" id="btn_usado" class="flex-1 py-3 px-4 rounded-lg border-2 {{ old('condition', $product->condition ?? 'Usado') == 'Usado' ? 'border-primary bg-primary-fixed text-primary font-bold' : 'border-outline-variant text-on-surface-variant font-bold' }}">Usado</button>
-                                        <button type="button" id="btn_nuevo" class="flex-1 py-3 px-4 rounded-lg border-2 {{ old('condition', $product->condition) == 'Nuevo' ? 'border-primary bg-primary-fixed text-primary font-bold' : 'border-outline-variant text-on-surface-variant font-bold' }}">Nuevo</button>
+                                        <button class="flex-1 py-3 px-4 rounded-lg border-2 border-primary bg-primary-fixed text-primary font-bold">Usado</button>
+                                        <button class="flex-1 py-3 px-4 rounded-lg border-2 border-outline-variant text-on-surface-variant font-bold hover:bg-surface-container-high transition-colors">Nuevo</button>
                                     </div>
                                 </div>
                             </div>
@@ -345,7 +341,7 @@
                         <h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Vista Previa del Anuncio</h3>
                         <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-lg border border-outline-variant group">
                             <div class="relative h-64">
-                                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" id="preview-img" src="{{ asset('storage/' . (is_array($product->image_path) ? ($product->image_path[0] ?? 'default.png') : $product->image_path)) }}" />
+                                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A premium smartphone showcase featuring a Samsung Galaxy S23 Ultra. The image captures the device's elegant phantom black finish under soft, diffused studio lighting. The high-resolution sensors of the camera system are clearly visible, conveying a sense of top-tier performance and photographic capability. The background is a clean, monochromatic gray that emphasizes the product's professional profile." id="preview-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBslL_S7HWNt7I3KB8jgVLLDHF5HmKbePeTLyUNNQ4_RDINPzh37gdGVajyumu7wLRZNf8fbCLkd7tZCpBlNHCOlcQXtr72PpHP6u_9yAmpbQZf6anqbBaaInZXDX4vD4pm6Rqe8zxvYP_9OrJ-EeZ1wi6m9jsc4YdWawwx53IluC0ebJ-jp04a9bfDXn5ObLJR-g-Wrak-EKuu67mpVlgvkY65wSoMvdjcowBnFau7jCmU63tOATGXbSwlqcMDDo_gOj_1BnMP7HE" />
                                 <div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
                                     <span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
                                     <span class="text-label-caps font-bold">4.9</span>
@@ -353,16 +349,16 @@
                             </div>
                             <div class="p-6">
                                 <div class="flex justify-between items-start mb-2">
-                                    <span class="text-primary font-label-caps text-label-caps bg-primary-fixed px-2 py-0.5 rounded uppercase" id="preview-category">{{ $product->category }}</span>
-                                    <div class="flex items-center text-on-surface-variant text-body-sm" id="preview-location">
+                                    <span class="text-primary font-label-caps text-label-caps bg-primary-fixed px-2 py-0.5 rounded uppercase">Tecnología</span>
+                                    <div class="flex items-center text-on-surface-variant text-body-sm">
                                         <span class="material-symbols-outlined text-[16px] mr-1">location_on</span>
-                                        {{ $product->location }}
+                                        Lima
                                     </div>
                                 </div>
-                                <h4 class="font-headline-md text-headline-md text-on-surface mb-2 leading-tight" id="preview-title">{{ $product->name }}</h4>
+                                <h4 class="font-headline-md text-headline-md text-on-surface mb-2 leading-tight" id="preview-title">Smartphone Samsung Galaxy S23 Ultra</h4>
                                 <div class="flex items-baseline gap-2 mb-4">
-                                    <span class="font-price-display text-price-display text-secondary" id="preview-price">S/ {{ number_format($product->price, 2) }}</span>
-                                    <span class="text-on-surface-variant text-body-sm line-through" id="preview-old-price">S/ {{ number_format($product->price * 1.1, 2) }}</span>
+                                    <span class="font-price-display text-price-display text-secondary">S/ 3,850.00</span>
+                                    <span class="text-on-surface-variant text-body-sm line-through">S/ 4,200.00</span>
                                 </div>
                                 <button class="w-full bg-secondary text-on-secondary font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all">
                                     <span class="material-symbols-outlined">handshake</span>
@@ -375,12 +371,11 @@
                                 <span class="material-symbols-outlined text-tertiary">info</span>
                                 <div>
                                     <p class="font-body-sm text-body-sm font-bold text-tertiary">Consejo del Hub</p>
-                                    <p class="font-body-sm text-body-sm text-on-tertiary-fixed-variant mt-1">Los anuncios con descripciones detalladas y precios competitivos en <span id="preview-tip-location">{{ $product->location }}</span> cierran un 30% más rápido.</p>
+                                    <p class="font-body-sm text-body-sm text-on-tertiary-fixed-variant mt-1">Los anuncios con descripciones detalladas y precios competitivos en Lima cierran un 30% más rápido.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </form>
         </div>
     </main>
@@ -421,69 +416,50 @@
             </div>
         </div>
     </footer>
-    <script>
-        // Simple micro-interaction for the "Handshake" icon logic or input preview sync
-        const imageInput = document.getElementById('image-input');
-        const galleryContainer = document.getElementById('gallery-container');
-        const uploadBox = document.getElementById('upload-box');
-        const deletedImagesContainer = document.getElementById('deleted-images-container');
-        const previewImgElement = document.getElementById('preview-img');
+<script>
+    // 1. Función para manejar el borrado (tanto existentes como nuevas)
+    function removeImage(btn, imageName = null) {
+        if (!confirm('¿Seguro que deseas eliminar esta imagen?')) return;
 
-        function updateMainPreview() {
-            const firstImg = galleryContainer.querySelector('img');
-            if (firstImg) {
-                previewImgElement.src = firstImg.src;
-            } else {
-                previewImgElement.src = '/storage/default.png';
-            }
+        // Si la imagen ya existía en la BD, la marcamos para borrar en el servidor
+        if (imageName) {
+            const form = document.querySelector('form');
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'removed_images[]';
+            input.value = imageName;
+            form.appendChild(input);
         }
 
-        document.querySelectorAll('.btn-delete-existing').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const card = e.target.closest('.existing-image-card');
-                const path = card.getAttribute('data-path');
+        // Eliminamos el contenedor visualmente
+        btn.closest('.image-wrapper').remove();
+    }
 
-                const hiddenInput = document.createElement('input');
-                hiddenInput.type = 'hidden';
-                hiddenInput.name = 'deleted_images[]';
-                hiddenInput.value = path;
-                deletedImagesContainer.appendChild(hiddenInput);
-
-                card.remove();
-                updateMainPreview();
-            });
+    // 2. Lógica para previsualizar y AGREGAR EL BOTÓN DE BORRAR a las nuevas
+    document.getElementById('image-input').addEventListener('change', function(e) {
+        const gallery = document.getElementById('gallery-container');
+        const uploadBox = document.getElementById('upload-box');
+        
+        Array.from(e.target.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const div = document.createElement('div');
+                // IMPORTANTE: añadimos la clase 'image-wrapper' para que el borrado funcione
+                div.className = "aspect-square rounded-xl overflow-hidden border border-outline-variant relative group image-wrapper";
+                div.innerHTML = `
+                    <img src="${event.target.result}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button type="button" onclick="removeImage(this)" class="bg-error text-on-error p-2 rounded-full shadow-lg">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </div>
+                `;
+                gallery.insertBefore(div, uploadBox);
+            }
+            reader.readAsDataURL(file);
         });
-
-        imageInput.addEventListener('change', (e) => {
-            const files = Array.from(e.target.files);
-
-            files.forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const div = document.createElement('div');
-                    div.className = 'aspect-square rounded-xl overflow-hidden border border-outline-variant relative group new-image-card';
-
-                    div.innerHTML = `
-                <img class="w-full h-full object-cover" src="${event.target.result}" />
-                <div class="absolute inset-0 bg-primary/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button type="button" class="bg-error text-on-error p-2 rounded-full shadow-lg btn-delete-new">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
-                </div>
-            `;
-
-                    div.querySelector('.btn-delete-new').addEventListener('click', () => {
-                        div.remove();
-                        updateMainPreview();
-                    });
-
-                    galleryContainer.insertBefore(div, uploadBox);
-                    updateMainPreview();
-                };
-                reader.readAsDataURL(file);
-            });
-        });
-    </script>
+    });
+</script>
 </body>
 
 </html>
