@@ -19,6 +19,7 @@ class Product extends Model
         'description',
         'price',
         'image_path',
+        'deleted_images_log',
         'is_active',
     ];
 

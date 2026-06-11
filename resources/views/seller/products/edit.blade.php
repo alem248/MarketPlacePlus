@@ -163,9 +163,16 @@
                     <input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm w-48" placeholder="Buscar productos..." type="text" />
                 </div>
                 <button class="material-symbols-outlined text-primary p-2 active:scale-95 transition-transform">notifications</button>
-                <button class="material-symbols-outlined text-primary p-2 active:scale-95 transition-transform">shopping_cart</button>
-                <div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden border border-outline-variant">
-                    <img alt="Seller Profile Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of a mature merchant with a kind expression, wearing business casual attire. The portrait is set against a clean, modern studio background with soft cinematic lighting that highlights the reliability and trustworthiness of a verified seller. The overall tone is corporate yet approachable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAri4eyZZKyZ9140meFZi7gq6hfl102u1iljbpsvYpvAd8xzNYlbXMlA-zHdttMOEi0cd43BbsooTmPYz3ZtSI09Z-KPJmUshMWSc7MUGI32iNrzAOVxjrhDMMrgjDz6ibw4FT8njCcru-OLGWxF9gJDEAztEMMMmwWFDdKuqeekzeWsoJJ_AT8k6-hK94BwZQYBhOysMJ2pTWvagDzh6Ryf3K_LmflnCA8Q35TxDlHMNIewLzB7joL_LO545H-uTHby2L7--T6dGc" />
+                <div class="w-24 h-24 rounded-full bg-surface-variant overflow-hidden border-2 border-primary shadow-sm">
+                    @if(auth()->user()->foto && Storage::disk('public')->exists(auth()->user()->foto))
+                    <img alt="{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}"
+                        class="w-full h-full object-cover"
+                        src="{{ asset('storage/' . auth()->user()->foto) }}" />
+                    @else
+                    <img alt="Perfil por defecto"
+                        class="w-full h-full object-cover"
+                        src="{{ asset('img/icon_default.jpg') }}" />
+                    @endif
                 </div>
             </div>
         </div>
@@ -285,7 +292,7 @@
 
                                 <div>
                                     <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">DESCRIPCIÓN</label>
-                                    <textarea id="form-price" name="description" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary" rows="6">{{ old('description', $product->description) }}</textarea>
+                                    <textarea name="description" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary" rows="6">{{ old('description', $product->description) }}</textarea>
                                 </div>
                             </div>
                         </section>
@@ -323,7 +330,7 @@
                                     <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">PRECIO (S/.)</label>
                                     <div class="relative">
                                         <span class="absolute left-4 top-3 font-bold text-primary">S/.</span>
-                                        <input name="price" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 pl-12 font-price-display text-price-display text-secondary focus:ring-2 focus:ring-primary" type="number" step="0.01" value="{{ old('price', $product->price) }}" />
+                                        <input id="form-price" name="price" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 pl-12 font-price-display text-price-display text-secondary focus:ring-2 focus:ring-primary" type="number" step="0.01" value="{{ old('price', $product->price) }}" />
                                     </div>
                                 </div>
                                 <div>
@@ -335,37 +342,61 @@
                                 </div>
                             </div>
                         </section>
+                        <div class="mt-6 p-4 bg-surface-container-low rounded-xl flex items-center justify-between border border-outline-variant">
+                            <div>
+                                <label class="block font-bold text-on-surface">Estado del Producto</label>
+                                <p class="text-xs text-on-surface-variant">¿El producto sigue disponible para la venta?</p>
+                            </div>
+
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" name="is_active" value="1" class="sr-only peer" {{ old('is_active', $product->is_active) ? 'checked' : '' }}>
+                                <div class="w-11 h-6 bg-outline rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                            </label>
+                        </div>
                     </div>
                     <!-- Preview Sidebar -->
                     <div class="lg:col-span-4 sticky top-24">
                         <h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Vista Previa del Anuncio</h3>
+
                         <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-lg border border-outline-variant group">
                             <div class="relative h-64">
-                                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A premium smartphone showcase featuring a Samsung Galaxy S23 Ultra. The image captures the device's elegant phantom black finish under soft, diffused studio lighting. The high-resolution sensors of the camera system are clearly visible, conveying a sense of top-tier performance and photographic capability. The background is a clean, monochromatic gray that emphasizes the product's professional profile." id="preview-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBslL_S7HWNt7I3KB8jgVLLDHF5HmKbePeTLyUNNQ4_RDINPzh37gdGVajyumu7wLRZNf8fbCLkd7tZCpBlNHCOlcQXtr72PpHP6u_9yAmpbQZf6anqbBaaInZXDX4vD4pm6Rqe8zxvYP_9OrJ-EeZ1wi6m9jsc4YdWawwx53IluC0ebJ-jp04a9bfDXn5ObLJR-g-Wrak-EKuu67mpVlgvkY65wSoMvdjcowBnFau7jCmU63tOATGXbSwlqcMDDo_gOj_1BnMP7HE" />
+                                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    id="preview-img"
+                                    src="{{ asset('storage/' . ($product->image_path[0] ?? 'default.jpg')) }}" />
                                 <div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
                                     <span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
                                     <span class="text-label-caps font-bold">4.9</span>
                                 </div>
                             </div>
+
                             <div class="p-6">
                                 <div class="flex justify-between items-start mb-2">
-                                    <span class="text-primary font-label-caps text-label-caps bg-primary-fixed px-2 py-0.5 rounded uppercase">Tecnología</span>
-                                    <div class="flex items-center text-on-surface-variant text-body-sm">
+                                    <span class="preview-category text-primary font-label-caps text-label-caps bg-primary-fixed px-2 py-0.5 rounded uppercase">
+                                        {{ $product->category ?? 'Categoría' }}
+                                    </span>
+                                    <div id="preview-location" class="flex items-center text-on-surface-variant text-body-sm">
                                         <span class="material-symbols-outlined text-[16px] mr-1">location_on</span>
-                                        Lima
+                                        {{ $product->location ?? 'Lima' }}
                                     </div>
                                 </div>
-                                <h4 class="font-headline-md text-headline-md text-on-surface mb-2 leading-tight" id="preview-title">Smartphone Samsung Galaxy S23 Ultra</h4>
+
+                                <h4 class="font-headline-md text-headline-md text-on-surface mb-2 leading-tight" id="preview-title">
+                                    {{ $product->title ?? 'Smartphone Samsung Galaxy S23 Ultra' }}
+                                </h4>
+
                                 <div class="flex items-baseline gap-2 mb-4">
-                                    <span class="font-price-display text-price-display text-secondary">S/ 3,850.00</span>
-                                    <span class="text-on-surface-variant text-body-sm line-through">S/ 4,200.00</span>
+                                    <span class="preview-price font-price-display text-price-display text-secondary">
+                                        S/ {{ number_format($product->price ?? 0, 2) }}
+                                    </span>
                                 </div>
+
                                 <button class="w-full bg-secondary text-on-secondary font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all">
                                     <span class="material-symbols-outlined">handshake</span>
                                     Trato Directo
                                 </button>
                             </div>
                         </div>
+
                         <div class="mt-6 bg-tertiary-fixed/30 p-4 rounded-xl border border-tertiary/20">
                             <div class="flex gap-3">
                                 <span class="material-symbols-outlined text-tertiary">info</span>
@@ -416,37 +447,35 @@
             </div>
         </div>
     </footer>
-<script>
-    // 1. Función para manejar el borrado (tanto existentes como nuevas)
-    function removeImage(btn, imageName = null) {
-        if (!confirm('¿Seguro que deseas eliminar esta imagen?')) return;
+    <script>
+        // --- 1. LÓGICA DE IMÁGENES ---
+        function removeImage(btn, imageName = null) {
+            if (!confirm('¿Seguro que deseas eliminar esta imagen?')) return;
 
-        // Si la imagen ya existía en la BD, la marcamos para borrar en el servidor
-        if (imageName) {
-            const form = document.querySelector('form');
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'removed_images[]';
-            input.value = imageName;
-            form.appendChild(input);
+            if (imageName) {
+                const form = document.querySelector('form');
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'removed_images[]';
+                input.value = imageName;
+                form.appendChild(input);
+            }
+            btn.closest('.image-wrapper').remove();
         }
 
-        // Eliminamos el contenedor visualmente
-        btn.closest('.image-wrapper').remove();
-    }
+        document.getElementById('image-input').addEventListener('change', function(e) {
+            const gallery = document.getElementById('gallery-container');
+            const uploadBox = document.getElementById('upload-box');
 
-    // 2. Lógica para previsualizar y AGREGAR EL BOTÓN DE BORRAR a las nuevas
-    document.getElementById('image-input').addEventListener('change', function(e) {
-        const gallery = document.getElementById('gallery-container');
-        const uploadBox = document.getElementById('upload-box');
-        
-        Array.from(e.target.files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const div = document.createElement('div');
-                // IMPORTANTE: añadimos la clase 'image-wrapper' para que el borrado funcione
-                div.className = "aspect-square rounded-xl overflow-hidden border border-outline-variant relative group image-wrapper";
-                div.innerHTML = `
+            Array.from(e.target.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    // Actualizamos también la vista previa de la tarjeta
+                    document.getElementById('preview-img').src = event.target.result;
+
+                    const div = document.createElement('div');
+                    div.className = "aspect-square rounded-xl overflow-hidden border border-outline-variant relative group image-wrapper";
+                    div.innerHTML = `
                     <img src="${event.target.result}" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <button type="button" onclick="removeImage(this)" class="bg-error text-on-error p-2 rounded-full shadow-lg">
@@ -454,12 +483,51 @@
                         </button>
                     </div>
                 `;
-                gallery.insertBefore(div, uploadBox);
-            }
-            reader.readAsDataURL(file);
+                    gallery.insertBefore(div, uploadBox);
+                }
+                reader.readAsDataURL(file);
+            });
         });
-    });
-</script>
+
+        // --- 2. LÓGICA DE VISTA PREVIA (Texto y Precios) ---
+        const updatePreview = () => {
+            const title = document.getElementById('form-title').value;
+            const category = document.getElementById('form-category').value;
+            const location = document.getElementById('form-location').value;
+            const price = document.getElementById('form-price').value;
+
+            document.getElementById('preview-title').textContent = title || "Nombre del Producto";
+            document.querySelector('.preview-category').textContent = category || "Categoría";
+            document.getElementById('preview-location').innerHTML =
+                `<span class="material-symbols-outlined text-[16px] mr-1">location_on</span> ${location || "Ubicación"}`;
+
+            document.querySelector('.preview-price').textContent =
+                `S/ ${parseFloat(price || 0).toLocaleString('es-PE', {minimumFractionDigits: 2})}`;
+        };
+
+        // Escuchar cambios en los inputs del formulario
+        ['form-title', 'form-category', 'form-location', 'form-price'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('input', updatePreview);
+        });
+    </script>
+    @if(session('success'))
+    <div id="success-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-surface-container-lowest p-8 rounded-2xl shadow-xl max-w-sm w-full text-center border border-outline-variant animate-in fade-in zoom-in duration-300">
+            <div class="flex justify-center mb-4">
+                <span class="material-symbols-outlined text-primary text-6xl">check_circle</span>
+            </div>
+
+            <h3 class="text-headline-md font-bold text-on-surface">¡Todo listo!</h3>
+            <p class="text-body-md text-on-surface-variant mt-2">{{ session('success') }}</p>
+
+            <button onclick="document.getElementById('success-modal').style.display='none'"
+                class="mt-6 w-full bg-primary text-on-primary py-3 rounded-lg font-bold hover:brightness-110 transition-all">
+                Aceptar
+            </button>
+        </div>
+    </div>
+    @endif
 </body>
 
 </html>

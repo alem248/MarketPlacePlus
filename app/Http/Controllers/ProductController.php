@@ -103,12 +103,15 @@ public function update(Request $request, $id)
     $product->update([
         'title' => $request->title,
         'category' => $request->category,
+        'description' => $request->description,
         'price' => $request->price,
         'location' => $request->location,
         'image_path' => array_values($activeImages),
-        'deleted_images_log' => array_values($deletedLog)
+        'deleted_images_log' => array_values($deletedLog),
+        'is_active' => $request->has('is_active') ? true : false
     ]);
 
-    return redirect()->route('seller.panel')->with('success', 'Producto actualizado con éxito.');
+
+return redirect()->back()->with('success', 'El producto se ha actualizado correctamente.');
 }
 }

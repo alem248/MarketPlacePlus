@@ -8,6 +8,7 @@ use App\Http\Controllers\TratosController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AdminDashboardController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -30,12 +31,7 @@ Route::middleware(['auth'])->group(function () {
 // administrador
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
 
-    Route::get('/dashboard', function () {
-        if (data_get(auth()->user(), 'role') !== 'admin') {
-            return redirect()->route('home');
-        }
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [AdminProductController::class, 'create'])->name('products.create');

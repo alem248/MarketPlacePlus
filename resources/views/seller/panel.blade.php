@@ -164,10 +164,10 @@
                 <h1 class="font-headline-md text-headline-md text-on-surface">¿Qué vamos a vender hoy?</h1>
             </div>
             <div class="hidden md:flex items-center gap-6">
-                <button class="bg-secondary-container text-on-secondary-container px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-all scale-95 active:transition-all">
+                <a href="{{ route('seller.products.create') }}" class="bg-secondary-container text-on-secondary-container px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-all scale-95 active:transition-all">
                     <span class="material-symbols-outlined">add_circle</span>
                     Crear Publicación
-                </button>
+                    </a>
             </div>
         </div>
     </nav>
@@ -207,7 +207,7 @@
                     @class([ 'flex items-center px-4 py-3 rounded-xl transition-all' , 'bg-secondary-container text-on-secondary-container font-bold'=> request()->routeIs('seller.products.create'),
                     'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' => !request()->routeIs('seller.products.create')
                     ])>
-                    <span class="material-symbols-outlined mr-3">add_circle</span>
+                    <span {{ route('seller.products.create') }} class="material-symbols-outlined mr-3">add_circle</span>
                     <span class="font-body-lg text-body-lg">Crear Publicación</span>
                 </a>
                 <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all" href="{{ route('proximamente') }}">
@@ -228,10 +228,10 @@
                     <div class="relative z-10 max-w-xl">
                         <h1 class="font-headline-lg text-headline-lg mb-2">¿Qué vamos a vender hoy?</h1>
                         <p class="font-body-lg text-body-lg opacity-90 mb-6">La clave de una buena venta es la confianza. Descripciones claras y fotos impecables garantizan éxito.</p>
-                        <button class="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-bold font-headline-md text-headline-md flex items-center gap-2 hover:scale-105 transition-transform">
+                        <a href="{{ route('seller.products.create') }}" class="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-bold font-headline-md text-headline-md flex items-center gap-2 hover:scale-105 transition-transform">
                             PUBLICAR PRODUCTO
                             <span class="material-symbols-outlined">add_box</span>
-                        </button>
+                        </a>
                     </div>
                     <div class="hidden lg:block opacity-20">
                         <span class="material-symbols-outlined text-[160px]" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
@@ -261,9 +261,6 @@
                                             <a href="{{ route('seller.products.edit', $product->id) }}" class="p-2 bg-white/90 rounded-full hover:bg-white text-primary transition-colors">
                                                 <span class="material-symbols-outlined text-sm">edit</span>
                                             </a>
-                                            <button class="p-2 bg-white/90 rounded-full hover:bg-white text-error transition-colors">
-                                                <span class="material-symbols-outlined text-sm">delete</span>
-                                            </button>
                                         </div>
                                     </div>
 
