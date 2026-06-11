@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Product extends Model
 {
     use HasFactory;
- 
+
     protected $fillable = [
         'user_id',
         'title',
@@ -32,7 +32,7 @@ class Product extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\Models\User::class, 'user_id', 'id');
     }
 
     public function comments(): HasMany

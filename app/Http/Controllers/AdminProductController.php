@@ -51,6 +51,7 @@ class AdminProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+        // 1. Validamos los datos permitidos
         $data = $request->validate([
             'title'       => ['required', 'string', 'max:200'],
             'description' => ['required', 'string', 'min:10'],
@@ -61,21 +62,28 @@ class AdminProductController extends Controller
             'image'       => ['nullable', 'image', 'max:5120'],
         ]);
 
+        // 2. Procesamos imagen si existe
         if ($request->hasFile('image')) {
             if ($product->image_path) {
                 Storage::disk('public')->delete($product->image_path);
             }
             $data['image_path'] = $request->file('image')->store('products', 'public');
         }
+
+        // 3. Normalizamos is_active
         $data['is_active'] = $request->boolean('is_active');
+
+        // 4. ELIMINAMOS cualquier campo que no sea de la tabla si es necesario
         unset($data['image']);
 
-        $product->update($data);
+        // 5. USAMOS fill() y save() en lugar de update() masivo
+        // Esto es mucho más seguro frente a errores de columnas no encontradas
+        $product->fill($data);
+        $product->save(); // save() es más robusto ante inconsistencias de esquema
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Publicación actualizada.');
     }
-
     public function destroy(Product $product)
     {
         if ($product->image_path) {

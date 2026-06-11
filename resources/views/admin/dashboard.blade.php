@@ -235,25 +235,28 @@
                                         <td class="px-6 py-4">
                                             <div class="flex items-center gap-3">
                                                 <div class="w-12 h-12 rounded bg-surface-container-high overflow-hidden flex-shrink-0">
-                                                    @if($product->imagen)
-                                                    <img alt="{{ $product->nombre }}" class="w-full h-full object-cover" src="{{ asset('storage/' . $product->imagen) }}">
+                                                    @if($product->image_path)
+                                                    <img alt="{{ $product->title }}" class="w-full h-full object-cover" src="{{ asset('storage/' . (is_array($product->image_path) ? $product->image_path[0] : $product->image_path)) }}">
                                                     @else
-                                                    <div class="w-full h-full bg-surface-variant flex items-center justify-center text-outline">Sin foto</div>
+                                                    <div class="w-full h-full bg-surface-variant flex items-center justify-center text-outline text-[10px]">Sin foto</div>
                                                     @endif
                                                 </div>
-                                                <span class="font-semibold text-body-lg">{{ $product->nombre }}</span>
+                                                <span class="font-semibold text-body-lg">{{ $product->title }}</span>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 font-body-sm">{{ $product->user->name ?? 'Sin asignar' }}</td>
-                                        <td class="px-6 py-4 text-right font-body-lg font-bold">${{ number_format($product->precio, 2) }}</td>
+                                        <td class="px-6 py-4 font-body-sm">{{ $product->user->first_name.' '.$product->user->last_name  ?? 'Sin asignar' }}</td>
+                                        <td class="px-6 py-4 text-right font-body-lg font-bold">${{ number_format((float)$product->price, 2) }}</td>
                                         <td class="px-6 py-4 text-center">
-                                            <span class="px-3 py-1 rounded-full {{ $product->estado == 'activo' ? 'bg-tertiary-fixed' : 'bg-error-container' }} text-[10px] font-bold">
-                                                {{ strtoupper($product->estado) }}
+                                            <span class="px-3 py-1 rounded-full {{ $product->is_active ? 'bg-tertiary-fixed' : 'bg-error-container' }} text-[10px] font-bold">
+                                                {{ $product->is_active ? 'ACTIVO' : 'INACTIVO' }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-right">
-                                            <a href="#" class="text-primary hover:bg-primary-fixed p-1 rounded-full"><span class="material-symbols-outlined">edit</span></a>
-                                            <button class="text-error hover:bg-error-container p-1 rounded-full ml-2"><span class="material-symbols-outlined">delete</span></button>
+                                            <a href="{{ route('admin.products.edit', $product->id) }}" class="text-primary hover:bg-primary-fixed p-1 rounded-full"><span class="material-symbols-outlined">edit</span></a>
+                                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="text-error hover:bg-error-container p-1 rounded-full ml-2"><span class="material-symbols-outlined">delete</span></button>
+                                            </form>
                                         </td>
                                     </tr>
                                     @empty
