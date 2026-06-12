@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminSeeder::class,
+            ProductSeeder::class,  // productos de muestra para el catálogo
+            TratosSeeder::class,   // tratos de ejemplo para Juan Pérez
         ]);
 
     }

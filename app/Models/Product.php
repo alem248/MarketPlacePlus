@@ -21,13 +21,16 @@ class Product extends Model
         'image_path',
         'deleted_images_log',
         'is_active',
+        'condition', // estado: "Nuevo", "Usado - Como nuevo", "Usado"
+        'tags',      // etiquetas JSON: ["Apple","Laptops","Premium"]
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
-        'price' => 'decimal:2',
-        'image_path' => 'array',
+        'is_active'          => 'boolean',
+        'price'              => 'decimal:2',
+        'image_path'         => 'array',
         'deleted_images_log' => 'array',
+        'tags'               => 'array', // deserializa el JSON automáticamente
     ];
 
     public function user(): BelongsTo
