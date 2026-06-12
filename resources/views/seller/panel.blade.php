@@ -467,7 +467,33 @@
             <p class="text-body-sm opacity-50">Market Place Plus - eCommerce Template © 2026. Design by Templatecookie</p>
         </div>
     </footer>
-    ```
+    @if(isset($suspendedProduct))
+    <div id="suspensionModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
+        <div class="bg-surface rounded-2xl p-8 max-w-md w-full shadow-2xl border border-outline-variant">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-error-container text-on-error-container rounded-full flex items-center justify-center mb-4">
+                    <span class="material-symbols-outlined text-4xl">report_problem</span>
+                </div>
+                <h2 class="text-headline-md font-bold text-on-surface mb-2">Publicación Suspendida</h2>
+                <p class="text-body-lg text-on-surface-variant mb-6">
+                    Tu producto <strong>{{ $suspendedProduct->title }}</strong> ha sido suspendido por un administrador.
+                </p>
+                
+                <div class="w-full bg-surface-container-low p-4 rounded-xl text-left mb-6 border border-outline-variant">
+                    <p class="text-xs font-bold text-on-surface-variant uppercase mb-1">Motivo:</p>
+                    <p class="text-sm text-on-surface">{{ $suspendedProduct->suspension_reason }}</p>
+                </div>
+
+                <form action="{{ route('seller.products.acknowledge', $suspendedProduct->id) }}" method="POST" class="w-full">
+                    @csrf
+                    <button type="submit" class="w-full bg-primary text-on-primary py-3 rounded-xl font-bold hover:opacity-90 transition-all">
+                        Entendido
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+@endif
 
 
 

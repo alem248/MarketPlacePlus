@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+
+use App\Mail\ProductSuspendedMail;
+use Illuminate\Support\Facades\Mail;
 
 class AdminProductController extends Controller
 {
@@ -93,5 +96,34 @@ class AdminProductController extends Controller
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Publicación eliminada.');
+    }
+
+    public function updateStatus(Request $request, Product $product)
+    {
+        // Validamos que el estado sea un booleano (activo o pendiente)
+        $request->validate([
+            'is_active' => 'required|boolean',
+        ]);
+
+        $product->is_active = $request->is_active;
+        $product->save();
+
+        return response()->json(['success' => true, 'message' => 'Estado actualizado.']);
+    }
+
+    public function suspend(Request $request, Product $product)
+    {
+        $request->validate(['reason' => 'required|string|max:500']);
+
+        // 1. Actualizar el producto
+        $product->update([
+            'is_active' => false,
+            'suspension_reason' => $request->reason
+        ]);
+
+        // 2. Enviar correo al usuario dueño del producto
+        Mail::to($product->user->email)->send(new ProductSuspendedMail($product));
+
+        return back()->with('success', 'Producto suspendido y notificación enviada.');
     }
 }

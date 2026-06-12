@@ -181,7 +181,8 @@
                     <span class="material-symbols-outlined">dashboard</span>
                     <span class="font-body-lg">Dashboard</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg flex items-center px-4 py-3 gap-3 transition-all" href="#">
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg flex items-center px-4 py-3 gap-3 transition-all"
+                    href="{{ route('admin.products.index') }}">
                     <span class="material-symbols-outlined">inventory_2</span>
                     <span class="font-body-lg">Gestionar Publicaciones</span>
                 </a>
@@ -216,7 +217,10 @@
                     <div class="bg-surface-container-lowest rounded-lg border border-outline-variant overflow-hidden shadow-sm" style="opacity: 1; transform: translateY(0px); transition: opacity 0.6s, transform 0.6s;">
                         <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-white">
                             <h2 class="font-headline-md text-on-surface">Publicaciones Recientes</h2>
-                            <button class="text-primary font-bold font-body-sm hover:underline">Ver todas</button>
+                            <a href="{{ route('admin.products.index') }}"
+                                class="text-primary font-bold font-body-sm hover:underline">
+                                Ver todas
+                            </a>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left">
@@ -381,7 +385,10 @@
                     <div class="space-y-3">
                         <p class="font-label-caps text-secondary font-bold uppercase">ACCESOS RÁPIDOS</p>
                         <nav class="flex flex-col gap-2">
-                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="#">Gestionar Publicaciones</a>
+                            <a href="{{ route('admin.products.index') }}"
+                                class="text-surface-variant text-body-sm hover:text-white transition-colors">
+                                Gestionar Publicaciones
+                            </a>
                             <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="#">Gestionar Comentarios</a>
                             <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="#">Gestionar Publicidad</a>
                         </nav>
