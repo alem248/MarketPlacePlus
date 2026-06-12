@@ -237,6 +237,7 @@
             <form action="{{ route('seller.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
+                
                 <header class="flex justify-between items-end mb-8">
                     <div>
                         <nav class="flex gap-2 text-on-surface-variant mb-2">

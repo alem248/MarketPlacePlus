@@ -69,9 +69,16 @@ class ProductController extends Controller
             ->whereNotNull('suspension_reason')
             ->first();
 
+        $reactivatedProduct = Product::where('user_id', auth()->id())
+        ->where('is_active', true)
+        ->whereNotNull('reactivated_at')
+        ->whereNull('viewed_reactivation_at')
+        ->first();
+
         // 3. Pasar ambas variables a la vista
-        return view('seller.panel', compact('products', 'suspendedProduct'));
+        return view('seller.panel', compact('products', 'suspendedProduct', 'reactivatedProduct'));
     }
+
     public function edit($id)
     {
         $product = Product::where('user_id', auth()->user()->id)->findOrFail($id);
@@ -82,6 +89,10 @@ class ProductController extends Controller
     {
         // 1. Buscamos el producto asegurando que pertenece al usuario
         $product = Product::where('user_id', auth()->user()->id)->findOrFail($id);
+
+        if (!empty($product->suspension_reason)) {
+        return redirect()->back()->with('error', 'Este producto está suspendido y no puede ser modificado. Por favor, contacta a soporte.');
+    }
 
         // 2. Validación
         $request->validate([
@@ -135,12 +146,20 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'El producto se ha actualizado correctamente.');
     }
     public function acknowledge($id)
-    {
-        $product = Product::where('user_id', auth()->id())->findOrFail($id);
+{
+    $product = Product::where('user_id', auth()->id())->findOrFail($id);
+    $product->update(['viewed_suspension_at' => now()]); 
+    return back();
+}
 
-        // Limpiamos el motivo para que el modal ya no aparezca
-        $product->update(['suspension_reason' => null]);
+public function acknowledgeReactivation($id)
+{
+    $product = Product::where('user_id', auth()->id())->findOrFail($id);
+    
+    $product->update([
+        'viewed_reactivation_at' => now()
+    ]);
 
-        return back()->with('success', 'Notificación marcada como leída.');
-    }
+    return redirect()->route('seller.panel');
+}
 }

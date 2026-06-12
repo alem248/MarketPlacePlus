@@ -167,7 +167,7 @@
                 <a href="{{ route('seller.products.create') }}" class="bg-secondary-container text-on-secondary-container px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-all scale-95 active:transition-all">
                     <span class="material-symbols-outlined">add_circle</span>
                     Crear Publicación
-                    </a>
+                </a>
             </div>
         </div>
     </nav>
@@ -258,9 +258,19 @@
                                         @endif
 
                                         <div class="absolute top-2 right-2 flex gap-1">
-                                            <a href="{{ route('seller.products.edit', $product->id) }}" class="p-2 bg-white/90 rounded-full hover:bg-white text-primary transition-colors">
+                                            {{-- 1. Si el producto tiene razón de suspensión, bloqueamos la edición SIEMPRE --}}
+                                            @if($product->suspension_reason)
+                                            <div class="p-2 bg-error text-white rounded-full cursor-not-allowed opacity-80"
+                                                title="Suspendido: {{ $product->suspension_reason }}">
+                                                <span class="material-symbols-outlined text-sm">block</span>
+                                            </div>
+                                            @else
+                                            {{-- 2. Si NO hay razón de suspensión, permitimos editar --}}
+                                            <a href="{{ route('seller.products.edit', $product->id) }}"
+                                                class="p-2 bg-white/90 rounded-full hover:bg-white text-primary transition-colors">
                                                 <span class="material-symbols-outlined text-sm">edit</span>
                                             </a>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -467,34 +477,56 @@
             <p class="text-body-sm opacity-50">Market Place Plus - eCommerce Template © 2026. Design by Templatecookie</p>
         </div>
     </footer>
-    @if(isset($suspendedProduct))
+    @if(isset($suspendedProduct) && !empty($suspendedProduct->suspension_reason) && is_null($suspendedProduct->viewed_suspension_at))
     <div id="suspensionModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
-        <div class="bg-surface rounded-2xl p-8 max-w-md w-full shadow-2xl border border-outline-variant">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl border border-gray-200">
             <div class="flex flex-col items-center text-center">
-                <div class="w-16 h-16 bg-error-container text-on-error-container rounded-full flex items-center justify-center mb-4">
+                <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4">
                     <span class="material-symbols-outlined text-4xl">report_problem</span>
                 </div>
-                <h2 class="text-headline-md font-bold text-on-surface mb-2">Publicación Suspendida</h2>
-                <p class="text-body-lg text-on-surface-variant mb-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-2">Publicación Suspendida</h2>
+                <p class="text-sm text-gray-600 mb-6">
                     Tu producto <strong>{{ $suspendedProduct->title }}</strong> ha sido suspendido por un administrador.
                 </p>
-                
-                <div class="w-full bg-surface-container-low p-4 rounded-xl text-left mb-6 border border-outline-variant">
-                    <p class="text-xs font-bold text-on-surface-variant uppercase mb-1">Motivo:</p>
-                    <p class="text-sm text-on-surface">{{ $suspendedProduct->suspension_reason }}</p>
+
+                <div class="w-full bg-gray-50 p-4 rounded-xl text-left mb-6 border border-gray-200">
+                    <p class="text-xs font-bold text-gray-500 uppercase mb-1">Motivo:</p>
+                    <p class="text-sm text-gray-800">{{ $suspendedProduct->suspension_reason }}</p>
                 </div>
 
-                <form action="{{ route('seller.products.acknowledge', $suspendedProduct->id) }}" method="POST" class="w-full">
+                <form action="{{ route('seller.products.acknowledge', $suspendedProduct->id) }}" method="POST" class="w-full m-0 p-0">
                     @csrf
-                    <button type="submit" class="w-full bg-primary text-on-primary py-3 rounded-xl font-bold hover:opacity-90 transition-all">
+                    <button type="submit" class="w-full bg-blue-900 text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition-all block">
                         Entendido
                     </button>
                 </form>
             </div>
         </div>
     </div>
-@endif
+    @endif
+{{-- MODAL DE REACTIVACIÓN EXITOSA --}}
+@if(isset($reactivatedProduct))
+    <div id="reactivationModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl border border-gray-200">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
+                    <span class="material-symbols-outlined text-4xl">check_circle</span>
+                </div>
+                <h2 class="text-xl font-bold text-gray-900 mb-2">¡Publicación Reactivada!</h2>
+                <p class="text-sm text-gray-600 mb-6">
+                    Buenas noticias. Tu producto <strong>{{ $reactivatedProduct->title }}</strong> ha sido revisado y aprobado por el administrador. Ya se encuentra visible para todos los compradores.
+                </p>
 
+                <form action="{{ route('seller.products.acknowledgeReactivation', $reactivatedProduct->id) }}" method="POST" class="w-full m-0 p-0">
+                    @csrf
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold transition-all block">
+                        Excelente, gracias
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+@endif
 
 
 </body>

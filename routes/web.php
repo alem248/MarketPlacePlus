@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/seller/products/{id}', [ProductController::class, 'update'])->name('seller.products.update');
     Route::post('/seller/products/{id}/acknowledge', [App\Http\Controllers\ProductController::class, 'acknowledge'])
     ->name('seller.products.acknowledge');
-
+    Route::post('/seller/products/{id}/acknowledge-reactivation', [ProductController::class, 'acknowledgeReactivation'])->name('seller.products.acknowledgeReactivation');
 
     Route::get('/tratos', [TratosController::class, 'index'])->name('tratos.index');
 

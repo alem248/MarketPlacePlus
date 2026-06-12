@@ -340,73 +340,7 @@
                 </a>
                 @endforeach
 
-                {{-- ===== TARJETAS ESTÁTICAS de relleno (sin DB aún) ===== --}}
-                <!-- More products to fill grid -->
-                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden product-card-hover flex flex-col">
-                    <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img alt="TV" class="w-full h-full object-cover" data-alt="A sleek flat-screen television displaying a high-resolution nature landscape. The frame is minimal and thin, set against a modern interior backdrop. Lighting is soft and atmospheric, highlighting the premium quality of home entertainment technology in a clean corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8jtbZMr_luf1-RUq9Efx1xY81ZmlVZR9W1B-OO7NZhv9riR-UkcLEmtamvZfJe69J--NUMoC5M-_zKcnX_RMPjibVEsE5e7uNDI2YTrpSZiVUgm1dqfMktGTvYRxCEYjIIVGv3lSdqqPoW6ZAJ4w7c9YKWTGbkY1jDWD9VlOMAHPYdYBe7_uitkk8p9NijS8cmiPs27CM6b8nZbeaRkkJn15PbdHTAnjK-Tb0lsUln5PjMRbPuYtNeGyzTNeTliok16Lpd8va2iw">
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col">
-                        <p class="text-label-caps text-secondary mb-1">Smart Home</p>
-                        <h3 class="text-headline-md text-on-surface line-clamp-1 mb-2">Smart TV OLED 55"</h3>
-                        <div class="mt-auto">
-                            <p class="text-price-display text-primary">S/. 780.00</p>
-                            <button class="w-full mt-4 py-3 bg-secondary-container text-on-secondary rounded-xl font-bold flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined" data-icon="handshake" style="font-variation-settings: 'FILL' 1; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(1) rotate(0deg);">handshake</span>
-                                Trato Directo
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden product-card-hover flex flex-col">
-                    <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img alt="Shoes" class="w-full h-full object-cover" data-alt="A side view of a vibrant red athletic sneaker. The image is captured with professional studio lighting, creating deep shadows and bright highlights that emphasize the textures of the fabric and the sleek sole. The background is a clean white, typical for high-end e-commerce." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZpBkEsXSKxB9zefH2xU_8CnVxFzN_hHFk6Kh0MeE2Zkd6jQuywi-RCL7alnZ2fPfeYNdI5gwPHN1foxqpJ1Bi_B6ovrLznO8q2jGK3O-78TWqAYIUiuNQl58SVDT-TJX_dRsyFJPq-DHcFT3VZUcjMVJ1RWdZF098GPRz2BKGdYEsUn_zUGTxUAZSnlX4ooSVL0t-3mBu9DyUYlfYTjzn-mTrxGgQdlwr01k1gzNY10koXOVg-BTZLnKJoMSCLjEuGxr7qTj93pg">
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col">
-                        <p class="text-label-caps text-secondary mb-1">Deportes</p>
-                        <h3 class="text-headline-md text-on-surface line-clamp-1 mb-2">Zapatillas Pro Runner X</h3>
-                        <div class="mt-auto">
-                            <p class="text-price-display text-primary">S/. 150.00</p>
-                            <button class="w-full mt-4 py-3 bg-secondary-container text-on-secondary rounded-xl font-bold flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined" data-icon="handshake" style="font-variation-settings: 'FILL' 1; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(1) rotate(0deg);">handshake</span>
-                                Trato Directo
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden product-card-hover flex flex-col">
-                    <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img alt="Camera" class="w-full h-full object-cover" data-alt="A professional mirrorless camera with a large lens attached. The camera is showcased on a dark textured surface with dramatic side lighting that picks out the dials and buttons. The visual style is technical and high-performance, appealing to professional users." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYkoSc6HCsPWPlz9hfAV5D9vpebNqQMVkSeQmpVhqALmmVggpbc03iYzkDRg-v8-RZz-peRfkGz2o5s5YChULHtHeVdFQr-BfXaJs0b03mU9ai93KWLNn1vsqg0ZY0FIJm4euKd5dn7Gwn3l2_5ZDviuY2yCuseVla-qxUqgLKRIVnhz7O30k2G0RNwkIRUtgVfNj063Z4-POwpGjtiHAuPerkBVqoRTjRrsvvrXykTIu9LyF5eCn3JIhW9Waj4Ipz7Da3TUoXVas">
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col">
-                        <p class="text-label-caps text-secondary mb-1">Cámaras</p>
-                        <h3 class="text-headline-md text-on-surface line-clamp-1 mb-2">Lumix Digital G7 4K</h3>
-                        <div class="mt-auto">
-                            <p class="text-price-display text-primary">S/. 890.00</p>
-                            <button class="w-full mt-4 py-3 bg-secondary-container text-on-secondary rounded-xl font-bold flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined" data-icon="handshake" style="font-variation-settings: 'FILL' 1; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(1) rotate(0deg);">handshake</span>
-                                Trato Directo
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden product-card-hover flex flex-col">
-                    <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img alt="Tablet" class="w-full h-full object-cover" data-alt="A modern tablet with a high-resolution display showcasing artistic digital illustrations. The device is being held by a user, showing its thin bezel and portable size. The background is a soft-focus creative workspace, giving the product a lifestyle yet professional context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEIfnm2nfvD18v5H4sGwM5gzdtuJJRHE9Py_ZNHlnS3al2StCJn31tJpSO-BQgy3D5dHq1AoqtEFZ7TIOMwXvi9cfHQbQm0fpdYEDvPrNJJ0bwpfTXe3M9rTKUZDf137E_tBed7Lw_AwaFLh4DxO9EembmmYfjzpundHGq3WzX2A1iNZA6ESgwtH7wnrnEb2T33STqYrS-4_Sw8Lzkrrxi07hyqfLeZ8YBZaBAIBOEcmVxcn5OVvwQeG3fFX9f4eevzCSg7CVaSlQ">
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col">
-                        <p class="text-label-caps text-secondary mb-1">Tablets</p>
-                        <h3 class="text-headline-md text-on-surface line-clamp-1 mb-2">iPad Air 5th Gen</h3>
-                        <div class="mt-auto">
-                            <p class="text-price-display text-primary">S/. 650.00</p>
-                            <button class="w-full mt-4 py-3 bg-secondary-container text-on-secondary rounded-xl font-bold flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined" data-icon="handshake" style="font-variation-settings: 'FILL' 1;">handshake</span>
-                                Trato Directo
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <!-- Simple Pagination -->
             <div class="flex items-center justify-center gap-2 mt-12 py-8 border-t border-outline-variant">
                 <button class="p-2 rounded-lg hover:bg-surface-container transition-colors disabled:opacity-30" disabled="">

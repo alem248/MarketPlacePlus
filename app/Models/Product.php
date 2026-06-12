@@ -21,8 +21,12 @@ class Product extends Model
         'image_path',
         'deleted_images_log',
         'is_active',
-        'condition', // estado: "Nuevo", "Usado - Como nuevo", "Usado"
-        'tags',      // etiquetas JSON: ["Apple","Laptops","Premium"]
+        'suspension_reason',
+        'condition',
+        'tags',
+        'viewed_suspension_at',
+        'reactivated_at',
+        'viewed_reactivation_at',
     ];
 
     protected $casts = [
@@ -30,8 +34,17 @@ class Product extends Model
         'price'              => 'decimal:2',
         'image_path'         => 'array',
         'deleted_images_log' => 'array',
-        'tags'               => 'array', // deserializa el JSON automáticamente
+        'tags'               => 'array',
+        'viewed_suspension_at' => 'datetime',
+        'reactivated_at'         => 'datetime',
+        'viewed_reactivation_at' => 'datetime',
     ];
+
+    public function needsSuspensionWarning(): bool
+    {
+
+        return !empty($this->suspension_reason) && is_null($this->viewed_suspension_at);
+    }
 
     public function user(): BelongsTo
     {

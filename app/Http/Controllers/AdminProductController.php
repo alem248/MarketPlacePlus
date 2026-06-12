@@ -71,14 +71,11 @@ class AdminProductController extends Controller
             }
             $data['image_path'] = $request->file('image')->store('products', 'public');
         }
-
-        // 3. Normalizamos is_active
         $data['is_active'] = $request->boolean('is_active');
 
-        // 4. ELIMINAMOS cualquier campo que no sea de la tabla si es necesario
         unset($data['image']);
 
-        // 5. USAMOS fill() y save() en lugar de update() masivo
+
         // Esto es mucho más seguro frente a errores de columnas no encontradas
         $product->fill($data);
         $product->save(); // save() es más robusto ante inconsistencias de esquema
@@ -96,32 +93,40 @@ class AdminProductController extends Controller
             ->with('success', 'Publicación desactivada. Los datos se conservan para auditoría.');
     }
 
-    public function updateStatus(Request $request, Product $product)
+   public function updateStatus(Request $request, Product $product)
     {
-        // Validamos que el estado sea un booleano (activo o pendiente)
         $request->validate([
-            'is_active' => 'required|boolean',
+            'is_active' => 'required|boolean'
         ]);
 
-        $product->is_active = $request->is_active;
-        $product->save();
+        if ($request->is_active == 1) {
 
-        return response()->json(['success' => true, 'message' => 'Estado actualizado.']);
+            $product->reactivate();       
+        
+            $product->update([
+                'reactivated_at' => now(),
+                'viewed_suspension_at' => null 
+            ]);
+        }
+
+
+        return redirect()->back()->with('success', 'La publicación ha sido aprobada y reactivada con éxito.');
     }
 
-    public function suspend(Request $request, Product $product)
-    {
-        $request->validate(['reason' => 'required|string|max:500']);
+   public function suspend(Request $request, Product $product)
+{
+    $request->validate(['reason' => 'required|string|max:500']);
 
-        // 1. Actualizar el producto
-        $product->update([
-            'is_active' => false,
-            'suspension_reason' => $request->reason
-        ]);
 
-        // 2. Enviar correo al usuario dueño del producto
-        Mail::to($product->user->email)->send(new ProductSuspendedMail($product));
+    $product->update([
+        'is_active' => false,
+        'suspension_reason' => $request->reason
+    ]);
 
-        return back()->with('success', 'Producto suspendido y notificación enviada.');
-    }
+    $product->refresh();
+
+    Mail::to($product->user->email)->send(new ProductSuspendedMail($product));
+
+    return back()->with('success', 'Producto suspendido y notificación enviada.');
+}
 }
