@@ -46,6 +46,10 @@ Route::middleware(['auth'])->group(function () {
     ->name('seller.products.acknowledge');
     Route::post('/seller/products/{id}/acknowledge-reactivation', [ProductController::class, 'acknowledgeReactivation'])->name('seller.products.acknowledgeReactivation');
 
+    Route::prefix('seller')->name('seller.')->middleware('auth')->group(function () {
+    Route::get('/deals', [DealController::class, 'index'])->name('deals.index');
+});
+
     Route::get('/tratos', [TratosController::class, 'index'])->name('tratos.index');
 
     // Detalle/seguimiento de un trato específico del comprador
