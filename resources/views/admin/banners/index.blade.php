@@ -91,14 +91,6 @@
                                     <span class="material-symbols-outlined text-[20px]">play_arrow</span> Reactivar
                                 </button>
                             </form>
-                            {{-- Eliminar definitivamente --}}
-                            <form action="{{ route('admin.banners.destroy', $banner) }}" method="POST"
-                                  onsubmit="return confirm('¿Eliminar definitivamente este banner?')">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="p-2 text-error hover:bg-error/10 rounded-full transition-colors" title="Eliminar definitivamente">
-                                    <span class="material-symbols-outlined">delete</span>
-                                </button>
-                            </form>
                         @endif
                     </div>
                 </div>

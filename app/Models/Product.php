@@ -42,4 +42,22 @@ class Product extends Model
     {
         return $this->hasMany(Comment::class)->where('is_active', true);
     }
+
+    // ─── Soft Delete Methods ────────────────────────────────────────────────────
+
+    public function suspend(string $reason = null): void
+    {
+        $this->update([
+            'is_active' => false,
+            'suspension_reason' => $reason,
+        ]);
+    }
+
+    public function reactivate(): void
+    {
+        $this->update([
+            'is_active' => true,
+            'suspension_reason' => null,
+        ]);
+    }
 }

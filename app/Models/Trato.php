@@ -62,4 +62,14 @@ class Trato extends Model
     {
         return self::STATUS_LABELS[$this->status] ?? strtoupper($this->status);
     }
+
+    // ─── Methods ────────────────────────────────────────────────────────────────
+
+    /**
+     * Cancela un trato sin eliminar el registro (soft delete)
+     */
+    public function cancel(): void
+    {
+        $this->update(['status' => 'cancelado']);
+    }
 }

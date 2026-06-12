@@ -256,11 +256,15 @@
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-right">
-                                            <a href="{{ route('admin.products.edit', $product->id) }}" class="text-primary hover:bg-primary-fixed p-1 rounded-full"><span class="material-symbols-outlined">edit</span></a>
-                                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="text-error hover:bg-error-container p-1 rounded-full ml-2"><span class="material-symbols-outlined">delete</span></button>
-                                            </form>
+                                            <a href="{{ route('admin.products.edit', $product->id) }}" class="text-primary hover:bg-primary-fixed p-1 rounded-full" title="Editar"><span class="material-symbols-outlined">edit</span></a>
+                                            @if($product->is_active)
+                                                <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline" onsubmit="return confirm('¿Desactivar esta publicación?')">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="text-error hover:bg-error-container p-1 rounded-full ml-2" title="Desactivar"><span class="material-symbols-outlined">block</span></button>
+                                                </form>
+                                            @else
+                                                <button disabled class="text-on-surface-variant p-1 rounded-full ml-2 opacity-50 cursor-not-allowed" title="Publicación desactivada"><span class="material-symbols-outlined">block</span></button>
+                                            @endif
                                         </td>
                                     </tr>
                                     @empty

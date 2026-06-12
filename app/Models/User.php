@@ -23,6 +23,7 @@ class User extends Authenticatable
         'dob',
         'gender',
         'role',
+        'is_active',
     ];
 
     protected $hidden = [
@@ -36,6 +37,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'dob'               => 'date',
             'password'          => 'hashed',
+            'is_active'         => 'boolean',
         ];
     }
 
@@ -50,6 +52,25 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+    public function isActive(): bool
+    {
+        return $this->is_active;
+    }
+
+    // ─── Soft Delete Methods ────────────────────────────────────────────────────
+
+    public function suspend(): void
+    {
+        $this->update(['is_active' => false]);
+    }
+
+    public function reactivate(): void
+    {
+        $this->update(['is_active' => true]);
+    }
+
+    // ─── Relations ──────────────────────────────────────────────────────────────
 
     public function products()
     {

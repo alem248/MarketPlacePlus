@@ -30,4 +30,16 @@ class Comment extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    // ─── Soft Delete Methods ────────────────────────────────────────────────────
+
+    public function hide(): void
+    {
+        $this->update(['is_active' => false]);
+    }
+
+    public function show(): void
+    {
+        $this->update(['is_active' => true]);
+    }
 }

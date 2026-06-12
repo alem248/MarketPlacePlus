@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-
 use App\Mail\ProductSuspendedMail;
 use Illuminate\Support\Facades\Mail;
 
@@ -89,13 +87,12 @@ class AdminProductController extends Controller
     }
     public function destroy(Product $product)
     {
-        if ($product->image_path) {
-            Storage::disk('public')->delete($product->image_path);
-        }
-        $product->delete();
+        // Soft delete: solo desactivar el producto, no eliminar datos
+        $product->reactivate(); // Primero limpiamos el motivo anterior
+        $product->suspend('Eliminado por administrador');
 
         return redirect()->route('admin.products.index')
-            ->with('success', 'Publicación eliminada.');
+            ->with('success', 'Publicación desactivada. Los datos se conservan para auditoría.');
     }
 
     public function updateStatus(Request $request, Product $product)

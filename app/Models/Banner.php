@@ -21,4 +21,16 @@ class Banner extends Model
         'end_date'  => 'date',
         'is_active' => 'boolean',
     ];
+
+    // ─── Soft Delete Methods ────────────────────────────────────────────────────
+
+    public function suspend(): void
+    {
+        $this->update(['is_active' => false]);
+    }
+
+    public function reactivate(): void
+    {
+        $this->update(['is_active' => true]);
+    }
 }
