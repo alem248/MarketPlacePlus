@@ -5,7 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TratosController;
-use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdminDashboardController;
@@ -39,18 +39,13 @@ Route::middleware(['auth'])->group(function () {
     // Gestión de productos del vendedor
     Route::get('/seller/products/create', [ProductController::class, 'create'])->name('seller.products.create');
     Route::post('/seller/products', [ProductController::class, 'store'])->name('seller.products.store');
-<<<<<<< HEAD
     Route::get('/seller/products/{id}/edit', [ProductController::class, 'edit'])->name('seller.products.edit');
     Route::put('/seller/products/{id}', [ProductController::class, 'update'])->name('seller.products.update');
-    Route::post('/seller/products/{id}/acknowledge', [App\Http\Controllers\ProductController::class, 'acknowledge'])
-    ->name('seller.products.acknowledge');
-=======
-
-    Route::get('/tratos', [TratosController::class, 'index'])->name('tratos.index');
+    Route::post('/seller/products/{id}/acknowledge', [ProductController::class, 'acknowledge'])
+        ->name('seller.products.acknowledge');
 
     // Detalle/seguimiento de un trato específico del comprador
     Route::get('/tratos/{trato}', [TratosController::class, 'show'])->name('tratos.show');
->>>>>>> 0c905f4df2eb846b652ae3ba3f27768d528c12c7
 });
 
 // Ruta de vista simple (Independiente)
