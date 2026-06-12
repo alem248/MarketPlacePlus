@@ -12,6 +12,9 @@ use App\Http\Controllers\AdminDashboardController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Detalle público de un producto (requiere login para ver el chat y los tratos)
+Route::middleware(['auth'])->get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register.show');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login.show');
@@ -25,6 +28,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/seller/products', [ProductController::class, 'store'])->name('seller.products.store');
 
     Route::get('/tratos', [TratosController::class, 'index'])->name('tratos.index');
+
+    // Detalle/seguimiento de un trato específico del comprador
+    Route::get('/tratos/{trato}', [TratosController::class, 'show'])->name('tratos.show');
 });
 
 

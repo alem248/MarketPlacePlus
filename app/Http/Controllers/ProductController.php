@@ -7,6 +7,18 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
+    // Muestra el detalle completo de un producto al comprador
+    public function show(Product $product)
+    {
+        // Si el producto está desactivado, lo ocultamos con 404
+        abort_if(!$product->is_active, 404);
+
+        // Cargamos el vendedor para mostrar su nombre y teléfono en la vista
+        $product->load('user');
+
+        return view('products.show', compact('product'));
+    }
+
     public function create()
     {
         return view('seller.create-product');
@@ -32,7 +44,7 @@ class ProductController extends Controller
         }
 
         Product::create([
-            'user_id'     => auth()->id(),
+            'user_id'     => auth()->user()->id,
             'title'       => $request->title,
             'category'    => $request->category,
             'location'    => $request->location,
@@ -48,20 +60,20 @@ class ProductController extends Controller
 
     public function dashboard()
     {
-        $products = Product::where('user_id', auth()->id())->get();
+        $products = Product::where('user_id', auth()->user()->id)->get();
         return view('seller.panel', compact('products'));
     }
 
     public function edit($id)
     {
-        $product = Product::where('user_id', auth()->id())->findOrFail($id);
+        $product = Product::where('user_id', auth()->user()->id)->findOrFail($id);
         return view('seller.products.edit', compact('product'));
     }
 
 public function update(Request $request, $id)
 {
     // 1. Buscamos el producto asegurando que pertenece al usuario
-    $product = Product::where('user_id', auth()->id())->findOrFail($id);
+    $product = Product::where('user_id', auth()->user()->id)->findOrFail($id);
 
     // 2. Validación
     $request->validate([

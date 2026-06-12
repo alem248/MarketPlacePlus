@@ -174,9 +174,9 @@
                     <button class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-caps font-label-caps flex items-center gap-1 active:scale-95 duration-150">
                         <span class="material-symbols-outlined text-[20px]" data-icon="favorite">favorite</span>
                     </button>
-                    <button class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-caps font-label-caps flex items-center gap-1 active:scale-95 duration-150">
+                    <a href="{{ route('tratos.index') }}" class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-caps font-label-caps flex items-center gap-1 active:scale-95 duration-150">
                         <span class="material-symbols-outlined text-[20px]" data-icon="handshake">handshake</span>
-                    </button>
+                    </a>
                 </div>
                 <div class="flex items-center gap-3 border-l pl-6 border-outline-variant">
                     @auth
@@ -239,7 +239,7 @@
                     <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
                     <span class="text-body-lg font-body-lg">Panel</span>
                 </a>
-                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="{{ route('proximamente') }}">
+                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="{{ route('tratos.index') }}">
                     <span class="material-symbols-outlined" data-icon="handshake">handshake</span>
                     <span class="text-body-lg font-body-lg">Mis Tratos</span>
                 </a>
@@ -302,74 +302,45 @@
                 </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter mb-12">
-                <!-- Product Card 1 -->
-                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden product-card-hover flex flex-col">
+
+                {{-- ===== TARJETAS DINÁMICAS desde la base de datos ===== --}}
+                @foreach($products as $product)
+                @php
+                    // Primera imagen del producto; si es URL externa la usamos directo, si no, Storage::url()
+                    $images = $product->image_path ?? [];
+                    $thumb  = $images[0] ?? null;
+                    $imgSrc = $thumb
+                        ? (Str::startsWith($thumb, 'http') ? $thumb : Storage::url($thumb))
+                        : null;
+                @endphp
+                {{-- El <a> convierte toda la tarjeta en un enlace al detalle del producto --}}
+                <a href="{{ route('products.show', $product) }}"
+                   class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden product-card-hover flex flex-col group">
                     <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img alt="MacBook Pro" class="w-full h-full object-cover" data-alt="A clean, minimalist product shot of a silver MacBook Pro sitting on a light gray surface. The lighting is soft and even, highlighting the sleek metallic finish and premium build quality. The composition is centered and professional, reflecting a high-trust intermediary marketplace aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4I-KrUMLgKxiMq78qgde3oBQoIabPS5IXNI_gPK44PtLHbGaE6Ja6VnZHexveGUUM3RRRMgrBtt9iltlEpLVuqer_RB0EQyqu088RE7g4ltK7RF_yi9Gec3LnUpSYKwxNElcbyiJ-CJESLzNbxqameH21wi9fwYF1iku1QEkjWEKrEkLB9BlITuqgXdt5KhOdNH6NUL3hDauA2wP2nr3buUlv5YfqRzcJUwZXQPSzDcGAVAuFSSi2t3e5X9fX-NuQuMifnRXte-k">
+                        @if($imgSrc)
+                            <img alt="{{ $product->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="{{ $imgSrc }}">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center">
+                                <span class="material-symbols-outlined text-outline" style="font-size:48px">image</span>
+                            </div>
+                        @endif
                     </div>
                     <div class="p-4 flex-1 flex flex-col">
-                        <p class="text-label-caps text-secondary mb-1">Laptops</p>
-                        <h3 class="text-headline-md text-on-surface line-clamp-1 mb-2">MacBook Pro M3 512GB</h3>
+                        <p class="text-label-caps text-secondary mb-1">{{ $product->category }}</p>
+                        <h3 class="text-headline-md text-on-surface line-clamp-1 mb-2">{{ $product->title }}</h3>
                         <div class="mt-auto">
-                            <p class="text-price-display text-primary">S/. 950.00</p>
-                            <button class="w-full mt-4 py-3 bg-secondary-container text-on-secondary rounded-xl font-bold flex items-center justify-center gap-2">
+                            <p class="text-price-display text-primary">S/. {{ number_format($product->price, 2) }}</p>
+                            {{-- El botón es solo visual; el click lo maneja el <a> padre --}}
+                            <div class="w-full mt-4 py-3 bg-secondary-container text-on-secondary rounded-xl font-bold flex items-center justify-center gap-2">
                                 <span class="material-symbols-outlined" data-icon="handshake" style="font-variation-settings: 'FILL' 1;">handshake</span>
                                 Trato Directo
-                            </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Product Card 2 -->
-                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden product-card-hover flex flex-col">
-                    <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img alt="Sony Headphones" class="w-full h-full object-cover" data-alt="A studio portrait of premium black over-ear noise-cancelling headphones. The lighting creates subtle highlights on the matte texture of the product. The background is a neutral light gray, emphasizing the high-tech functional design suited for a professional electronic marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb4goNJdR7GVj57882ULwnl1--zCNjyTuZpowtxrmjBpQ0C7XmIQ7xJhtt-nzBSd3nW73tL_ZGfspRortqfwtqjIzHbyX_TS5vMafDEO4XiRtWA1VNJrgDf5MkSiY8FNk3QbFijs5Tv2V56SYYXMPVB1b9wQhb3n81aTC91X_budflUs0EUbNgk9XBC05WYnXM_vD3vd8GtWB-HufEg5ls3q9VM_pYX-Uva4IC5cmZKijyULChyHfEzsH7r7oXOCY-SrUGuTIH-0s">
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col">
-                        <p class="text-label-caps text-secondary mb-1">Audio</p>
-                        <h3 class="text-headline-md text-on-surface line-clamp-1 mb-2">Sony WH-1000XM5 ANC</h3>
-                        <div class="mt-auto">
-                            <p class="text-price-display text-primary">S/. 520.00</p>
-                            <button class="w-full mt-4 py-3 bg-secondary-container text-on-secondary rounded-xl font-bold flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined" data-icon="handshake" style="font-variation-settings: 'FILL' 1; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(1) rotate(0deg);">handshake</span>
-                                Trato Directo
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Product Card 3 -->
-                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden product-card-hover flex flex-col">
-                    <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img alt="Samsung S24" class="w-full h-full object-cover" data-alt="A modern smartphone with a large vibrant screen showing abstract colorful wallpapers. The device is captured at a slight angle to showcase its slim profile and premium build materials. Soft professional lighting creates a clean, commercial look perfect for an online tech catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4LEcD_s3WUNR_hZNmTWZecZn6D8ffGkjIfakXo_Tj5Gn955OjTQdtB6j5K7ipOIJE29JdiZUi-lQJTu5Rd43pJHGNEH77Z-lwKpjYrqYNQzvYbqymbnw-63JcvTk2AyiUjj-14ktXbISxOC82RaT48yMDM5TBNeWAeKoqJJL6j3G99kWPvH6aZ_19wOcUtS2RUYdCYj7mK-xQoyk_UNt_evWjvuhcuO-iybz9_NkuMyfuIUiBN7kGGtDtB9RhE0DQt_Wey-_eEVE">
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col">
-                        <p class="text-label-caps text-secondary mb-1">Celulares</p>
-                        <h3 class="text-headline-md text-on-surface line-clamp-1 mb-2">Samsung Galaxy S24 Ultra</h3>
-                        <div class="mt-auto">
-                            <p class="text-price-display text-primary">S/. 850.00</p>
-                            <button class="w-full mt-4 py-3 bg-secondary-container text-on-secondary rounded-xl font-bold flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined" data-icon="handshake" style="font-variation-settings: 'FILL' 1;">handshake</span>
-                                Trato Directo
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Product Card 4 -->
-                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden product-card-hover flex flex-col">
-                    <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img alt="Watch" class="w-full h-full object-cover" data-alt="A close-up shot of a modern minimalist white smartwatch. The focus is on the watch face and the clean silicone strap. The overall aesthetic is bright and high-key, using soft daylight to create an inviting yet professional product presentation for a reliable marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsjk8L9h_dChU7lH5dSqXiwZW8ac83gM7CRqP5RSw726gVHQWhUKFXK55D3v0wdJBvKIgnDIx7yqSeO5cbzRFath7aov4_C-yTxn33xbUEOd0LrSWpFKPwdY97eyYHX0RkhKd-of2Ie1zZjoi_bTc4yPip0n1oBgTuYl-b5C_piwcD4r-3AG-3B0X3_WTwm6X2-yABMpRcxkj1eMCJ6xeDHIFQEPiFIxI6IvKFn837iyooYY2YCZ4v_QRyGM43JEOWy6873IxS4bY">
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col">
-                        <p class="text-label-caps text-secondary mb-1">Wearables</p>
-                        <h3 class="text-headline-md text-on-surface line-clamp-1 mb-2">Apple Watch Series 9</h3>
-                        <div class="mt-auto">
-                            <p class="text-price-display text-primary">S/. 420.00</p>
-                            <button class="w-full mt-4 py-3 bg-secondary-container text-on-secondary rounded-xl font-bold flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined" data-icon="handshake" style="font-variation-settings: 'FILL' 1;">handshake</span>
-                                Trato Directo
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                </a>
+                @endforeach
+
+                {{-- ===== TARJETAS ESTÁTICAS de relleno (sin DB aún) ===== --}}
                 <!-- More products to fill grid -->
                 <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden product-card-hover flex flex-col">
                     <div class="aspect-square bg-surface-container overflow-hidden">
