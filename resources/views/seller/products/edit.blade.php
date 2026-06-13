@@ -210,7 +210,7 @@
                 <span class="material-symbols-outlined mr-3">handshake</span>
                 <span class="font-body-lg text-body-lg">Mis Tratos</span>
             </a>
-            <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('proximamente') }}">
+            <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('comprobantes.index') }}">
                 <span class="material-symbols-outlined mr-3">receipt_long</span>
                 <span class="font-body-lg text-body-lg">Mis Comprobantes</span>
             </a>

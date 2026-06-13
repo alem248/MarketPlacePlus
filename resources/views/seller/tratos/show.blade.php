@@ -156,7 +156,7 @@
                     <span class="text-body-lg">Delivery</span>
                 </a>
 
-                <a href="{{ route('proximamente') }}"
+                <a href="{{ route('comprobantes.index') }}"
                    class="flex items-center gap-3 mx-2 my-1 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all">
                     <span class="material-symbols-outlined">receipt_long</span>
                     <span class="text-body-lg">Mis Comprobantes</span>
@@ -368,9 +368,10 @@
                                 default            => '0%',
                             };
                         @endphp
+                        {{-- data-width evita expresiones Blade en style="" que confunden el linter CSS --}}
                         <div class="relative h-2 bg-surface-container-high rounded-full mb-8 overflow-hidden">
-                            <div class="h-2 bg-secondary-container rounded-full transition-all duration-700"
-                                 style="width: {{ $progressPct }}"></div>
+                            <div class="h-2 bg-secondary-container rounded-full transition-all duration-700 js-progress-bar"
+                                 data-width="{{ $progressPct }}"></div>
                         </div>
 
                         {{-- Pasos del timeline como lista vertical con checkboxes --}}
@@ -393,7 +394,11 @@
                             @php $step2 = $statusOrder >= 2; @endphp
                             <div class="flex items-center gap-4 p-3 rounded-xl {{ $step2 ? 'bg-secondary-container/10' : 'bg-surface-container-low opacity-40' }}">
                                 <div class="w-9 h-9 rounded-lg {{ $step2 ? 'bg-secondary-container text-on-secondary-container' : 'bg-surface-container-high text-on-surface-variant' }} flex items-center justify-center shrink-0">
-                                    <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' {{ $step2 ? 1 : 0 }}">forum</span>
+                                    @if($step2)
+                                        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">forum</span>
+                                    @else
+                                        <span class="material-symbols-outlined text-[18px]">forum</span>
+                                    @endif
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-body-sm font-bold text-on-surface">En Discusión</p>
@@ -407,7 +412,11 @@
                             @php $step3 = $statusOrder >= 3; @endphp
                             <div class="flex items-center gap-4 p-3 rounded-xl {{ $step3 ? 'bg-secondary-container/10' : 'bg-surface-container-low opacity-40' }}">
                                 <div class="w-9 h-9 rounded-lg {{ $step3 ? 'bg-secondary-container text-on-secondary-container' : 'bg-surface-container-high text-on-surface-variant' }} flex items-center justify-center shrink-0">
-                                    <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' {{ $step3 ? 1 : 0 }}">verified</span>
+                                    @if($step3)
+                                        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">verified</span>
+                                    @else
+                                        <span class="material-symbols-outlined text-[18px]">verified</span>
+                                    @endif
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-body-sm font-bold text-on-surface">Aprobado</p>
@@ -692,6 +701,11 @@
 
 @push('scripts')
 <script>
+    // Aplica el ancho de la barra de progreso desde data-width (evita expresiones Blade en style="")
+    document.querySelectorAll('.js-progress-bar').forEach(el => {
+        el.style.width = el.dataset.width;
+    });
+
     // Auto-scroll al fondo del chat al cargar la página
     document.getElementById('chat-bottom')?.scrollIntoView({ behavior: 'smooth' });
 

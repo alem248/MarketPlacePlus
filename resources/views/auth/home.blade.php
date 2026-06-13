@@ -247,7 +247,7 @@
                     <span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
                     <span class="text-body-lg font-body-lg">Delivery</span>
                 </a>
-                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="{{ route('proximamente') }}">
+                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="{{ route('comprobantes.index') }}">
                     <span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
                     <span class="text-body-lg font-body-lg">Mis Comprobantes</span>
                 </a>

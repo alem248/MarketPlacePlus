@@ -89,7 +89,7 @@
                     <span class="material-symbols-outlined">local_shipping</span>
                     <span class="text-body-lg font-body-lg">Delivery</span>
                 </a>
-                <a href="{{ route('proximamente') }}"
+                <a href="{{ route('comprobantes.index') }}"
                    class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all">
                     <span class="material-symbols-outlined">receipt_long</span>
                     <span class="text-body-lg font-body-lg">Mis Comprobantes</span>

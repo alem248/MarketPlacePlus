@@ -114,7 +114,7 @@
                     <span class="text-body-lg">Delivery</span>
                 </a>
 
-                <a href="{{ route('proximamente') }}"
+                <a href="{{ route('comprobantes.index') }}"
                    class="flex items-center gap-3 mx-2 my-1 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all">
                     <span class="material-symbols-outlined">receipt_long</span>
                     <span class="text-body-lg">Mis Comprobantes</span>

@@ -260,8 +260,9 @@
                                             <div class="w-14 h-14 rounded-lg overflow-hidden bg-surface-variant shrink-0 border border-outline-variant">
                                                 @php
                                                 $firstImage = is_array($product->image_path) ? ($product->image_path[0] ?? '') : $product->image_path;
+                                                $imgSrc = Str::startsWith($firstImage, 'http') ? $firstImage : Storage::url($firstImage);
                                                 @endphp
-                                                <img alt="{{ $product->title }}" class="w-full h-full object-cover" src="{{ asset('storage/' . $firstImage) }}">
+                                                <img alt="{{ $product->title }}" class="w-full h-full object-cover" src="{{ $imgSrc }}">
                                             </div>
                                             <span class="font-body-lg text-body-lg font-semibold text-on-surface">{{ $product->title }}</span>
                                         </div>
