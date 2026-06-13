@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CommentController as AdminCommentController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ComprobantesController;
 
 // ==========================================
 // RUTAS PÚBLICAS Y DE AUTENTICACIÓN
@@ -58,6 +59,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Guardar calificación y comentario del comprador al vendedor (solo estado 'recibido')
     Route::post('/tratos/{trato}/calificar', [CommentController::class, 'store'])->name('tratos.calificar');
+
+    // Comprobantes de venta del comprador
+    Route::get('/mis-comprobantes', [ComprobantesController::class, 'index'])->name('comprobantes.index');
+    Route::post('/tratos/{trato}/comprobante', [ComprobantesController::class, 'store'])->name('comprobantes.store');
 
 });
 

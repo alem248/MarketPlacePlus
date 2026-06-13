@@ -122,9 +122,9 @@
                     <span class="text-label-caps">Delivery</span>
                 </a>
 
-                <a href="{{ route('proximamente') }}"
+                <a href="{{ route('comprobantes.index') }}"
                    class="flex items-center gap-3 p-3 text-on-surface hover:bg-surface-container-low rounded-xl transition-all">
-                    <span class="material-symbols-outlined">payments</span>
+                    <span class="material-symbols-outlined">receipt_long</span>
                     <span class="text-label-caps">Mis Comprobantes</span>
                 </a>
             </nav>
@@ -163,10 +163,15 @@
                     - Por ahora está bloqueado visualmente si no es 'recibido'.
                 --}}
                 @if($isRecibido)
-                    <button class="bg-secondary-container hover:bg-secondary transition-all text-on-secondary-container hover:text-on-secondary px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-md">
-                        <span class="material-symbols-outlined">receipt_long</span>
-                        Generar comprobante de venta
-                    </button>
+                    {{-- Formulario POST que genera el comprobante y redirige a Mis Comprobantes --}}
+                    <form action="{{ route('comprobantes.store', $trato) }}" method="POST">
+                        @csrf
+                        <button type="submit"
+                                class="bg-secondary-container hover:bg-secondary transition-all text-on-secondary-container hover:text-on-secondary px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-md">
+                            <span class="material-symbols-outlined">receipt_long</span>
+                            Generar comprobante de venta
+                        </button>
+                    </form>
                 @else
                     <button disabled
                             title="Disponible cuando ambas partes marquen como recibido"
