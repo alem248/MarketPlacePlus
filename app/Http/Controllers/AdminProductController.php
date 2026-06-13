@@ -34,7 +34,7 @@ class AdminProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $data['image_path'] = $request->file('image')->store('products', 'public');
+            $data['image_path'] = [$request->file('image')->store('products', 'public')];
         }
         $data['user_id']   = auth()->id();
         $data['is_active'] = true;
@@ -69,7 +69,7 @@ class AdminProductController extends Controller
             if ($product->image_path) {
                 Storage::disk('public')->delete($product->image_path);
             }
-            $data['image_path'] = $request->file('image')->store('products', 'public');
+            $data['image_path'] = [$request->file('image')->store('products', 'public')];
         }
         $data['is_active'] = $request->boolean('is_active');
 
@@ -85,8 +85,6 @@ class AdminProductController extends Controller
     }
     public function destroy(Product $product)
     {
-        // Soft delete: solo desactivar el producto, no eliminar datos
-        $product->reactivate(); // Primero limpiamos el motivo anterior
         $product->suspend('Eliminado por administrador');
 
         return redirect()->route('admin.products.index')
@@ -100,17 +98,19 @@ class AdminProductController extends Controller
         ]);
 
         if ($request->is_active == 1) {
-
-            $product->reactivate();       
-        
+            $product->reactivate();
             $product->update([
-                'reactivated_at' => now(),
-                'viewed_suspension_at' => null 
+                'reactivated_at'         => now(),
+                'viewed_suspension_at'   => null,
+                'viewed_reactivation_at' => null,
             ]);
+
+            return redirect()->back()->with('success', 'La publicación ha sido reactivada con éxito.');
         }
 
+        $product->suspend('Desactivado por administrador');
 
-        return redirect()->back()->with('success', 'La publicación ha sido aprobada y reactivada con éxito.');
+        return redirect()->back()->with('success', 'La publicación ha sido desactivada.');
     }
 
    public function suspend(Request $request, Product $product)
