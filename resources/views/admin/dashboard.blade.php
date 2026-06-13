@@ -274,7 +274,6 @@
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-right">
-                                            <a href="{{ route('admin.products.edit', $product->id) }}" class="text-primary hover:bg-primary-fixed p-1 rounded-full" title="Editar"><span class="material-symbols-outlined">edit</span></a>
                                             @if($product->is_active)
                                                 <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline" onsubmit="return confirm('¿Desactivar esta publicación?')">
                                                     @csrf @method('DELETE')

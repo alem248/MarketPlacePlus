@@ -27,9 +27,9 @@
                 <a href="{{ route('home') }}" class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
                     <span class="material-symbols-outlined">home</span>
                 </a>
-                <button class="btn-soon p-2 hover:bg-surface-container-low rounded-full transition-colors">
+                <a href="{{ route('proximamente') }}" class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
                     <span class="material-symbols-outlined">favorite</span>
-                </button>
+                </a>
                 {{-- Handshake activo (lleno) porque estamos en Mis Tratos --}}
                 <a href="{{ route('tratos.index') }}" class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
                     <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">handshake</span>
@@ -188,19 +188,9 @@
             {{-- ===== LISTADO DE TRATOS ===== --}}
             <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
 
-                {{-- Cabecera de la tabla con filtro --}}
+                {{-- Cabecera de la tabla --}}
                 <div class="p-6 border-b border-outline-variant flex items-center justify-between">
                     <h2 class="text-headline-md font-headline-md">Listado de Tratos</h2>
-                    <div class="relative">
-                        <select class="appearance-none bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 pr-10 text-body-sm focus:ring-primary focus:border-primary outline-none">
-                            <option>Todos los estados</option>
-                            <option>Aprobado</option>
-                            <option>En discusión</option>
-                            <option>Recibido</option>
-                            <option>Cancelado</option>
-                        </select>
-                        <span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none">expand_more</span>
-                    </div>
                 </div>
 
                 {{-- Tabla de tratos --}}
