@@ -174,31 +174,46 @@
         <aside class="hidden md:flex flex-col w-sidebar-width bg-surface-container border-r border-outline-variant p-base space-y-4 shrink-0">
             <div class="px-4 py-6 border-b border-outline-variant/30">
                 <h2 class="font-headline-md text-headline-md text-primary font-bold">Panel Admin</h2>
+                <p class="text-on-surface-variant text-body-sm">Control central del sitio</p>
             </div>
-            <nav class="space-y-1">
-                <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all translate-x-1 duration-200"
-                    href="{{ route('admin.dashboard') }}">
-                    <span class="material-symbols-outlined mr-3">dashboard</span>
+            <nav class="flex-1 space-y-1">
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-xl flex items-center px-4 py-3 gap-3 transition-all"
+                   href="{{ route('admin.dashboard') }}">
+                    <span class="material-symbols-outlined">dashboard</span>
                     <span class="font-body-lg text-body-lg">Dashboard</span>
                 </a>
-                <a class="bg-primary text-on-primary rounded-xl font-bold flex items-center px-4 py-3 translate-x-1 duration-200 shadow-sm" href="#">
-                    <span class="material-symbols-outlined mr-3">inventory_2</span>
+                <a class="bg-primary text-on-primary rounded-xl font-bold flex items-center px-4 py-3 gap-3 transition-all" href="{{ route('admin.products.index') }}">
+                    <span class="material-symbols-outlined">inventory_2</span>
                     <span class="font-body-lg text-body-lg">Gestionar Publicaciones</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all translate-x-1 duration-200" href="#">
-                    <span class="material-symbols-outlined mr-3">forum</span>
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-xl flex items-center px-4 py-3 gap-3 transition-all"
+                   href="{{ route('admin.comments.index') }}">
+                    <span class="material-symbols-outlined">comment</span>
                     <span class="font-body-lg text-body-lg">Gestionar Comentarios</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all translate-x-1 duration-200" href="#">
-                    <span class="material-symbols-outlined mr-3">campaign</span>
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-xl flex items-center px-4 py-3 gap-3 transition-all"
+                   href="{{ route('admin.banners.index') }}">
+                    <span class="material-symbols-outlined">ads_click</span>
                     <span class="font-body-lg text-body-lg">Gestionar Publicidad</span>
+                </a>
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-xl flex items-center px-4 py-3 gap-3 transition-all"
+                   href="{{ route('admin.users.index') }}">
+                    <span class="material-symbols-outlined">group</span>
+                    <span class="font-body-lg text-body-lg">Gestionar Usuarios</span>
                 </a>
             </nav>
             <div class="pt-4 border-t border-outline-variant">
-                <a class="text-error hover:bg-error-container rounded-lg flex items-center px-4 py-3 gap-3 transition-all" href="#">
-                    <span class="material-symbols-outlined">logout</span>
-                    <span class="font-body-lg">Cerrar Sesión</span>
+                <a href="{{ route('home') }}" class="text-on-surface-variant hover:bg-surface-variant rounded-xl flex items-center px-4 py-3 gap-3 transition-all">
+                    <span class="material-symbols-outlined">storefront</span>
+                    <span class="font-body-lg">Ver Tienda</span>
                 </a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full text-error hover:bg-error-container rounded-xl flex items-center px-4 py-3 gap-3 transition-all text-left">
+                        <span class="material-symbols-outlined">logout</span>
+                        <span class="font-body-lg">Cerrar Sesión</span>
+                    </button>
+                </form>
             </div>
         </aside>
 
@@ -353,25 +368,25 @@
                 <div class="space-y-6">
                     <h3 class="text-sm font-bold uppercase tracking-widest">Políticas de Seguridad</h3>
                     <nav class="flex flex-col gap-4">
-                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="#">Privacidad de Datos</a>
-                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="#">Términos de Moderación</a>
-                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="#">Seguridad de la Plataforma</a>
+                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="{{ route('proximamente') }}">Privacidad de Datos</a>
+                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="{{ route('proximamente') }}">Términos de Moderación</a>
+                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="{{ route('proximamente') }}">Seguridad de la Plataforma</a>
                     </nav>
                 </div>
                 <div class="space-y-6">
                     <h3 class="text-sm font-bold uppercase tracking-widest">Soporte Admin</h3>
                     <nav class="flex flex-col gap-4">
-                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="#">Centro de Ayuda Admin</a>
-                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="#">Reportar Incidencia</a>
-                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="#">Guía de Administrador</a>
+                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="{{ route('proximamente') }}">Centro de Ayuda Admin</a>
+                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="{{ route('proximamente') }}">Reportar Incidencia</a>
+                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="{{ route('proximamente') }}">Guía de Administrador</a>
                     </nav>
                 </div>
                 <div class="space-y-6">
                     <h3 class="text-sm font-bold uppercase tracking-widest">Accesos Rápidos</h3>
                     <nav class="flex flex-col gap-4">
-                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="#">Gestionar Publicaciones</a>
-                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="#">Gestionar Comentarios</a>
-                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="#">Gestionar Publicidad</a>
+                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="{{ route('admin.products.index') }}">Gestionar Publicaciones</a>
+                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="{{ route('admin.comments.index') }}">Gestionar Comentarios</a>
+                        <a class="text-sm text-gray-300 hover:text-white transition-all" href="{{ route('admin.banners.index') }}">Gestionar Publicidad</a>
                     </nav>
                 </div>
             </div>

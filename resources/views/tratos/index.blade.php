@@ -69,7 +69,7 @@
             </div>
 
             {{-- Botón cambiar a modo vendedor --}}
-            <a href="{{ route('seller.products.create') }}"
+            <a href="{{ route('seller.panel') }}"
                class="w-full bg-secondary-container text-on-secondary-container font-bold py-3 rounded-lg flex items-center justify-center gap-2 shadow-sm hover:opacity-90 transition-all">
                 <span class="material-symbols-outlined">sync</span>
                 Cambiar a Vendedor
@@ -354,9 +354,9 @@
             <div>
                 <h4 class="text-label-caps font-label-caps text-on-primary mb-6">Soporte</h4>
                 <ul class="flex flex-col gap-3">
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="#">Ayuda al cliente</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="#">Sobre nosotros</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="#">Términos y condiciones</a></li>
+                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Ayuda al cliente</a></li>
+                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Sobre nosotros</a></li>
+                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Términos y condiciones</a></li>
                 </ul>
             </div>
             <div>

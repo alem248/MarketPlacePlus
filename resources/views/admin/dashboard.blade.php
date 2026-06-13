@@ -171,36 +171,48 @@
     </header>
     <div class="flex flex-1 pt-16">
         <!-- SideNavBar -->
-        <aside class="hidden md:flex flex-col fixed h-[calc(100vh-64px)] left-0 w-sidebar-width bg-surface border-r border-outline-variant p-4 z-40">
+        <aside class="hidden md:flex flex-col fixed h-[calc(100vh-64px)] left-0 w-sidebar-width bg-surface-container border-r border-outline-variant p-base space-y-4 z-40 overflow-y-auto">
+            <div class="px-4 py-6 border-b border-outline-variant/30">
+                <h2 class="font-headline-md text-headline-md text-primary font-bold">Panel Admin</h2>
+                <p class="text-on-surface-variant text-body-sm">Control central del sitio</p>
+            </div>
             <nav class="flex-1 space-y-1">
-                <div class="mb-4 px-4">
-                    <h3 class="font-label-caps text-on-surface-variant text-[11px] mb-2">ADMINISTRACIÓN</h3>
-                    <p class="font-headline-md text-primary font-bold">Panel Admin</p>
-                </div>
-                <a class="sidebar-active flex items-center px-4 py-3 gap-3 transition-colors" href="#">
+                <a class="bg-primary text-on-primary rounded-xl font-bold flex items-center px-4 py-3 gap-3 transition-all"
+                   href="{{ route('admin.dashboard') }}">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span class="font-body-lg">Dashboard</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg flex items-center px-4 py-3 gap-3 transition-all"
-                    href="{{ route('admin.products.index') }}">
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-xl flex items-center px-4 py-3 gap-3 transition-all"
+                   href="{{ route('admin.products.index') }}">
                     <span class="material-symbols-outlined">inventory_2</span>
                     <span class="font-body-lg">Gestionar Publicaciones</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg flex items-center px-4 py-3 gap-3 transition-all" href="#">
-                    <span class="material-symbols-outlined">chat_bubble</span>
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-xl flex items-center px-4 py-3 gap-3 transition-all"
+                   href="{{ route('admin.comments.index') }}">
+                    <span class="material-symbols-outlined">comment</span>
                     <span class="font-body-lg">Gestionar Comentarios</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg flex items-center px-4 py-3 gap-3 transition-all" href="#">
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-xl flex items-center px-4 py-3 gap-3 transition-all"
+                   href="{{ route('admin.banners.index') }}">
                     <span class="material-symbols-outlined">ads_click</span>
                     <span class="font-body-lg">Gestionar Publicidad</span>
                 </a>
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-xl flex items-center px-4 py-3 gap-3 transition-all"
+                   href="{{ route('admin.users.index') }}">
+                    <span class="material-symbols-outlined">group</span>
+                    <span class="font-body-lg">Gestionar Usuarios</span>
+                </a>
             </nav>
             <div class="pt-4 border-t border-outline-variant">
-                <form action="{{ route('logout') }}" method="POST" class="inline">
+                <a href="{{ route('home') }}" class="text-on-surface-variant hover:bg-surface-variant rounded-xl flex items-center px-4 py-3 gap-3 transition-all">
+                    <span class="material-symbols-outlined">storefront</span>
+                    <span class="font-body-lg">Ver Tienda</span>
+                </a>
+                <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="text-red-600 hover:text-red-800 font-medium transition-colors flex items-center gap-2 w-full text-left">
-                        <span class="material-symbols-outlined text-body-md">logout</span>
-                        Cerrar sesión
+                    <button type="submit" class="w-full text-error hover:bg-error-container rounded-xl flex items-center px-4 py-3 gap-3 transition-all text-left">
+                        <span class="material-symbols-outlined">logout</span>
+                        <span class="font-body-lg">Cerrar Sesión</span>
                     </button>
                 </form>
             </div>
@@ -239,17 +251,23 @@
                                         <td class="px-6 py-4">
                                             <div class="flex items-center gap-3">
                                                 <div class="w-12 h-12 rounded bg-surface-container-high overflow-hidden flex-shrink-0">
-                                                    @if($product->image_path)
-                                                    <img alt="{{ $product->title }}" class="w-full h-full object-cover" src="{{ asset('storage/' . (is_array($product->image_path) ? $product->image_path[0] : $product->image_path)) }}">
+                                                    @php
+                                                        $firstImage = is_array($product->image_path) && count($product->image_path) > 0
+                                                            ? $product->image_path[0]
+                                                            : null;
+                                                    @endphp
+                                                    @if($firstImage)
+                                                    <img alt="{{ $product->title }}" class="w-full h-full object-cover" src="{{ asset('storage/' . $firstImage) }}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                                                    <div class="w-full h-full bg-surface-variant items-center justify-center hidden"><span class="material-symbols-outlined text-outline" style="font-size:18px">image</span></div>
                                                     @else
-                                                    <div class="w-full h-full bg-surface-variant flex items-center justify-center text-outline text-[10px]">Sin foto</div>
+                                                    <div class="w-full h-full bg-surface-variant flex items-center justify-center"><span class="material-symbols-outlined text-outline" style="font-size:18px">image</span></div>
                                                     @endif
                                                 </div>
                                                 <span class="font-semibold text-body-lg">{{ $product->title }}</span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 font-body-sm">{{ $product->user->first_name.' '.$product->user->last_name  ?? 'Sin asignar' }}</td>
-                                        <td class="px-6 py-4 text-right font-body-lg font-bold">${{ number_format((float)$product->price, 2) }}</td>
+                                        <td class="px-6 py-4 text-right font-body-lg font-bold">S/. {{ number_format((float)$product->price, 2) }}</td>
                                         <td class="px-6 py-4 text-center">
                                             <span class="px-3 py-1 rounded-full {{ $product->is_active ? 'bg-tertiary-fixed' : 'bg-error-container' }} text-[10px] font-bold">
                                                 {{ $product->is_active ? 'ACTIVO' : 'INACTIVO' }}
@@ -284,48 +302,42 @@
                                 <span class="material-symbols-outlined text-outline">forum</span>
                             </div>
                             <div class="p-6 space-y-4 flex-1">
-                                <div class="p-4 bg-surface-container-low rounded-lg border border-outline-variant">
+                                @forelse($recentComments as $comment)
+                                <div class="p-4 bg-surface-container-low rounded-lg border border-outline-variant {{ $comment->is_active ? '' : 'opacity-60' }}">
                                     <div class="flex justify-between items-start mb-2">
                                         <div>
-                                            <p class="font-bold text-primary">Juan P.</p>
+                                            <p class="font-bold text-primary">{{ $comment->user->first_name }} {{ substr($comment->user->last_name, 0, 1) }}.</p>
+                                            {{-- Estrellas dinámicas según el rating del comentario --}}
                                             <div class="flex text-secondary-container">
-                                                <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-                                                <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-                                                <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-                                                <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-                                                <span class="material-symbols-outlined text-xs">star</span>
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    @if($i <= ($comment->rating ?? 0))
+                                                        <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+                                                    @else
+                                                        <span class="material-symbols-outlined text-xs text-outline-variant">star</span>
+                                                    @endif
+                                                @endfor
                                             </div>
                                         </div>
-                                        <span class="text-[10px] text-on-surface-variant font-medium">HACE 1H</span>
+                                        <span class="text-[10px] text-on-surface-variant font-medium uppercase">{{ $comment->created_at->diffForHumans() }}</span>
                                     </div>
-                                    <p class="text-body-sm text-on-surface italic mb-4">"¿Haces envíos a domicilio hoy mismo? Me urge para un regalo."</p>
+                                    <p class="text-body-sm text-on-surface italic mb-3 line-clamp-2">"{{ $comment->content }}"</p>
+                                    {{-- Botón toggle: deshabilitar si activo, habilitar si inactivo --}}
                                     <div class="flex gap-2 justify-end">
-                                        <button class="px-3 py-1 text-[11px] font-bold border border-error text-error rounded-md hover:bg-error-container transition-colors">Rechazar</button>
-                                        <button class="px-3 py-1 text-[11px] font-bold bg-primary text-on-primary rounded-md hover:brightness-110 transition-all">Aprobar</button>
+                                        <form action="{{ route('admin.comments.toggle', $comment) }}" method="POST">
+                                            @csrf @method('PATCH')
+                                            @if($comment->is_active)
+                                                <button type="submit" class="px-3 py-1 text-[11px] font-bold border border-error text-error rounded-md hover:bg-error-container transition-colors">Deshabilitar</button>
+                                            @else
+                                                <button type="submit" class="px-3 py-1 text-[11px] font-bold bg-primary text-on-primary rounded-md hover:brightness-110 transition-all">Habilitar</button>
+                                            @endif
+                                        </form>
                                     </div>
                                 </div>
-                                <div class="p-4 bg-surface-container-low rounded-lg border border-outline-variant">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <div>
-                                            <p class="font-bold text-primary">Sofía R.</p>
-                                            <div class="flex text-secondary-container">
-                                                <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-                                                <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-                                                <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-                                                <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-                                                <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-                                            </div>
-                                        </div>
-                                        <span class="text-[10px] text-on-surface-variant font-medium">HACE 2H</span>
-                                    </div>
-                                    <p class="text-body-sm text-on-surface italic mb-4">"Llegó en perfecto estado y muy rápido. Recomendado."</p>
-                                    <div class="flex gap-2 justify-end">
-                                        <button class="px-3 py-1 text-[11px] font-bold border border-error text-error rounded-md hover:bg-error-container">Rechazar</button>
-                                        <button class="px-3 py-1 text-[11px] font-bold bg-primary text-on-primary rounded-md hover:brightness-110">Aprobar</button>
-                                    </div>
-                                </div>
+                                @empty
+                                <p class="text-body-sm text-on-surface-variant text-center py-4">No hay comentarios registrados.</p>
+                                @endforelse
                             </div>
-                            <button class="m-6 mt-0 py-2 border border-outline text-on-surface font-bold rounded-lg hover:bg-surface-container-high transition-all text-sm">Ver todos los pendientes</button>
+                            <a href="{{ route('admin.comments.index') }}" class="m-6 mt-0 py-2 border border-outline text-on-surface font-bold rounded-lg hover:bg-surface-container-high transition-all text-sm text-center block">Ver todos los comentarios</a>
                         </div>
                         <!-- Advertising Management -->
                         <div class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm flex flex-col">
@@ -334,34 +346,47 @@
                                 <span class="material-symbols-outlined text-secondary">campaign</span>
                             </div>
                             <div class="p-6 space-y-4">
+                                {{-- Vista previa de los 2 primeros banners de la DB --}}
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div class="relative group cursor-pointer overflow-hidden rounded-lg border border-outline-variant aspect-video bg-surface-container">
-                                        <img alt="Banner Ads" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPjNF-5b-GDjijf-lyDcJpzlbFnWYEMLR7YSdc-tbTd57MXLnazyA2ZzcF_ZdwbrMAxQ2yI7azPmVNxLz3brTQ8yvO2XYP6Sqg9_cb1TgU5v8yshyMK1Da_mM9wBuAryAyIoe8c2cPiybuycqYz7BMHCr8oEMOM1RMcG6eW_Zc0wL6SxgbLPYxP9BfcRQH8n4Gow7xeb8JJtWELX-q7shopWba7MJUs_dbr5mTaxXLHI9gz7E62PwZBglsetI6R95FRL2xU5VSEvQ">
-                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                            <button class="p-1.5 bg-white rounded-full text-primary"><span class="material-symbols-outlined text-sm">edit</span></button>
-                                            <button class="p-1.5 bg-white rounded-full text-error"><span class="material-symbols-outlined text-sm">delete</span></button>
+                                    @foreach($banners->take(2) as $banner)
+                                    <div class="relative overflow-hidden rounded-lg border border-outline-variant aspect-video bg-surface-container {{ !$banner->is_active ? 'grayscale opacity-60' : '' }}">
+                                        @php
+                                            $imgSrc = Str::startsWith($banner->image_path ?? '', ['http://', 'https://'])
+                                                ? $banner->image_path
+                                                : asset('storage/' . $banner->image_path);
+                                        @endphp
+                                        @if($banner->image_path)
+                                            <img alt="{{ $banner->title }}" class="w-full h-full object-cover" src="{{ $imgSrc }}">
+                                        @else
+                                            <div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-3xl text-outline">image</span></div>
+                                        @endif
+                                        <div class="absolute bottom-2 left-2 {{ $banner->is_active ? 'bg-secondary text-on-secondary' : 'bg-surface-container-highest text-on-surface-variant' }} text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">
+                                            {{ $banner->is_active ? 'Activo' : 'Inactivo' }}
                                         </div>
-                                        <div class="absolute bottom-2 left-2 bg-secondary text-on-secondary text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">Activo</div>
                                     </div>
-                                    <div class="relative group cursor-pointer overflow-hidden rounded-lg border border-outline-variant aspect-video bg-surface-container">
-                                        <img alt="Banner Ads" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbXZQn-3yEBjNuEcf3NugxSszgwR_KNGydyugfEkS9WHs19qafrpma4bJ6Og5_iKBwHiL-rSWUTqZbPIVEBcm2NsWKF4iTe0qQ23PKf2Zspa1tIWzlmUyHOcbUKrYWo_uMX9EAVsm-EYBrodaSY36HgHvz9SeC8K2iAy3E2jQZf7_a99f9aaEKSIN8d733i4EIqwSJmlQE1gDfhzu3RD1ucoON9ZSagRQPfhUGZ1RwNpxhnHVKb2mz7D8xvBK7gOYkmkT0n_8olGo">
-                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                            <button class="p-1.5 bg-white rounded-full text-primary"><span class="material-symbols-outlined text-sm">edit</span></button>
-                                            <button class="p-1.5 bg-white rounded-full text-error"><span class="material-symbols-outlined text-sm">delete</span></button>
-                                        </div>
-                                        <div class="absolute bottom-2 left-2 bg-outline text-white text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">Pausado</div>
+                                    @endforeach
+                                    {{-- Rellena con placeholders si hay menos de 2 banners --}}
+                                    @for($i = $banners->count(); $i < 2; $i++)
+                                    <div class="overflow-hidden rounded-lg border-2 border-dashed border-outline-variant aspect-video bg-surface-container flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-3xl text-outline">add_photo_alternate</span>
                                     </div>
+                                    @endfor
                                 </div>
                                 <div class="bg-primary-container/10 p-4 rounded-lg border border-primary/20 mt-2">
-                                    <p class="font-body-sm font-semibold text-primary mb-1">Campaña Global de Verano</p>
-                                    <p class="text-[12px] text-on-surface-variant">Click-through rate: 4.2% • Impresiones hoy: 12.5k</p>
+                                    <p class="font-body-sm font-semibold text-primary mb-1">
+                                        Banners activos: {{ $banners->where('is_active', true)->count() }}
+                                    </p>
+                                    <p class="text-[12px] text-on-surface-variant">
+                                        Total registrados: {{ $banners->count() }}
+                                    </p>
                                 </div>
                             </div>
                             <div class="p-6 pt-0 mt-auto">
-                                <button class="w-full bg-primary text-on-primary font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all">
+                                <a href="{{ route('admin.banners.index') }}"
+                                   class="w-full bg-primary text-on-primary font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all">
                                     <span class="material-symbols-outlined">add_photo_alternate</span>
-                                    Subir Nuevo Anuncio
-                                </button>
+                                    Gestionar Banners
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -381,9 +406,9 @@
                     <div class="space-y-3">
                         <p class="font-label-caps text-secondary font-bold uppercase">POLÍTICAS DE SEGURIDAD</p>
                         <nav class="flex flex-col gap-2">
-                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="#">Privacidad de Datos</a>
-                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="#">Términos de Moderación</a>
-                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="#">Protocolos Admin</a>
+                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="{{ route('proximamente') }}">Privacidad de Datos</a>
+                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="{{ route('proximamente') }}">Términos de Moderación</a>
+                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="{{ route('proximamente') }}">Protocolos Admin</a>
                         </nav>
                     </div>
                     <div class="space-y-3">
@@ -393,16 +418,16 @@
                                 class="text-surface-variant text-body-sm hover:text-white transition-colors">
                                 Gestionar Publicaciones
                             </a>
-                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="#">Gestionar Comentarios</a>
-                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="#">Gestionar Publicidad</a>
+                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="{{ route('admin.comments.index') }}">Gestionar Comentarios</a>
+                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="{{ route('admin.banners.index') }}">Gestionar Publicidad</a>
                         </nav>
                     </div>
                     <div class="space-y-3">
                         <p class="font-label-caps text-secondary font-bold uppercase">SOPORTE ADMIN</p>
                         <nav class="flex flex-col gap-2">
-                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="#">Centro de Ayuda</a>
-                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="#">Reportar Incidencia</a>
-                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="#">Manual de Uso</a>
+                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="{{ route('proximamente') }}">Centro de Ayuda</a>
+                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="{{ route('proximamente') }}">Reportar Incidencia</a>
+                            <a class="text-surface-variant text-body-sm hover:text-white transition-colors" href="{{ route('proximamente') }}">Manual de Uso</a>
                         </nav>
                     </div>
                 </div>

@@ -32,6 +32,21 @@ class BannerSeeder extends Seeder
                 'end_date'   => '2026-12-31',
                 'is_active'  => true,
             ],
+            // --- Banners deshabilitados (reservados, no se muestran en la tienda) ---
+            [
+                'title'      => 'Ofertas de Temporada',
+                'image_path' => 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200',
+                'link_url'   => '/ofertas/temporada',
+                'end_date'   => '2026-09-30',
+                'is_active'  => false,
+            ],
+            [
+                'title'      => 'Electrónica Premium',
+                'image_path' => 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200',
+                'link_url'   => '/categoria/electronica',
+                'end_date'   => '2026-08-15',
+                'is_active'  => false,
+            ],
         ];
 
         foreach ($banners as $data) {

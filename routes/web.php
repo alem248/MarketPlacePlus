@@ -8,6 +8,7 @@ use App\Http\Controllers\TratosController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CommentController as AdminCommentController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\CommentController;
 
@@ -67,7 +68,7 @@ Route::view('/crear-producto', 'create-product')->name('products.create.view'); 
 // ==========================================
 // ZONA ADMINISTRADOR
 // ==========================================
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
@@ -95,4 +96,8 @@ Route::post('/products/{product}/suspend', [AdminProductController::class, 'susp
     // Gestión de Usuarios
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.updateRole');
+
+    // Gestión de Comentarios
+    Route::get('/comments', [AdminCommentController::class, 'index'])->name('comments.index');
+    Route::patch('/comments/{comment}/toggle', [AdminCommentController::class, 'toggle'])->name('comments.toggle');
 });

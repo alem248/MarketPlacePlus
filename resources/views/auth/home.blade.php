@@ -168,12 +168,12 @@
             </div>
             <nav class="flex items-center gap-6">
                 <div class="hidden md:flex gap-4">
-                    <button class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-caps font-label-caps flex items-center gap-1 active:scale-95 duration-150">
+                    <a href="{{ route('home') }}" class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-caps font-label-caps flex items-center gap-1 active:scale-95 duration-150">
                         <span class="material-symbols-outlined text-[20px]" data-icon="home">home</span>
-                    </button>
-                    <button class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-caps font-label-caps flex items-center gap-1 active:scale-95 duration-150">
+                    </a>
+                    <a href="{{ route('proximamente') }}" class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-caps font-label-caps flex items-center gap-1 active:scale-95 duration-150">
                         <span class="material-symbols-outlined text-[20px]" data-icon="favorite">favorite</span>
-                    </button>
+                    </a>
                     <a href="{{ route('tratos.index') }}" class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-caps font-label-caps flex items-center gap-1 active:scale-95 duration-150">
                         <span class="material-symbols-outlined text-[20px]" data-icon="handshake">handshake</span>
                     </a>
@@ -235,7 +235,7 @@
                 Cambiar a Vendedor
             </a>
             <nav class="flex flex-col gap-1">
-                <a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container font-bold rounded-xl transition-all translate-x-1 duration-200" href="{{ route('proximamente') }}">
+                <a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container font-bold rounded-xl transition-all translate-x-1 duration-200" href="{{ route('home') }}">
                     <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
                     <span class="text-body-lg font-body-lg">Panel</span>
                 </a>
@@ -400,8 +400,8 @@
             <div>
                 <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Enlaces Rápidos</h4>
                 <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Comprar producto</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Mis tratos</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('home') }}">Comprar producto</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('tratos.index') }}">Mis tratos</a></li>
                     <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Rastrear pedido</a></li>
                 </ul>
             </div>

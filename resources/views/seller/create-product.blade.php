@@ -200,25 +200,28 @@
                         <p class="text-on-surface-variant text-sm">Ventas activas: {{ auth()->user()->products()->count() }}</p>
                     </div>
                 </div>
-                <button class="w-full mt-4 bg-outline-variant text-on-surface-variant font-bold py-2 rounded-xl hover:bg-surface-variant transition-all">
+                <a href="{{ route('home') }}" class="w-full mt-4 bg-outline-variant text-on-surface-variant font-bold py-2 rounded-xl hover:bg-surface-variant transition-all block text-center">
                     Cambiar a Cliente
-                </button>
+                </a>
             </div>
-            <nav class="space-y-1"><a class="bg-secondary-container text-on-secondary-container rounded-xl font-bold flex items-center px-4 py-3" href="#">
+            <nav class="space-y-1">
+                <a class="bg-secondary-container text-on-secondary-container rounded-xl font-bold flex items-center px-4 py-3" href="{{ route('seller.products.create') }}">
                     <span class="material-symbols-outlined mr-3">add</span>
                     <span class="font-body-lg text-body-lg">Crear Publicación</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all translate-x-1 duration-200" href="{{ route('seller.panel') }}">
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('seller.panel') }}">
                     <span class="material-symbols-outlined mr-3">dashboard</span>
                     <span class="font-body-lg text-body-lg">Panel</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="#"><span class="material-symbols-outlined mr-3">handshake</span>
-                    <span class="font-body-lg text-body-lg">Mis Tratos</span></a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="#">
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('seller.tratos.index') }}">
+                    <span class="material-symbols-outlined mr-3">handshake</span>
+                    <span class="font-body-lg text-body-lg">Mis Tratos</span>
+                </a>
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('proximamente') }}">
                     <span class="material-symbols-outlined mr-3">local_shipping</span>
                     <span class="font-body-lg text-body-lg">Delivery</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="#">
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('proximamente') }}">
                     <span class="material-symbols-outlined mr-3">receipt_long</span>
                     <span class="font-body-lg text-body-lg">Mis Comprobantes</span>
                 </a>
@@ -401,17 +404,17 @@
             <div>
                 <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Enlaces Rápidos</h4>
                 <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Comprar producto</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Mis tratos</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Rastrear pedido</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('home') }}">Comprar producto</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('seller.tratos.index') }}">Mis tratos</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Rastrear pedido</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Soporte</h4>
                 <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Ayuda al cliente</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Sobre nosotros</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="#">Términos y condiciones</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Ayuda al cliente</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Sobre nosotros</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Términos y condiciones</a></li>
                 </ul>
             </div>
             <div class="md:col-span-1">

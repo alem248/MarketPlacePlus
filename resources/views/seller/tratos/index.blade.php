@@ -79,8 +79,8 @@
                     </div>
                 </div>
 
-                {{-- Cambiar a cliente: va a la vista de tratos del comprador --}}
-                <a href="{{ route('tratos.index') }}"
+                {{-- Cambiar a cliente: va al panel principal del comprador --}}
+                <a href="{{ route('home') }}"
                    class="w-full mt-2 py-2 px-4 rounded-xl border-2 border-secondary text-secondary font-bold text-label-caps hover:bg-secondary-fixed/20 transition-colors flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-[18px]">swap_horiz</span>
                     Cambiar a Cliente
@@ -303,9 +303,9 @@
             <div>
                 <h4 class="text-label-caps font-label-caps text-on-primary mb-6">Soporte</h4>
                 <ul class="flex flex-col gap-3">
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="#">Ayuda al cliente</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="#">Sobre nosotros</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="#">Términos y condiciones</a></li>
+                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Ayuda al cliente</a></li>
+                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Sobre nosotros</a></li>
+                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Términos y condiciones</a></li>
                 </ul>
             </div>
             <div>

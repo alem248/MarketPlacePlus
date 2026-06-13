@@ -103,21 +103,33 @@
 
                 @php $route = request()->route()->getName(); @endphp
 
+                <a href="{{ route('admin.dashboard') }}"
+                   class="{{ $route === 'admin.dashboard' ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' }} rounded-xl font-bold flex items-center px-4 py-3 transition-all">
+                    <span class="material-symbols-outlined mr-3">dashboard</span>
+                    <span class="font-body-lg text-body-lg">Dashboard</span>
+                </a>
+
                 <a href="{{ route('admin.products.index') }}"
                    class="{{ str_starts_with($route, 'admin.products') ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' }} rounded-xl font-bold flex items-center px-4 py-3 transition-all">
-                    <span class="material-symbols-outlined mr-3 {{ str_starts_with($route, 'admin.products') ? 'active-nav-item' : '' }}">inventory_2</span>
+                    <span class="material-symbols-outlined mr-3">inventory_2</span>
                     <span class="font-body-lg text-body-lg">Gestionar Publicaciones</span>
+                </a>
+
+                <a href="{{ route('admin.comments.index') }}"
+                   class="{{ str_starts_with($route, 'admin.comments') ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' }} rounded-xl font-bold flex items-center px-4 py-3 transition-all">
+                    <span class="material-symbols-outlined mr-3">comment</span>
+                    <span class="font-body-lg text-body-lg">Gestionar Comentarios</span>
                 </a>
 
                 <a href="{{ route('admin.banners.index') }}"
                    class="{{ str_starts_with($route, 'admin.banners') ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' }} rounded-xl font-bold flex items-center px-4 py-3 transition-all">
-                    <span class="material-symbols-outlined mr-3 {{ str_starts_with($route, 'admin.banners') ? 'active-nav-item' : '' }}">ads_click</span>
+                    <span class="material-symbols-outlined mr-3">ads_click</span>
                     <span class="font-body-lg text-body-lg">Gestionar Publicidad</span>
                 </a>
 
                 <a href="{{ route('admin.users.index') }}"
                    class="{{ str_starts_with($route, 'admin.users') ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' }} rounded-xl font-bold flex items-center px-4 py-3 transition-all">
-                    <span class="material-symbols-outlined mr-3 {{ str_starts_with($route, 'admin.users') ? 'active-nav-item' : '' }}">group</span>
+                    <span class="material-symbols-outlined mr-3">group</span>
                     <span class="font-body-lg text-body-lg">Gestionar Usuarios</span>
                 </a>
 

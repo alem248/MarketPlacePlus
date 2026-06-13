@@ -449,8 +449,8 @@
             <div>
                 <h4 class="text-label-caps font-bold mb-6 uppercase tracking-wider">Enlaces Rápidos</h4>
                 <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Comprar producto</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Mis tratos</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('home') }}">Comprar producto</a></li>
+                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('seller.tratos.index') }}">Mis tratos</a></li>
                     <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Rastrear pedido</a></li>
                 </ul>
             </div>
