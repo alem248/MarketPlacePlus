@@ -207,10 +207,10 @@
                     @class([ 'flex items-center px-4 py-3 rounded-xl transition-all' , 'bg-secondary-container text-on-secondary-container font-bold'=> request()->routeIs('seller.products.create'),
                     'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' => !request()->routeIs('seller.products.create')
                     ])>
-                    <span {{ route('seller.products.create') }} class="material-symbols-outlined mr-3">add_circle</span>
+                    <span class="material-symbols-outlined mr-3">add_circle</span>
                     <span class="font-body-lg text-body-lg">Crear Publicación</span>
                 </a>
-                <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all" href="{{ route('proximamente') }}">
+                <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all" href="{{ route('seller.tratos.index') }}">
                     <span class="material-symbols-outlined mr-3">handshake</span>
                     <span class="font-body-lg text-body-lg">Mis Tratos</span>
                 </a>
@@ -251,10 +251,21 @@
                                 @forelse($products as $product)
                                 <div class="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden group hover:shadow-lg transition-all">
                                     <div class="h-48 overflow-hidden relative">
-                                        @if(is_array($product->image_path) && isset($product->image_path[0]))
-                                        <img class="w-full h-full object-cover transition-transform group-hover:scale-110" src="{{ asset('storage/' . $product->image_path[0]) }}" alt="{{ $product->title }}">
+                                        @php
+                                            // Resolvemos la URL de la imagen: externa (http) o almacenamiento local
+                                            $imgs     = is_array($product->image_path) ? $product->image_path : [$product->image_path];
+                                            $firstImg = $imgs[0] ?? null;
+                                            $imgSrc   = $firstImg
+                                                ? (Str::startsWith($firstImg, 'http') ? $firstImg : Storage::url($firstImg))
+                                                : null;
+                                        @endphp
+                                        @if($imgSrc)
+                                        <img class="w-full h-full object-cover transition-transform group-hover:scale-110"
+                                             src="{{ $imgSrc }}" alt="{{ $product->title }}">
                                         @else
-                                        <img class="w-full h-full object-cover transition-transform group-hover:scale-110" src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->title }}">
+                                        <div class="w-full h-full flex items-center justify-center bg-surface-container">
+                                            <span class="material-symbols-outlined text-outline text-4xl">image</span>
+                                        </div>
                                         @endif
 
                                         <div class="absolute top-2 right-2 flex gap-1">

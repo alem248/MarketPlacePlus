@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Banner;
 use App\Models\Product;
 
 class HomeController extends Controller
@@ -15,6 +16,11 @@ class HomeController extends Controller
             ->latest()
             ->get();
 
-        return view('auth.home', compact('products'));
+        // Banners activos ordenados por creación: [0] hero, [1] sidebar
+        $banners = Banner::where('is_active', true)
+            ->orderBy('created_at')
+            ->get();
+
+        return view('auth.home', compact('products', 'banners'));
     }
 }

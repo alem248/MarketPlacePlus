@@ -287,19 +287,65 @@
                             </p>
                         </div>
 
-                        {{-- Preguntas frecuentes predefinidas --}}
+                        {{-- Mensajes predefinidos: aparecen como burbujas flotantes de chat --}}
+                        @php
+                            // Base del número WA del vendedor (solo dígitos)
+                            $waSellerNum = preg_replace('/[^0-9]/', '', $product->user->phone ?? '');
+                            // Links pre-escritos para cada mensaje
+                            $waMsgDisponible = $waSellerNum
+                                ? 'https://wa.me/' . $waSellerNum . '?text=' . rawurlencode('Hola! ¿Sigue disponible: ' . $product->title . '?')
+                                : '#';
+                            $waMsgInteresa = $waSellerNum
+                                ? 'https://wa.me/' . $waSellerNum . '?text=' . rawurlencode('Hola! Me interesa adquirir: ' . $product->title . '. ¿Podemos coordinar?')
+                                : '#';
+                        @endphp
                         <div class="p-4 bg-surface-container-low border-t border-outline-variant">
-                            <p class="text-[10px] font-label-caps text-outline mb-2 uppercase">Preguntas frecuentes</p>
-                            <div class="flex flex-wrap gap-2">
-                                <button class="suggestion-btn px-3 py-1 bg-surface-container-lowest border border-outline-variant rounded-full text-body-sm hover:border-primary transition-all">
-                                    ¿Cuál es el precio final?
-                                </button>
-                                <button class="suggestion-btn px-3 py-1 bg-surface-container-lowest border border-outline-variant rounded-full text-body-sm hover:border-primary transition-all">
-                                    ¿Haces envíos a provincia?
-                                </button>
-                                <button class="suggestion-btn px-3 py-1 bg-surface-container-lowest border border-outline-variant rounded-full text-body-sm hover:border-primary transition-all">
-                                    ¿Viene con garantía?
-                                </button>
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-outline mb-3">Mensajes frecuentes</p>
+                            <div class="space-y-2">
+
+                                {{--
+                                    Burbuja 1: ¿Sigue disponible?
+                                    Click en la burbuja → aparece como mensaje enviado en el chat.
+                                    Click en el botón WA → abre WhatsApp con el mensaje pre-escrito.
+                                --}}
+                                <div class="flex items-center gap-2">
+                                    <button onclick="sendBubbleMessage('¿Sigue disponible?')"
+                                            class="flex-1 text-left group">
+                                        <div class="bg-surface-container text-on-surface px-4 py-2.5 rounded-2xl rounded-tl-none shadow-sm border border-outline-variant/50 group-hover:border-primary/50 group-active:scale-[0.98] transition-all">
+                                            <p class="text-body-sm">¿Sigue disponible?</p>
+                                        </div>
+                                    </button>
+                                    <a href="{{ $waMsgDisponible }}" target="_blank"
+                                       title="Enviar por WhatsApp"
+                                       class="w-9 h-9 rounded-xl bg-[#25D366] flex items-center justify-center text-white shrink-0 hover:brightness-110 transition-all shadow-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                                            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.555 4.112 1.528 5.836L.057 23.997l6.304-1.654A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.887 9.887 0 01-5.031-1.378l-.36-.214-3.742.981.999-3.648-.235-.374A9.862 9.862 0 012.105 12C2.105 6.533 6.533 2.105 12 2.105S21.895 6.533 21.895 12 17.467 21.894 12 21.894z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+
+                                {{--
+                                    Burbuja 2: Me interesa adquirir el producto
+                                    Mismo comportamiento: click burbuja → chat, click WA → WhatsApp.
+                                --}}
+                                <div class="flex items-center gap-2">
+                                    <button onclick="sendBubbleMessage('Me interesa adquirir el producto')"
+                                            class="flex-1 text-left group">
+                                        <div class="bg-surface-container text-on-surface px-4 py-2.5 rounded-2xl rounded-tl-none shadow-sm border border-outline-variant/50 group-hover:border-primary/50 group-active:scale-[0.98] transition-all">
+                                            <p class="text-body-sm">Me interesa adquirir el producto</p>
+                                        </div>
+                                    </button>
+                                    <a href="{{ $waMsgInteresa }}" target="_blank"
+                                       title="Enviar por WhatsApp"
+                                       class="w-9 h-9 rounded-xl bg-[#25D366] flex items-center justify-center text-white shrink-0 hover:brightness-110 transition-all shadow-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                                            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.555 4.112 1.528 5.836L.057 23.997l6.304-1.654A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.887 9.887 0 01-5.031-1.378l-.36-.214-3.742.981.999-3.648-.235-.374A9.862 9.862 0 012.105 12C2.105 6.533 6.533 2.105 12 2.105S21.895 6.533 21.895 12 17.467 21.894 12 21.894z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+
                             </div>
                         </div>
 
@@ -389,24 +435,36 @@
         });
     });
 
-    // Al hacer click en una pregunta frecuente, la muestra como mensaje enviado en el chat
+    // Referencia al área de mensajes del chat
     const chatMessages = document.getElementById('chat-messages');
-    document.querySelectorAll('.suggestion-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Limpia el mensaje placeholder si existe
-            chatMessages.innerHTML = '';
 
-            // Agrega el mensaje del usuario
-            chatMessages.insertAdjacentHTML('beforeend', `
-                <div class="flex flex-col items-end max-w-[80%] ml-auto">
-                    <div class="bg-primary-container text-on-primary-container p-3 rounded-2xl rounded-tr-none">
-                        <p class="text-body-sm">${btn.innerText}</p>
-                    </div>
-                    <span class="text-[10px] text-outline mt-1 mr-1">Ahora</span>
+    // Envía una burbuja predefinida al chat: limpia el placeholder y muestra el mensaje como enviado
+    function sendBubbleMessage(text) {
+        // Elimina el mensaje placeholder ("Usa las preguntas de abajo...")
+        chatMessages.innerHTML = '';
+
+        const now = new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
+
+        // Agrega la burbuja como mensaje enviado (alineada a la derecha, estilo comprador)
+        chatMessages.insertAdjacentHTML('beforeend', `
+            <div class="flex flex-col items-end max-w-[80%] ml-auto">
+                <div class="bg-primary-container text-on-primary-container px-4 py-3 rounded-2xl rounded-tr-none shadow-sm">
+                    <p class="text-body-sm">${escapeHtml(text)}</p>
                 </div>
-            `);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        });
-    });
+                <span class="text-[10px] text-outline mt-1 mr-1 flex items-center gap-1">
+                    ${now}
+                    <span class="material-symbols-outlined" style="font-size:12px;font-variation-settings:'FILL' 1">done_all</span>
+                </span>
+            </div>
+        `);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Escapa HTML para evitar inyección en innerHTML
+    function escapeHtml(str) {
+        const d = document.createElement('div');
+        d.appendChild(document.createTextNode(str));
+        return d.innerHTML;
+    }
 </script>
 @endpush

@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\CommentController;
 
 // ==========================================
 // RUTAS PÚBLICAS Y DE AUTENTICACIÓN
@@ -35,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
     // Panel general y tratos
     Route::get('/vendedor/panel', [ProductController::class, 'dashboard'])->name('seller.panel');
     Route::get('/tratos', [TratosController::class, 'index'])->name('tratos.index');
+    // Lista de tratos donde el usuario autenticado es el VENDEDOR
+    Route::get('/vendedor/tratos', [TratosController::class, 'sellerIndex'])->name('seller.tratos.index');
 
     // Gestión de productos del vendedor
     Route::get('/seller/products/create', [ProductController::class, 'create'])->name('seller.products.create');
@@ -46,14 +49,14 @@ Route::middleware(['auth'])->group(function () {
     ->name('seller.products.acknowledge');
     Route::post('/seller/products/{id}/acknowledge-reactivation', [ProductController::class, 'acknowledgeReactivation'])->name('seller.products.acknowledgeReactivation');
 
-    Route::prefix('seller')->name('seller.')->middleware('auth')->group(function () {
-    Route::get('/deals', [DealController::class, 'index'])->name('deals.index');
-});
-
-    Route::get('/tratos', [TratosController::class, 'index'])->name('tratos.index');
-
     // Detalle/seguimiento de un trato específico del comprador
     Route::get('/tratos/{trato}', [TratosController::class, 'show'])->name('tratos.show');
+
+    // Detalle de un trato específico para el VENDEDOR
+    Route::get('/vendedor/tratos/{trato}', [TratosController::class, 'sellerShow'])->name('seller.tratos.show');
+
+    // Guardar calificación y comentario del comprador al vendedor (solo estado 'recibido')
+    Route::post('/tratos/{trato}/calificar', [CommentController::class, 'store'])->name('tratos.calificar');
 
 });
 

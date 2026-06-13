@@ -77,7 +77,8 @@
 
             {{-- Menú de navegación lateral --}}
             <nav class="flex flex-col gap-1">
-                <a href="{{ route('seller.panel') }}"
+                {{-- Panel del comprador: va al home (catálogo principal del comprador) --}}
+                <a href="{{ route('home') }}"
                    class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all rounded-lg">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span class="font-medium">Panel</span>

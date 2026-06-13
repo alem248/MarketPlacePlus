@@ -263,30 +263,63 @@
                     @csrf
                 </form>
             </nav>
-            <!-- Publicidad Widget Nike -->
-            <div class="mt-auto p-4 bg-inverse-surface text-on-primary rounded-xl overflow-hidden relative group">
-                <img alt="Nike Ad" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-700" data-alt="A professional product shot of a classic red Nike sneaker against a clean studio background. The lighting is crisp and modern, highlighting the shoe's sleek design. The overall aesthetic is high-end corporate retail with a focus on vibrant colors and minimalist composition, fitting a professional marketplace theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxNXZItFVZyu0FVJOgTUzHeif_LIpHFF_8KbqQd5AA9-XRbSZuZcucYphlOeTlFpRPEdliKY3yVzQfD1t9Kkz0zpEfTwXFXPLWLFsclecwkQM4K6D9pZ-FEOt-7MortoLOTjtO6PK2_HtO1YjWi69Hsp8gMncmy6USw61kPH0ZDvUvVnacKVk-8YcdSEOaRJqDDq-qxznUQug80P1_aC3OP-3IfGfulmDSaBh-oENHYtRKqkZqa1dQq8Z-ut_0aHTDmil-qePPlcU">
-                <div class="relative z-10">
+            <!-- Publicidad Widget: usa el segundo banner activo de la base de datos -->
+            @php
+                $sideBanner  = $banners->get(1);
+                $sideImgSrc  = null;
+                if ($sideBanner?->image_path) {
+                    $sideImgSrc = Str::startsWith($sideBanner->image_path, 'http')
+                        ? $sideBanner->image_path
+                        : Storage::url($sideBanner->image_path);
+                }
+            @endphp
+            <div class="mt-auto rounded-xl overflow-hidden relative group min-h-[180px] bg-inverse-surface text-on-primary">
+                @if($sideImgSrc)
+                    <img alt="{{ $sideBanner->title }}"
+                         class="absolute inset-0 w-full h-full object-cover object-center opacity-50 group-hover:scale-110 transition-transform duration-700"
+                         src="{{ $sideImgSrc }}">
+                @endif
+                <div class="relative z-10 p-4 flex flex-col h-full min-h-[180px]">
                     <span class="text-[10px] font-bold uppercase tracking-widest opacity-70">Publicidad</span>
-                    <h3 class="text-headline-md font-bold mt-1">Just Do It.</h3>
-                    <p class="text-body-sm mt-2">Nuevos modelos Nike Air ya disponibles.</p>
-                    <button class="mt-4 px-4 py-1.5 border border-white rounded-full text-label-caps hover:bg-white hover:text-primary transition-colors">Ver Nike</button>
+                    <h3 class="text-headline-md font-bold mt-1">{{ $sideBanner?->title ?? 'Oferta Especial' }}</h3>
+                    <p class="text-body-sm mt-2 opacity-80">Nuevos modelos Nike Air ya disponibles.</p>
+                    <a href="{{ $sideBanner?->link_url ?? '#' }}" target="_blank" rel="noopener"
+                       class="mt-4 self-start px-4 py-1.5 border border-white rounded-full text-label-caps hover:bg-white hover:text-primary transition-colors">
+                        Ver más
+                    </a>
                 </div>
             </div>
         </aside>
         <!-- Main Content -->
         <main class="flex-1 min-w-0 p-4 md:p-gutter">
-            <!-- Hero Banner -->
+            <!-- Hero Banner: usa el primer banner activo de la base de datos -->
+            @php
+                $heroBanner   = $banners->get(0);
+                $heroImgSrc   = null;
+                if ($heroBanner?->image_path) {
+                    $heroImgSrc = Str::startsWith($heroBanner->image_path, 'http')
+                        ? $heroBanner->image_path
+                        : Storage::url($heroBanner->image_path);
+                }
+                $heroLink = $heroBanner?->link_url ?? '#';
+            @endphp
             <section class="mb-10 rounded-2xl overflow-hidden bg-primary-container relative h-[300px] md:h-[400px] flex items-center">
-                <img alt="Promo Hero" class="absolute inset-0 w-full h-full object-cover opacity-30" data-alt="A futuristic tech-focused scene featuring high-end laptops and mobile devices floating in a vibrant abstract digital space. Bold orange and blue gradients dominate the composition, creating a high-energy call-to-action atmosphere. The lighting is cinematic and clean, emphasizing speed and professional reliability for a modern tech marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW5P4yXrDqkEWq_SRw0ftj7R3nOxTkuRrDyxxVLreNHFN1RITU5U33PYmWh6_aZK4bDXoSyDoatkJ-SISRRqJXLb7OOTbyP3yudFJMtHDeB84izJF4XDUZHEIjNwwy1kLNPK45KK1-55dU0FlbWO5VDxb_Dh7WHSUbaoEPBlCCutCtRh4sj18xEirFQe0yE7-9LlXFurWU20mRThi6Vjh6vpZBD27lLD9gzXBjIv9BVRoUveKfzVnxAdeJ0wezn4F3SPdxtIfz8XE">
+                @if($heroImgSrc)
+                    <img alt="{{ $heroBanner->title }}"
+                         class="absolute inset-0 w-full h-full object-cover opacity-30"
+                         src="{{ $heroImgSrc }}">
+                @endif
                 <div class="relative z-10 px-8 md:px-16 max-w-2xl">
                     <span class="inline-block px-3 py-1 bg-secondary-container text-on-secondary text-label-caps rounded-full mb-4">Lanzamiento 2026</span>
-                    <h1 class="text-headline-lg-mobile md:text-headline-lg text-on-primary mb-4 leading-tight">Future Tech Unleashed</h1>
+                    <h1 class="text-headline-lg-mobile md:text-headline-lg text-on-primary mb-4 leading-tight">
+                        {{ $heroBanner?->title ?? 'MarketPlace Plus' }}
+                    </h1>
                     <p class="text-body-lg text-primary-fixed-dim mb-8">Experimenta la innovación con los nuevos equipos de alta gama disponibles para trato directo.</p>
-                    <button class="px-8 py-3 bg-secondary-container text-on-secondary font-bold rounded-xl flex items-center gap-2 hover:shadow-lg transition-shadow">
+                    <a href="{{ $heroLink }}" target="_blank" rel="noopener"
+                       class="px-8 py-3 bg-secondary-container text-on-secondary font-bold rounded-xl inline-flex items-center gap-2 hover:shadow-lg transition-shadow">
                         Comprar Ahora
                         <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
-                    </button>
+                    </a>
                 </div>
             </section>
             <!-- Product Grid -->

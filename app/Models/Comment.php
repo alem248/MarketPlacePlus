@@ -14,11 +14,13 @@ class Comment extends Model
         'user_id',
         'product_id',
         'content',
+        'rating',
         'is_active',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
+        'rating'    => 'integer',
     ];
 
     public function user(): BelongsTo
