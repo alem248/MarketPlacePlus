@@ -19,7 +19,7 @@ class HomeController extends Controller
         // Banners activos ordenados por creación: [0] hero, [1] sidebar
         $banners = Banner::where('is_active', true)
             ->orderBy('created_at')
-            ->get();
+            ->get(); 
 
         return view('auth.home', compact('products', 'banners'));
     }

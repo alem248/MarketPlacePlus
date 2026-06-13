@@ -13,7 +13,6 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ComprobantesController;
 
-
 // RUTAS PÚBLICAS Y DE AUTENTICACIÓN
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -31,9 +30,9 @@ Route::get('/proximamente', function () {
     return view('proximamente');
 })->name('proximamente');
 
-
+// ==========================================
 // ZONA CLIENTE / VENDEDOR (Unificada)
-
+// ==========================================
 Route::middleware(['auth'])->group(function () {
     // Panel general y tratos
     Route::get('/vendedor/panel', [ProductController::class, 'dashboard'])->name('seller.panel');
@@ -70,9 +69,9 @@ Route::middleware(['auth'])->group(function () {
 Route::view('/crear-producto', 'create-product')->name('products.create.view'); // Cambié el nombre ligeramente para evitar choques con el admin
 
 
-
+// ==========================================
 // ZONA ADMINISTRADOR
-
+// ==========================================
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
