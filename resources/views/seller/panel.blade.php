@@ -190,7 +190,7 @@
                             <h2 class="text-headline-md font-headline-md font-bold text-primary">
                                 {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
                             </h2>
-                            <p class="text-body-sm text-outline">Comprador</p>
+                            <p class="text-body-sm text-outline">Vendedor</p>
                         </div>
                     </div>
                 </div>
@@ -218,6 +218,13 @@
                     <span class="material-symbols-outlined mr-3">receipt_long</span>
                     <span class="font-body-lg text-body-lg">Mis Comprobantes</span>
                 </a>
+                <form action="{{ route('logout') }}" method="POST" class="w-full">
+                    @csrf
+                    <button type="submit" class="flex items-center gap-2 w-full px-4 py-2 text-body-sm text-error hover:bg-error/10 rounded-lg text-left">
+                        <span class="material-symbols-outlined text-base" data-icon="logout">logout</span>
+                        Cerrar sesión
+                    </button>
+                </form>
             </nav>
         </aside>
         <!-- Main Content Canvas -->

@@ -299,14 +299,18 @@
                         </section>
 
                         <section class="bg-surface-container-lowest p-gutter rounded-xl border border-outline-variant shadow-sm">
-                            <div class="flex items-center gap-2 mb-6 text-primary">
+                            <div class="flex items-center gap-2 mb-4 text-primary">
                                 <span class="material-symbols-outlined">photo_library</span>
                                 <h2 class="font-headline-md text-headline-md">Multimedia</h2>
                             </div>
 
+                            <p id="file-error-msg" class="hidden text-red-600 text-sm font-bold mb-4 bg-red-50 p-3 rounded-lg border border-red-200">
+                                Archivo no compatible, solo utilice los formatos disponibles (JPG, PNG).
+                            </p>
+
                             <div id="gallery-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                                 <label id="upload-box" for="image-input" class="border-2 border-dashed border-outline-variant rounded-xl aspect-square flex flex-col items-center justify-center text-center hover:bg-surface-container-low transition-colors cursor-pointer group p-4">
-                                    <input type="file" id="image-input" name="image_path[]" accept="image/*" class="hidden" multiple>
+                                    <input type="file" id="image-input" name="image_path[]" accept="image/jpeg, image/png" class="hidden" multiple>
                                     <span id="upload-icon" class="material-symbols-outlined text-3xl text-outline-variant group-hover:text-primary transition-colors">cloud_upload</span>
                                     <p id="upload-text" class="mt-2 text-xs font-bold text-on-surface">Subir imágenes</p>
                                     <p id="upload-subtext" class="text-on-surface-variant text-[10px] mt-0.5">JPG, PNG (Max. 5MB)</p>
@@ -605,6 +609,26 @@
                 setTimeout(() => alert.remove(), 300);
             }
         }
+
+        document.getElementById('image-input').addEventListener('change', function(event) {
+            const errorMsg = document.getElementById('file-error-msg');
+            const allowedTypes = ['image/jpeg', 'image/png'];
+            let hasError = false;
+
+            for (let i = 0; i < this.files.length; i++) {
+                if (!allowedTypes.includes(this.files[i].type)) {
+                    hasError = true;
+                    break;
+                }
+            }
+
+            if (hasError) {
+                errorMsg.classList.remove('hidden');
+                this.value = '';
+            } else {
+                errorMsg.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 

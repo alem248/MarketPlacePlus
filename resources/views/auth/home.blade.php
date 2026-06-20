@@ -211,7 +211,7 @@
                     <h2 class="text-headline-md font-headline-md font-bold text-primary">
                         {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
                     </h2>
-                    <p class="text-body-sm text-outline">Comprador</p>
+                    <p class="text-body-sm text-outline">Cliente</p>
                 </div>
             </div>
             @else
