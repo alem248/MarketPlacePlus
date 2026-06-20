@@ -49,6 +49,7 @@
                         "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
                         "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "700" }]
                     }
+                    
                 }
             }
         }

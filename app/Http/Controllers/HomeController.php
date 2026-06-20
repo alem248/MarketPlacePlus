@@ -14,7 +14,7 @@ class HomeController extends Controller
         $products = Product::where('is_active', true)
             ->with('user')
             ->latest()
-            ->get();
+            ->paginate(12);
 
         // Banners activos ordenados por creación: [0] hero, [1] sidebar
         $banners = Banner::where('is_active', true)

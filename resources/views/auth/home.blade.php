@@ -375,18 +375,10 @@
 
             
             <!-- Simple Pagination -->
-            <div class="flex items-center justify-center gap-2 mt-12 py-8 border-t border-outline-variant">
-                <button class="p-2 rounded-lg hover:bg-surface-container transition-colors disabled:opacity-30" disabled="">
-                    <span class="material-symbols-outlined">chevron_left</span>
-                </button>
-                <button class="w-10 h-10 rounded-lg bg-primary text-on-primary font-bold">1</button>
-                <button class="w-10 h-10 rounded-lg hover:bg-surface-container transition-colors">2</button>
-                <button class="w-10 h-10 rounded-lg hover:bg-surface-container transition-colors">3</button>
-                <span class="px-2">...</span>
-                <button class="w-10 h-10 rounded-lg hover:bg-surface-container transition-colors">12</button>
-                <button class="p-2 rounded-lg hover:bg-surface-container transition-colors">
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </button>
+            <div class="mt-12 py-8 border-t border-outline-variant flex justify-center w-full">
+                <div class="w-full max-w-fit">
+                    {{ $products->links() }}
+                </div>
             </div>
         </main>
     </div>
