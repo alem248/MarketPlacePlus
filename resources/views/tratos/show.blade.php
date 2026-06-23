@@ -39,108 +39,12 @@
 <div class="bg-background text-on-surface font-body-lg">
 
     {{-- ===================== TOP NAV ===================== --}}
-    <nav class="bg-surface-container-lowest border-b border-outline-variant sticky top-0 z-50">
-        <div class="flex items-center justify-between w-full max-w-container-max mx-auto px-margin-mobile py-4 gap-4">
+    @include('partials.client-navbar')
 
-            {{-- Logo --}}
-            <a href="{{ route('home') }}"
-               class="text-headline-lg font-headline-lg text-primary tracking-tight shrink-0">
-                MarketPlace Plus
-            </a>
-
-            {{-- Buscador --}}
-            <div class="flex-1 max-w-2xl mx-gutter">
-                <div class="relative w-full">
-                    <input class="w-full pl-10 pr-10 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
-                           placeholder="¿Qué vamos a comprar hoy?" type="text">
-                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant">search</span>
-                </div>
-            </div>
-
-            {{-- Iconos de navegación --}}
-            <div class="flex items-center gap-6 text-primary">
-                <a href="{{ route('home') }}" class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">home</a>
-                <button class="btn-soon material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">favorite</button>
-                <a href="{{ route('tratos.index') }}" class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors" style="font-variation-settings:'FILL' 1">handshake</a>
-                {{-- Inicial del usuario como avatar --}}
-                <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary font-bold border border-outline-variant">
-                    {{ strtoupper(substr(auth()->user()->first_name, 0, 1)) }}
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="flex max-w-container-max mx-auto min-h-screen">
+    <div class="flex max-w-container-max mx-auto min-h-[calc(100vh-64px)]">
 
         {{-- ===================== SIDEBAR ===================== --}}
-        <aside class="hidden lg:flex flex-col w-sidebar-width bg-surface-container-lowest border-r border-outline-variant p-base gap-2 sticky top-[73px] h-[calc(100vh-73px)]">
-
-            {{-- Perfil del usuario --}}
-            <div class="p-6 flex flex-col items-center text-center gap-2">
-                <div class="relative inline-block">
-                    <div class="w-20 h-20 rounded-xl border-2 border-primary bg-primary flex items-center justify-center text-on-primary text-3xl font-bold">
-                        {{ strtoupper(substr(auth()->user()->first_name, 0, 1)) }}
-                    </div>
-                    <div class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
-                </div>
-                <div>
-                    <h3 class="text-headline-md font-bold text-primary">
-                        {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
-                    </h3>
-                    <p class="text-body-sm text-on-surface-variant">Comprador</p>
-                </div>
-            </div>
-
-            {{-- Botón cambiar a vendedor --}}
-            <div class="px-4 mb-2">
-                <a href="{{ route('seller.panel') }}"
-                   class="w-full bg-secondary-container text-on-secondary-container font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:opacity-90 transition-all">
-                    <span class="material-symbols-outlined">swap_horiz</span>
-                    Cambiar a Vendedor
-                </a>
-            </div>
-
-            {{-- Menú de navegación --}}
-            <nav class="flex-1 space-y-1 px-2">
-                {{-- Panel del comprador: va al home (catálogo principal del comprador) --}}
-                <a href="{{ route('home') }}"
-                   class="flex items-center gap-3 p-3 text-on-surface hover:bg-surface-container-low rounded-xl transition-all">
-                    <span class="material-symbols-outlined">dashboard</span>
-                    <span class="text-label-caps">Panel</span>
-                </a>
-
-                {{-- "Mis Tratos" activo --}}
-                <a href="{{ route('tratos.index') }}"
-                   class="flex items-center gap-3 p-3 bg-primary text-on-primary font-bold rounded-xl shadow-sm">
-                    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">handshake</span>
-                    <span class="text-label-caps">Mis Tratos</span>
-                </a>
-
-                <a href="{{ route('proximamente') }}"
-                   class="flex items-center gap-3 p-3 text-on-surface hover:bg-surface-container-low rounded-xl transition-all">
-                    <span class="material-symbols-outlined">local_shipping</span>
-                    <span class="text-label-caps">Delivery</span>
-                </a>
-
-                <a href="{{ route('comprobantes.index') }}"
-                   class="flex items-center gap-3 p-3 text-on-surface hover:bg-surface-container-low rounded-xl transition-all">
-                    <span class="material-symbols-outlined">receipt_long</span>
-                    <span class="text-label-caps">Mis Comprobantes</span>
-                </a>
-            </nav>
-
-            {{-- Cerrar sesión --}}
-            <div class="mt-auto border-t border-outline-variant pt-4 p-2">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit"
-                            class="w-full flex items-center gap-3 p-3 text-error hover:bg-error-container/20 rounded-xl transition-all">
-                        <span class="material-symbols-outlined">logout</span>
-                        <span class="text-label-caps font-bold">Cerrar sesión</span>
-                    </button>
-                </form>
-            </div>
-        </aside>
+        @include('partials.client-sidebar', ['activeClientTab' => 'tratos'])
 
         {{-- ===================== CONTENIDO PRINCIPAL ===================== --}}
         <main class="flex-1 p-gutter bg-surface">
@@ -241,8 +145,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{-- Botón de chat (visual, la lógica viene después) --}}
-                                <button class="p-3 text-primary hover:bg-primary-fixed rounded-xl transition-colors border border-outline-variant">
+                                {{-- Desplaza a la sección de chat --}}
+                                <button type="button"
+                                        onclick="document.getElementById('buyer-chat-section').scrollIntoView({behavior:'smooth'})"
+                                        class="p-3 text-primary hover:bg-primary-fixed rounded-xl transition-colors border border-outline-variant">
                                     <span class="material-symbols-outlined">forum</span>
                                 </button>
                             </div>
@@ -343,39 +249,46 @@
                                 </span>
                             </div>
 
-                            {{--
-                                Campo editable de método de pago.
-                                El guardado se implementará más adelante con un PATCH /tratos/{id}/payment.
-                                Por ahora es solo visual.
-                            --}}
+                            {{-- Método de pago: se guarda en BD vía PATCH --}}
                             <div class="space-y-2">
                                 <label class="text-body-sm text-on-surface-variant font-medium block">
                                     Método de Pago:
                                 </label>
-                                <input id="payment-method-input"
-                                       class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-2 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-bold text-on-surface"
-                                       type="text"
-                                       value="{{ $trato->payment_method ?? '' }}"
-                                       placeholder="Ej: Transferencia Bancaria, Yape...">
+                                <form action="{{ route('tratos.payment', $trato) }}" method="POST" class="flex gap-2">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input name="payment_method"
+                                           class="flex-1 bg-surface-container-low border border-outline-variant rounded-xl px-4 py-2 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-bold text-on-surface"
+                                           type="text"
+                                           value="{{ $trato->payment_method ?? '' }}"
+                                           placeholder="Ej: Transferencia Bancaria, Yape...">
+                                    <button type="submit"
+                                            class="px-3 py-2 bg-primary text-on-primary rounded-xl font-bold text-body-sm hover:opacity-90 transition-opacity shrink-0">
+                                        <span class="material-symbols-outlined text-[18px]">save</span>
+                                    </button>
+                                </form>
+                                @if(session('success') && str_contains(session('success'), 'pago'))
+                                    <p class="text-[11px] text-green-600">✓ Guardado</p>
+                                @endif
                             </div>
                         </div>
 
                         {{-- Botón cancelar trato --}}
                         <div class="mt-6 pt-6 border-t border-outline-variant">
                             @if($canCancel)
-                                {{--
-                                    TODO: conectar con ruta DELETE /tratos/{id}
-                                    cuando se implemente la lógica completa del flujo.
-                                --}}
-                                <button class="w-full flex items-center justify-center gap-2 px-4 py-2 border-2 border-error text-error hover:bg-error-container/10 transition-colors rounded-xl font-bold text-body-sm">
-                                    <span class="material-symbols-outlined">cancel</span>
-                                    Cancelar Trato
-                                </button>
+                                <form action="{{ route('tratos.cancel', $trato) }}" method="POST"
+                                      onsubmit="return confirm('¿Estás seguro de que deseas cancelar este trato?')">
+                                    @csrf
+                                    <button type="submit"
+                                            class="w-full flex items-center justify-center gap-2 px-4 py-2 border-2 border-error text-error hover:bg-error-container/10 transition-colors rounded-xl font-bold text-body-sm">
+                                        <span class="material-symbols-outlined">cancel</span>
+                                        Cancelar Trato
+                                    </button>
+                                </form>
                                 <p class="text-[10px] text-on-surface-variant text-center mt-2 italic">
                                     * Solo se puede cancelar antes de marcar como recibido.
                                 </p>
                             @else
-                                {{-- Si ya fue recibido no se puede cancelar --}}
                                 <div class="text-center text-body-sm text-on-surface-variant italic">
                                     Este trato ya no puede cancelarse.
                                 </div>
@@ -474,9 +387,9 @@
                                            class="w-5 h-5 rounded border-secondary-container text-secondary-container cursor-default">
                                 </div>
 
-                                {{-- Paso 4: Recibido — se activa cuando ambas partes confirman (lógica futura) --}}
+                                {{-- Paso 4: Recibido — el comprador confirma su recepción --}}
                                 @php $step4Done = $statusOrder >= 4; @endphp
-                                <div class="flex flex-col items-center gap-5 {{ !$step4Done ? 'opacity-40' : '' }}">
+                                <div class="flex flex-col items-center gap-5 {{ !$step4Done && $trato->status !== 'aprobado' ? 'opacity-40' : '' }}">
                                     <div class="w-14 h-14 rounded-xl flex items-center justify-center border-4 border-surface-container-lowest
                                                 {{ $step4Done ? 'bg-secondary-container text-on-secondary-container shadow-lg' : 'bg-surface-container-high text-on-surface-variant' }}">
                                         <span class="material-symbols-outlined text-[28px]">inventory_2</span>
@@ -487,13 +400,33 @@
                                             {{ $step4Done ? $trato->updated_at->format('d M, h:i A') : 'Pendiente' }}
                                         </span>
                                     </div>
-                                    {{--
-                                        TODO: este checkbox será interactivo en la siguiente fase.
-                                        Tanto comprador como vendedor deben marcarlo para avanzar el estado.
-                                        Por ahora es solo visual.
-                                    --}}
-                                    <input type="checkbox" {{ $step4Done ? 'checked' : '' }} disabled
-                                           class="w-5 h-5 rounded border-outline-variant text-primary cursor-not-allowed">
+                                    @if($step4Done)
+                                        {{-- Ambos confirmaron: bloqueado definitivamente --}}
+                                        <input type="checkbox" checked disabled
+                                               class="w-5 h-5 rounded border-secondary-container text-secondary-container cursor-default">
+                                    @elseif($trato->buyer_confirmed && !$trato->seller_confirmed)
+                                        {{-- Solo yo confirmé: puedo deshacer porque el vendedor aún no marcó --}}
+                                        <form action="{{ route('tratos.received.undo', $trato) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" title="Deshacer confirmación"
+                                                    class="w-5 h-5 rounded bg-secondary-container text-on-secondary-container hover:brightness-90 transition-all cursor-pointer flex items-center justify-center text-[10px] font-bold">
+                                                ✓
+                                            </button>
+                                        </form>
+                                        <p class="text-[10px] text-outline text-center -mt-3 italic">Toca para deshacer</p>
+                                    @elseif($trato->status === 'aprobado')
+                                        {{-- Aún no confirmé: botón para confirmar --}}
+                                        <form action="{{ route('tratos.received', $trato) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" title="Confirmar que recibí el producto"
+                                                    class="w-5 h-5 rounded border-2 border-primary bg-surface-container-lowest hover:bg-primary/10 transition-colors cursor-pointer flex items-center justify-center">
+                                            </button>
+                                        </form>
+                                        <p class="text-[10px] text-primary text-center -mt-3 italic">Confirmar recepción</p>
+                                    @else
+                                        <input type="checkbox" disabled
+                                               class="w-5 h-5 rounded border-outline-variant text-primary cursor-not-allowed">
+                                    @endif
                                 </div>
 
                             </div>
@@ -528,7 +461,7 @@
                             ? 'https://wa.me/' . $waSellerNum
                             : '#';
                     @endphp
-                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm flex flex-col overflow-hidden">
+                    <div id="buyer-chat-section" class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm flex flex-col overflow-hidden">
 
                         {{-- Header del chat del comprador --}}
                         <div class="px-5 py-4 border-b border-outline-variant bg-surface-bright flex items-center justify-between">
@@ -549,13 +482,31 @@
                             </span>
                         </div>
 
-                        {{-- Área de mensajes: vacía hasta que el comprador haga clic en una burbuja --}}
+                        {{-- Área de mensajes del chat --}}
                         <div id="trato-chat-messages"
-                             class="p-5 min-h-[140px] flex items-center justify-center bg-surface-container-lowest">
-                            <p class="text-body-sm text-outline text-center italic">
-                                Usa los mensajes de abajo para iniciar la conversación
-                            </p>
+                             class="p-5 min-h-[140px] bg-surface-container-lowest space-y-3 max-h-64 overflow-y-auto">
+                            @forelse($trato->messages as $msg)
+                                @php $isMine = $msg->sender_id === auth()->id(); @endphp
+                                <div class="flex flex-col {{ $isMine ? 'items-end' : 'items-start' }} max-w-[80%] {{ $isMine ? 'ml-auto' : '' }}">
+                                    <div class="{{ $isMine ? 'bg-primary-container text-on-primary-container rounded-tr-none' : 'bg-surface-container text-on-surface rounded-tl-none' }} px-4 py-3 rounded-2xl shadow-sm">
+                                        <p class="text-body-sm">{{ $msg->body }}</p>
+                                    </div>
+                                    <span class="text-[10px] text-outline mt-1 {{ $isMine ? 'mr-1' : 'ml-1' }}">
+                                        {{ $msg->sender->first_name }} · {{ $msg->created_at->format('h:i A') }}
+                                    </span>
+                                </div>
+                            @empty
+                                <p class="text-body-sm text-outline text-center italic">
+                                    Usa los mensajes de abajo para iniciar la conversación
+                                </p>
+                            @endforelse
                         </div>
+
+                        {{-- Formulario oculto para enviar mensajes predefinidos --}}
+                        <form id="buyer-msg-form" action="{{ route('tratos.messages.store', $trato) }}" method="POST" class="hidden">
+                            @csrf
+                            <input type="hidden" name="body" id="buyer-msg-body">
+                        </form>
 
                         {{-- Mensajes predefinidos: burbujas flotantes de chat --}}
                         <div class="p-4 bg-surface-container-low border-t border-outline-variant">
@@ -570,7 +521,7 @@
                                     Click WA → abre WhatsApp con mensaje pre-escrito.
                                 --}}
                                 <div class="flex items-center gap-2">
-                                    <button onclick="sendTratoMessage('¿Sigue disponible?')"
+                                    <button onclick="sendBuyerMessage('¿Sigue disponible?')"
                                             class="flex-1 text-left group">
                                         <div class="bg-surface-container text-on-surface px-4 py-2.5 rounded-2xl rounded-tl-none shadow-sm border border-outline-variant/50 group-hover:border-primary/50 group-active:scale-[0.98] transition-all">
                                             <p class="text-body-sm">¿Sigue disponible?</p>
@@ -591,7 +542,7 @@
                                     Mismo comportamiento doble: chat + WhatsApp.
                                 --}}
                                 <div class="flex items-center gap-2">
-                                    <button onclick="sendTratoMessage('Me interesa adquirir el producto')"
+                                    <button onclick="sendBuyerMessage('Me interesa adquirir el producto')"
                                             class="flex-1 text-left group">
                                         <div class="bg-surface-container text-on-surface px-4 py-2.5 rounded-2xl rounded-tl-none shadow-sm border border-outline-variant/50 group-hover:border-primary/50 group-active:scale-[0.98] transition-all">
                                             <p class="text-body-sm">Me interesa adquirir el producto</p>
@@ -607,6 +558,21 @@
                                     </a>
                                 </div>
                             </div>
+
+                            {{-- Opción cancelar trato --}}
+                            @if($canCancel)
+                            <div class="mt-3 pt-3 border-t border-outline-variant/50">
+                                <form action="{{ route('tratos.cancel', $trato) }}" method="POST"
+                                      onsubmit="return confirm('¿Estás seguro de que deseas cancelar este trato?')">
+                                    @csrf
+                                    <button type="submit"
+                                            class="w-full text-left flex items-center gap-1.5 text-[11px] text-error/70 hover:text-error transition-colors px-1 py-1">
+                                        <span class="material-symbols-outlined text-[14px]">cancel</span>
+                                        Cancelar este trato
+                                    </button>
+                                </form>
+                            </div>
+                            @endif
                         </div>
 
                         {{-- Botón CONCRETAR POR WHATSAPP (igual estilo que products/show) --}}
@@ -626,88 +592,23 @@
         </main>
     </div>
 
-    {{-- ===================== FOOTER ===================== --}}
-    <footer class="w-full mt-gutter bg-inverse-surface">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-gutter py-12 max-w-container-max mx-auto">
-            <div class="md:col-span-1">
-                <span class="text-headline-md font-headline-md font-bold text-on-primary">MarketPlace Plus</span>
-                <p class="text-body-sm text-surface-variant mt-4">La plataforma líder para conectar compradores y vendedores de forma directa y segura.</p>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps text-on-primary mb-6">Enlaces Rápidos</h4>
-                <ul class="flex flex-col gap-3">
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('home') }}">Comprar producto</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('tratos.index') }}">Mis tratos</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Rastrear pedido</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps text-on-primary mb-6">Soporte</h4>
-                <ul class="flex flex-col gap-3">
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Ayuda al cliente</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Sobre nosotros</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Términos y condiciones</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps mb-6 uppercase tracking-wider text-white">Recomendaciones para tus tratos</h4>
-                <div class="flex flex-col gap-4 p-4 rounded-xl">
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white">verified_user</span>
-                        <p class="text-body-sm leading-tight text-white">Verifica la reputación del vendedor</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white">location_on</span>
-                        <p class="text-body-sm leading-tight text-white">Realiza tus tratos en lugares públicos</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white">chat_bubble</span>
-                        <p class="text-body-sm leading-tight text-white">Usa WhatsApp para mayor seguridad</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white">security</span>
-                        <p class="text-body-sm leading-tight text-white">No compartas datos bancarios sensibles</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="border-t border-outline/30 py-6 px-gutter max-w-container-max mx-auto text-center">
-            <p class="text-body-sm text-surface-variant/60">Market Place Plus - eCommerce Template © 2026.</p>
-        </div>
-    </footer>
+    @include('partials.footer')
 
 </div>
 @endsection
 
 @push('scripts')
 <script>
-    const tratoChatBox = document.getElementById('trato-chat-messages');
+    // Auto-scroll al último mensaje del chat al cargar
+    const chatBox = document.getElementById('trato-chat-messages');
+    if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
 
-    // Envía una burbuja predefinida al chat del comprador dentro de tratos/show
-    function sendTratoMessage(text) {
-        // Elimina el placeholder inicial
-        tratoChatBox.innerHTML = '';
-        tratoChatBox.classList.remove('flex', 'items-center', 'justify-center');
-        tratoChatBox.classList.add('space-y-3', 'p-5');
-
-        const now = new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
-
-        // Inserta el mensaje como burbuja enviada (derecha, estilo comprador)
-        tratoChatBox.insertAdjacentHTML('beforeend', `
-            <div class="flex flex-col items-end max-w-[80%] ml-auto">
-                <div class="bg-primary-container text-on-primary-container px-4 py-3 rounded-2xl rounded-tr-none shadow-sm">
-                    <p class="text-body-sm">${escHtml(text)}</p>
-                </div>
-                <span class="text-[10px] text-outline mt-1 mr-1 flex items-center gap-1">
-                    ${now}
-                    <span class="material-symbols-outlined" style="font-size:12px;font-variation-settings:'FILL' 1">done_all</span>
-                </span>
-            </div>
-        `);
-        tratoChatBox.scrollTop = tratoChatBox.scrollHeight;
+    // Envía un mensaje predefinido al backend (guarda en BD y recarga la página)
+    function sendBuyerMessage(text) {
+        document.getElementById('buyer-msg-body').value = text;
+        document.getElementById('buyer-msg-form').submit();
     }
 
-    // Escapa HTML para evitar inyección en innerHTML
     function escHtml(str) {
         const d = document.createElement('div');
         d.appendChild(document.createTextNode(str));

@@ -14,11 +14,24 @@ class ComprobantesController extends Controller
     public function index()
     {
         $comprobantes = Comprobante::where('buyer_id', auth()->id())
-            ->with(['product', 'seller'])
+            ->with(['product', 'seller', 'buyer'])
             ->latest()
             ->get();
 
         return view('comprobantes.index', compact('comprobantes'));
+    }
+
+    /**
+     * Lista todos los comprobantes del vendedor autenticado.
+     */
+    public function sellerIndex()
+    {
+        $comprobantes = Comprobante::where('seller_id', auth()->id())
+            ->with(['product', 'buyer'])
+            ->latest()
+            ->get();
+
+        return view('seller.comprobantes.index', compact('comprobantes'));
     }
 
     /**

@@ -12,11 +12,16 @@ use App\Http\Controllers\Admin\CommentController as AdminCommentController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ComprobantesController;
+use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\Admin\DeliveryController as AdminDeliveryController;
 
 
 // RUTAS PÚBLICAS Y DE AUTENTICACIÓN
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/search', [HomeController::class, 'search'])->name('products.search');
 
 // Detalle público de un producto (requiere login para ver el chat y los tratos)
 Route::middleware(['auth'])->get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
@@ -57,12 +62,56 @@ Route::middleware(['auth'])->group(function () {
     // Detalle de un trato específico para el VENDEDOR
     Route::get('/vendedor/tratos/{trato}', [TratosController::class, 'sellerShow'])->name('seller.tratos.show');
 
+    // Crear trato desde página de producto
+    Route::post('/products/{product}/trato', [TratosController::class, 'store'])->name('tratos.store');
+
+    // Acciones del comprador sobre un trato
+    Route::post('/tratos/{trato}/cancel',          [TratosController::class, 'cancel'])->name('tratos.cancel');
+    Route::post('/tratos/{trato}/received',        [TratosController::class, 'buyerConfirm'])->name('tratos.received');
+    Route::post('/tratos/{trato}/received/undo',   [TratosController::class, 'buyerUnconfirm'])->name('tratos.received.undo');
+    Route::patch('/tratos/{trato}/payment', [TratosController::class, 'updatePayment'])->name('tratos.payment');
+    Route::post('/tratos/{trato}/messages', [TratosController::class, 'sendMessage'])->name('tratos.messages.store');
+
+    // Acciones del vendedor sobre un trato
+    Route::post('/vendedor/tratos/{trato}/accept',          [TratosController::class, 'accept'])->name('seller.tratos.accept');
+    Route::post('/vendedor/tratos/{trato}/reject',          [TratosController::class, 'reject'])->name('seller.tratos.reject');
+    Route::post('/vendedor/tratos/{trato}/delivered',       [TratosController::class, 'sellerConfirm'])->name('seller.tratos.delivered');
+    Route::post('/vendedor/tratos/{trato}/delivered/undo',  [TratosController::class, 'sellerUnconfirm'])->name('seller.tratos.delivered.undo');
+    Route::post('/vendedor/tratos/{trato}/messages',  [TratosController::class, 'sendMessage'])->name('seller.tratos.messages.store');
+
     // Guardar calificación y comentario del comprador al vendedor (solo estado 'recibido')
     Route::post('/tratos/{trato}/calificar', [CommentController::class, 'store'])->name('tratos.calificar');
+
+    // Foto de perfil
+    Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.photo.update');
+
+    // Favoritos
+    Route::get('/favoritos', [FavoriteController::class, 'index'])->name('favorites.index');
+    Route::post('/favoritos', [FavoriteController::class, 'store'])->name('favorites.store');
+    Route::delete('/favoritos', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+    Route::get('/favoritos/colecciones', [FavoriteController::class, 'collections'])->name('favorites.collections');
+    Route::post('/favoritos/colecciones', [FavoriteController::class, 'storeCollection'])->name('favorites.collections.store');
+    Route::get('/favoritos/colecciones/{collection}', [FavoriteController::class, 'showCollection'])->name('favorites.collections.show');
+    Route::delete('/favoritos/colecciones/{collection}/productos/{product}', [FavoriteController::class, 'destroyFromCollection'])->name('favorites.collections.destroyProduct');
+    Route::delete('/favoritos/colecciones/{collection}', [FavoriteController::class, 'destroyCollection'])->name('favorites.collections.destroy');
+
+    // Delivery del comprador
+    Route::get('/delivery', [DeliveryController::class, 'buyerIndex'])->name('delivery.index');
+    Route::post('/delivery/{trato}/confirmar', [DeliveryController::class, 'buyerConfirm'])->name('delivery.confirm');
+
+    // Delivery del vendedor
+    Route::get('/vendedor/delivery', [DeliveryController::class, 'sellerIndex'])->name('seller.delivery.index');
+    Route::get('/vendedor/delivery/{trato}/solicitar', [DeliveryController::class, 'sellerCreate'])->name('seller.delivery.create');
+    Route::post('/vendedor/delivery/{trato}/solicitar', [DeliveryController::class, 'sellerStore'])->name('seller.delivery.store');
+    Route::get('/vendedor/delivery/{trato}/seguimiento', [DeliveryController::class, 'sellerShow'])->name('seller.delivery.show');
+    Route::post('/vendedor/delivery/{trato}/en-camino', [DeliveryController::class, 'sellerMarkEnCamino'])->name('seller.delivery.en-camino');
 
     // Comprobantes de venta del comprador
     Route::get('/mis-comprobantes', [ComprobantesController::class, 'index'])->name('comprobantes.index');
     Route::post('/tratos/{trato}/comprobante', [ComprobantesController::class, 'store'])->name('comprobantes.store');
+
+    // Comprobantes del vendedor
+    Route::get('/vendedor/mis-comprobantes', [ComprobantesController::class, 'sellerIndex'])->name('seller.comprobantes.index');
 
 });
 
@@ -105,4 +154,10 @@ Route::post('/products/{product}/suspend', [AdminProductController::class, 'susp
     // Gestión de Comentarios
     Route::get('/comments', [AdminCommentController::class, 'index'])->name('comments.index');
     Route::patch('/comments/{comment}/toggle', [AdminCommentController::class, 'toggle'])->name('comments.toggle');
+
+    // Gestión de Deliveries
+    Route::get('/delivery', [AdminDeliveryController::class, 'index'])->name('delivery.index');
+    Route::get('/delivery/{delivery}', [AdminDeliveryController::class, 'show'])->name('delivery.show');
+    Route::post('/delivery/{delivery}/aprobar', [AdminDeliveryController::class, 'approve'])->name('delivery.approve');
+    Route::post('/delivery/{delivery}/rechazar', [AdminDeliveryController::class, 'reject'])->name('delivery.reject');
 });

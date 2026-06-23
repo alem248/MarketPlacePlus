@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Trato;
 
 class ProductController extends Controller
 {
@@ -75,8 +76,15 @@ class ProductController extends Controller
         ->whereNull('viewed_reactivation_at')
         ->first();
 
-        // 3. Pasar ambas variables a la vista
-        return view('seller.panel', compact('products', 'suspendedProduct', 'reactivatedProduct'));
+        // 3. Propuestas pendientes del vendedor (pedido_realizado o en_discusion)
+        $pendingTratos = Trato::where('seller_id', auth()->id())
+            ->whereIn('status', ['pedido_realizado', 'en_discusion'])
+            ->with(['product', 'buyer', 'messages'])
+            ->latest()
+            ->take(6)
+            ->get();
+
+        return view('seller.panel', compact('products', 'suspendedProduct', 'reactivatedProduct', 'pendingTratos'));
     }
 
     public function edit($id)

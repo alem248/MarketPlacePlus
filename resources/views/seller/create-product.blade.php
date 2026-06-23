@@ -147,89 +147,27 @@
 </head>
 
 <body class="bg-background text-on-surface min-h-screen flex flex-col">
-    <!-- TopNavBar -->
-    <header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline fixed top-0 w-full z-50">
-        <div class="flex justify-between items-center px-gutter py-base w-full max-w-container-max mx-auto h-16">
-            <div class="flex items-center gap-4">
-                <span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Market Place Plus</span>
-                <span class="hidden md:block text-on-surface-variant font-body-sm italic ml-4">¿Qué vamos a vender hoy?</span>
-            </div>
-            <div class="flex items-center gap-4">
-                <button class="hidden md:flex items-center gap-2 bg-secondary-container text-on-secondary-container px-4 py-2 rounded-xl font-bold hover:bg-surface-container-high transition-colors scale-95 active:transition-all">
-                    <span class="material-symbols-outlined">add</span>
-                    <span class="">Crear Publicación</span>
-                </button>
-                <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
-                    <span class="material-symbols-outlined text-on-surface-variant">person</span>
-                </div>
-            </div>
-        </div>
-    </header>
-    @if(session('success'))
-    <div class="mb-4 p-4 bg-tertiary-fixed text-tertiary rounded-2xl font-bold flex items-center gap-2">
-        <span class="material-symbols-outlined">check_circle</span>
-        {{ session('success') }}
-    </div>
-    @endif
-
-    @if($errors->any())
-    <div class="mb-4 p-4 bg-error-container text-on-error-container rounded-2xl font-bold">
-        <ul class="list-disc pl-5">
-            @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
+    @include('partials.seller-navbar')
     <div class="flex flex-1 pt-16">
-        <!-- SideNavBar -->
-        <aside class="fixed left-0 w-sidebar-width bg-surface-container dark:bg-surface-container-low border-r border-outline-variant hidden md:flex flex-col p-base space-y-4 bottom-0 top-16" style="height: calc(-64px + 100vh); z-index: 40;">
-            <div class="p-4 mb-4">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary">
-                        @if(!empty(auth()->user()->foto))
-                        <img alt="Avatar del Vendedor" class="w-full h-full object-cover" src="{{ asset('storage/' . auth()->user()->foto) }}">
-                        @else
-                        <img alt="Avatar por defecto" class="w-full h-full object-cover" src="{{ asset('img/icon_default.jpg') }}">
-                        @endif
-                    </div>
-                    <div>
-                        <p class="font-headline-md text-headline-md text-primary">
-                            {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
-                        </p>
-                        <p class="text-on-surface-variant text-sm">Ventas activas: {{ auth()->user()->products()->count() }}</p>
-                    </div>
-                </div>
-                <a href="{{ route('home') }}" class="w-full mt-4 bg-outline-variant text-on-surface-variant font-bold py-2 rounded-xl hover:bg-surface-variant transition-all block text-center">
-                    Cambiar a Cliente
-                </a>
-            </div>
-            <nav class="space-y-1">
-                <a class="bg-secondary-container text-on-secondary-container rounded-xl font-bold flex items-center px-4 py-3" href="{{ route('seller.products.create') }}">
-                    <span class="material-symbols-outlined mr-3">add</span>
-                    <span class="font-body-lg text-body-lg">Crear Publicación</span>
-                </a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('seller.panel') }}">
-                    <span class="material-symbols-outlined mr-3">dashboard</span>
-                    <span class="font-body-lg text-body-lg">Panel</span>
-                </a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('seller.tratos.index') }}">
-                    <span class="material-symbols-outlined mr-3">handshake</span>
-                    <span class="font-body-lg text-body-lg">Mis Tratos</span>
-                </a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('proximamente') }}">
-                    <span class="material-symbols-outlined mr-3">local_shipping</span>
-                    <span class="font-body-lg text-body-lg">Delivery</span>
-                </a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('comprobantes.index') }}">
-                    <span class="material-symbols-outlined mr-3">receipt_long</span>
-                    <span class="font-body-lg text-body-lg">Mis Comprobantes</span>
-                </a>
-            </nav>
-        </aside>
+        @include('partials.seller-sidebar', ['activeSellerTab' => 'create'])
         <!-- Main Content -->
-        <main class="flex-1 md:ml-sidebar-width p-gutter bg-background custom-scrollbar min-h-screen">
+        <main class="flex-1 p-gutter bg-background min-h-screen">
             <div class="max-w-6xl mx-auto space-y-gutter">
+                @if(session('success'))
+                <div class="mb-4 p-4 bg-tertiary-fixed text-tertiary rounded-2xl font-bold flex items-center gap-2">
+                    <span class="material-symbols-outlined">check_circle</span>
+                    {{ session('success') }}
+                </div>
+                @endif
+                @if($errors->any())
+                <div class="mb-4 p-4 bg-error-container text-on-error-container rounded-2xl font-bold">
+                    <ul class="list-disc pl-5">
+                        @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
 
                 <header class="mb-8">
                     <h1 class="font-headline-lg text-headline-lg text-primary">Publicar Nuevo Producto</h1>
@@ -398,55 +336,7 @@
         </div>
         @endif
     </div>
-    <!-- Footer -->
-    <footer class="w-full mt-gutter bg-inverse-surface dark:bg-surface-container-lowest relative z-50">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-gutter py-12 max-w-container-max mx-auto">
-            <div class="md:col-span-1">
-                <span class="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary">MarketPlace Plus</span>
-                <p class="text-body-sm text-surface-variant dark:text-on-surface-variant mt-4">La plataforma líder para conectar compradores y vendedores de forma directa y segura.</p>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Enlaces Rápidos</h4>
-                <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('home') }}">Comprar producto</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('seller.tratos.index') }}">Mis tratos</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Rastrear pedido</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Soporte</h4>
-                <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Ayuda al cliente</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Sobre nosotros</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Términos y condiciones</a></li>
-                </ul>
-            </div>
-            <div class="md:col-span-1">
-                <h4 class="text-label-caps font-label-caps mb-6 uppercase tracking-wider text-white">RECOMENDACIONES PARA TUS TRATOS</h4>
-                <div class="flex flex-col gap-4">
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-white" style="font-size: 20px;">check_circle</span>
-                        <p class="text-body-sm leading-tight text-white">Verifica la reputación del vendedor</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-white" style="font-size: 20px;">location_on</span>
-                        <p class="text-body-sm leading-tight text-white">Realiza tus tratos en lugares públicos</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-white" style="font-size: 20px;">chat</span>
-                        <p class="text-body-sm leading-tight text-white">Usa WhatsApp para mayor seguridad</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-white" style="font-size: 20px;">security</span>
-                        <p class="text-body-sm leading-tight text-white">No compartas datos bancarios sensibles</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="border-t border-outline/30 py-6 px-gutter max-w-container-max mx-auto text-center">
-            <p class="text-body-sm text-surface-variant/60">Market Place Plus - eCommerce Template © 2026. Design by Templatecookie</p>
-        </div>
-    </footer>
+    @include('partials.footer')
     <!-- Mobile Nav Bar (Hidden on Desktop) -->
     <div class="md:hidden fixed bottom-0 w-full bg-surface border-t border-outline-variant flex justify-around py-2 z-50">
         <button class="flex flex-col items-center p-2 text-on-surface-variant">

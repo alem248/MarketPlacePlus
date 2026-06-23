@@ -154,79 +154,9 @@
 </head>
 
 <body class="bg-background text-on-surface">
-    <!-- TopNavBar -->
-    <nav class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline fixed full-width top-0 z-50 w-full">
-        <div class="flex justify-between items-center px-gutter py-base w-full max-w-container-max mx-auto h-16">
-            <div class="flex items-center gap-4">
-                <span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Market Place Plus</span>
-            </div>
-            <div class="hidden md:flex items-center">
-                <h1 class="font-headline-md text-headline-md text-on-surface">¿Qué vamos a vender hoy?</h1>
-            </div>
-            <div class="hidden md:flex items-center gap-6">
-                <a href="{{ route('seller.products.create') }}" class="bg-secondary-container text-on-secondary-container px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-all scale-95 active:transition-all">
-                    <span class="material-symbols-outlined">add_circle</span>
-                    Crear Publicación
-                </a>
-            </div>
-        </div>
-    </nav>
+    @include('partials.seller-navbar')
     <div class="flex pt-16 min-h-screen"> <!-- Container for Sidebar and Main Content -->
-        <!-- SideNavBar -->
-        <aside class="w-sidebar-width bg-surface-container dark:bg-surface-container-low border-r border-outline-variant flex flex-col p-base space-y-4 hidden md:flex sticky top-16 self-start shrink-0">
-            <div class="p-4 bg-surface-container-lowest rounded-2xl mb-4 border border-outline-variant">
-                <div class="p-4 bg-surface-container-lowest rounded-2xl mb-4 border border-outline-variant">
-                    <div class="flex flex-col items-center gap-3 mb-4">
-                        <div class="relative">
-                            @if(!empty(auth()->user()->foto))
-                            <img alt="Avatar del Comprador" class="w-24 h-24 rounded-full object-cover border-2 border-primary" src="{{ asset('storage/' . auth()->user()->foto) }}">
-                            @else
-                            <img alt="Avatar por defecto" class="w-24 h-24 rounded-full object-cover border-2 border-primary" src="{{ asset('img/icon_default.jpg') }}">
-                            @endif
-                            <div class="absolute bottom-1 right-1 w-5 h-5 bg-tertiary-fixed rounded-full border-2 border-surface-container-lowest"></div>
-                        </div>
-
-                        <div class="text-center mt-1">
-                            <h2 class="text-headline-md font-headline-md font-bold text-primary">
-                                {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
-                            </h2>
-                            <p class="text-body-sm text-outline">Vendedor</p>
-                        </div>
-                    </div>
-                </div>
-                <a href="{{ route('home') }}" class="w-full block text-center py-3 px-4 bg-[#003178] text-white rounded-2xl font-bold font-headline-md text-headline-md transition-all hover:brightness-110">
-                    Cambiar a Cliente
-                </a>
-            </div>
-            <nav class="space-y-1">
-                <a class="bg-secondary-container text-on-secondary-container rounded-xl font-bold flex items-center px-4 py-3" href="{{ route('seller.panel') }}">
-                    <span class="material-symbols-outlined mr-3">dashboard</span>
-                    <span class="font-body-lg text-body-lg">Panel</span>
-                </a>
-                <a href="{{ route('seller.products.create') }}"
-                    @class([ 'flex items-center px-4 py-3 rounded-xl transition-all' , 'bg-secondary-container text-on-secondary-container font-bold'=> request()->routeIs('seller.products.create'),
-                    'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' => !request()->routeIs('seller.products.create')
-                    ])>
-                    <span class="material-symbols-outlined mr-3">add_circle</span>
-                    <span class="font-body-lg text-body-lg">Crear Publicación</span>
-                </a>
-                <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all" href="{{ route('seller.tratos.index') }}">
-                    <span class="material-symbols-outlined mr-3">handshake</span>
-                    <span class="font-body-lg text-body-lg">Mis Tratos</span>
-                </a>
-                <a class="text-on-surface-variant hover:text-on-surface flex items-center px-4 py-3 hover:bg-surface-variant rounded-xl transition-all" href="{{ route('comprobantes.index') }}">
-                    <span class="material-symbols-outlined mr-3">receipt_long</span>
-                    <span class="font-body-lg text-body-lg">Mis Comprobantes</span>
-                </a>
-                <form action="{{ route('logout') }}" method="POST" class="w-full">
-                    @csrf
-                    <button type="submit" class="flex items-center gap-2 w-full px-4 py-2 text-body-sm text-error hover:bg-error/10 rounded-lg text-left">
-                        <span class="material-symbols-outlined text-base" data-icon="logout">logout</span>
-                        Cerrar sesión
-                    </button>
-                </form>
-            </nav>
-        </aside>
+        @include('partials.seller-sidebar', ['activeSellerTab' => 'panel'])
         <!-- Main Content Canvas -->
         <div class="flex-1 flex flex-col min-w-0">
             <main class="flex-1 p-gutter bg-background">
@@ -394,50 +324,96 @@
                 </div>
                 <!-- Right Column (Proposals Inbox) -->
                 <div class="space-y-6">
-                    <h2 class="font-headline-lg text-headline-lg text-on-surface">Bandeja de Propuestas</h2>
+                    <div class="flex justify-between items-center">
+                        <h2 class="font-headline-lg text-headline-lg text-on-surface">Bandeja de Propuestas</h2>
+                        @if($pendingTratos->isNotEmpty())
+                            <span class="inline-flex items-center gap-1 px-3 py-1 bg-secondary-container/20 text-secondary rounded-full text-xs font-bold">
+                                {{ $pendingTratos->count() }} pendiente{{ $pendingTratos->count() > 1 ? 's' : '' }}
+                            </span>
+                        @endif
+                    </div>
+
                     <div class="space-y-4">
-                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
-                            <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
-                            <div class="flex-1">
-                                <p class="text-sm font-bold text-on-surface mb-1">Carlos Ruiz solicita este producto</p>
-                                <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 2 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
+                        @forelse($pendingTratos as $trato)
+                        @php
+                            $imgs     = is_array($trato->product->image_path) ? $trato->product->image_path : [$trato->product->image_path];
+                            $firstImg = $imgs[0] ?? null;
+                            $imgSrc   = $firstImg
+                                ? (Str::startsWith($firstImg, 'http') ? $firstImg : Storage::url($firstImg))
+                                : null;
+                            $lastMsg  = $trato->messages->last();
+                            $isNew    = $trato->status === 'pedido_realizado';
+                        @endphp
+                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors {{ $isNew ? 'border-l-4 border-l-secondary-container' : '' }}">
+
+                            {{-- Imagen del producto --}}
+                            <div class="w-14 h-14 rounded-xl shrink-0 overflow-hidden bg-surface-container-high flex items-center justify-center">
+                                @if($imgSrc)
+                                    <img src="{{ $imgSrc }}" alt="{{ $trato->product->title }}" class="w-full h-full object-cover">
+                                @else
+                                    <span class="material-symbols-outlined text-outline">image</span>
+                                @endif
+                            </div>
+
+                            <div class="flex-1 min-w-0">
+                                {{-- Comprador + producto --}}
+                                <p class="text-sm font-bold text-on-surface truncate">
+                                    {{ $trato->buyer->first_name }} {{ $trato->buyer->last_name }}
+                                </p>
+                                <p class="text-xs text-on-surface-variant truncate mb-1">
+                                    {{ $trato->product->title }}
+                                    <span class="font-bold text-primary ml-1">S/. {{ number_format($trato->price, 2) }}</span>
+                                </p>
+
+                                {{-- Último mensaje del comprador --}}
+                                @if($lastMsg)
+                                    <p class="text-xs text-on-surface-variant italic truncate mb-2">
+                                        "{{ $lastMsg->body }}"
+                                    </p>
+                                @endif
+
+                                {{-- Badges --}}
+                                <div class="flex items-center gap-2 mb-3">
+                                    @if($isNew)
+                                        <span class="text-xs px-2 py-0.5 bg-secondary-container/20 text-secondary rounded-full font-bold">Nueva propuesta</span>
+                                    @else
+                                        <span class="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded-full font-bold">En discusión</span>
+                                    @endif
+                                    <span class="text-xs text-on-surface-variant">{{ $trato->created_at->format('d M, Y') }}</span>
+                                </div>
+
+                                {{-- Acciones --}}
+                                <div class="flex gap-2">
+                                    <a href="{{ route('seller.tratos.show', $trato) }}"
+                                       class="flex-1 border border-primary text-primary py-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-primary hover:text-on-primary transition-all">
+                                        <span class="material-symbols-outlined text-[14px]">forum</span>
+                                        Responder
+                                    </a>
+                                    <form action="{{ route('seller.tratos.reject', $trato) }}" method="POST"
+                                          onsubmit="return confirm('¿Rechazar esta propuesta?')">
+                                        @csrf
+                                        <button type="submit"
+                                                class="px-3 py-2 rounded-xl border border-error/40 text-error text-xs font-bold hover:bg-error/10 transition-colors">
+                                            <span class="material-symbols-outlined text-[14px]">close</span>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
-                            <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
-                            <div class="flex-1">
-                                <p class="text-sm font-bold text-on-surface mb-1">Lucía Torres solicita este producto</p>
-                                <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 5 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
-                            </div>
+                        @empty
+                        <div class="flex flex-col items-center justify-center py-12 bg-surface-container-lowest border border-dashed border-outline-variant rounded-2xl text-center px-6">
+                            <span class="material-symbols-outlined text-outline text-4xl mb-3">inbox</span>
+                            <p class="font-bold text-on-surface mb-1">Sin propuestas pendientes</p>
+                            <p class="text-xs text-on-surface-variant">Cuando un comprador inicie un trato en uno de tus productos, aparecerá aquí.</p>
                         </div>
-                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
-                            <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
-                            <div class="flex-1">
-                                <p class="text-sm font-bold text-on-surface mb-1">Marco Peña solicita este producto</p>
-                                <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 15 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
-                            </div>
-                        </div>
-                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
-                            <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
-                            <div class="flex-1">
-                                <p class="text-sm font-bold text-on-surface mb-1">Sofía Mendoza solicita este producto</p>
-                                <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 30 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
-                            </div>
-                        </div>
-                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
-                            <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
-                            <div class="flex-1">
-                                <p class="text-sm font-bold text-on-surface mb-1">Alejandro G. solicita este producto</p>
-                                <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 45 min</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
-                            </div>
-                        </div>
-                        <div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-2xl flex gap-4 items-start hover:bg-surface-container transition-colors">
-                            <div class="w-12 h-12 rounded-lg bg-surface-variant shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-outline">image</span></div>
-                            <div class="flex-1">
-                                <p class="text-sm font-bold text-on-surface mb-1">Valentina R. solicita este producto</p>
-                                <div class="flex items-center gap-2 mb-3"><span class="text-xs px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">Nueva oferta</span><span class="text-xs text-on-surface-variant">Hace 1 hora</span></div><button class="w-full border border-primary text-primary py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined text-sm">forum</span> Responder propuesta</button>
-                            </div>
-                        </div>
+                        @endforelse
+
+                        @if($pendingTratos->isNotEmpty())
+                        <a href="{{ route('seller.tratos.index') }}"
+                           class="block w-full text-center text-primary font-bold text-sm hover:underline py-2">
+                            Ver todos los tratos →
+                        </a>
+                        @endif
                     </div>
                 </div>
         </div>
@@ -445,56 +421,7 @@
         <!-- Corrected Dark Footer -->
     </div>
     </div>
-    <footer class="w-full bg-[#191c1d] text-white">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-gutter py-12 max-w-container-max mx-auto">
-            <div class="space-y-4">
-                <span class="text-headline-md font-bold block">MarketPlace Plus</span>
-                <p class="text-body-sm text-surface-variant opacity-80 leading-relaxed">
-                    La plataforma líder para conectar compradores y vendedores de forma directa y segura.
-                </p>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-bold mb-6 uppercase tracking-wider">Enlaces Rápidos</h4>
-                <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('home') }}">Comprar producto</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('seller.tratos.index') }}">Mis tratos</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Rastrear pedido</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-bold mb-6 uppercase tracking-wider">Soporte</h4>
-                <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Ayuda al cliente</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Sobre nosotros</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Términos y condiciones</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-bold mb-6 uppercase tracking-wider">RECOMENDACIONES PARA TUS TRATOS</h4>
-                <div class="flex flex-col gap-4">
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-xl">check_circle</span>
-                        <p class="text-body-sm">Verifica la reputación del vendedor</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-xl">location_on</span>
-                        <p class="text-body-sm">Realiza tus tratos en lugares públicos</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-xl">chat</span>
-                        <p class="text-body-sm">Usa WhatsApp para mayor seguridad</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-xl">security</span>
-                        <p class="text-body-sm">No compartas datos bancarios sensibles</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="border-t border-white/10 py-6 px-gutter max-w-container-max mx-auto text-center">
-            <p class="text-body-sm opacity-50">Market Place Plus - eCommerce Template © 2026. Design by Templatecookie</p>
-        </div>
-    </footer>
+    @include('partials.footer')
     @if(isset($suspendedProduct) && !empty($suspendedProduct->suspension_reason) && is_null($suspendedProduct->viewed_suspension_at))
     <div id="suspensionModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
         <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl border border-gray-200">

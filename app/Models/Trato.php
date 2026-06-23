@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Trato extends Model
 {
@@ -13,12 +15,16 @@ class Trato extends Model
         'product_id',
         'price',
         'sku',
-        'payment_method', // "Transferencia Bancaria", "Yape", etc. (lo escribe el comprador)
-        'status', // pedido_realizado | en_discusion | aprobado | recibido | cancelado
+        'payment_method',
+        'status',
+        'seller_confirmed',
+        'buyer_confirmed',
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
+        'price'            => 'decimal:2',
+        'seller_confirmed' => 'boolean',
+        'buyer_confirmed'  => 'boolean',
     ];
 
     // Etiquetas legibles por estado para mostrar en la vista
@@ -55,6 +61,18 @@ class Trato extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    // Solicitud de delivery asociada
+    public function delivery(): HasOne
+    {
+        return $this->hasOne(Delivery::class);
+    }
+
+    // Mensajes del chat del trato
+    public function messages(): HasMany
+    {
+        return $this->hasMany(TratoMessage::class)->orderBy('created_at');
     }
 
     // Retorna el label legible del estado actual

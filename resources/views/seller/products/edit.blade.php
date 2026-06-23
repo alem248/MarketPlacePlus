@@ -147,86 +147,14 @@
 </head>
 
 <body class="bg-surface text-on-surface">
-    <!-- TopNavBar -->
-    <nav class="fixed top-0 w-full z-50 bg-surface-container-lowest dark:bg-surface-container-low shadow-sm border-b border-outline-variant dark:border-outline h-16">
-        <div class="flex justify-between items-center px-gutter h-full w-full max-w-container-max mx-auto">
-            <div class="flex items-center gap-8">
-                <span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">MarketPlace Plus</span>
-                <div class="hidden md:flex gap-6">
-                    <a class="font-body-lg text-body-lg text-on-surface-variant dark:text-on-surface-variant hover:text-primary-container transition-colors" href="{{ route('home') }}">Explorar</a>
-                    <a class="font-body-lg text-body-lg text-on-surface-variant dark:text-on-surface-variant hover:text-primary-container transition-colors" href="{{ route('seller.tratos.index') }}">Mis Tratos</a>
-                </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="hidden md:flex bg-surface-container-low rounded-full px-4 py-2 border border-outline-variant items-center gap-2">
-                    <span class="material-symbols-outlined text-on-surface-variant">search</span>
-                    <input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm w-48" placeholder="Buscar productos..." type="text" />
-                </div>
-                <button class="material-symbols-outlined text-primary p-2 active:scale-95 transition-transform">notifications</button>
-                <div class="w-24 h-24 rounded-full bg-surface-variant overflow-hidden border-2 border-primary shadow-sm">
-                    @if(auth()->user()->foto && Storage::disk('public')->exists(auth()->user()->foto))
-                    <img alt="{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}"
-                        class="w-full h-full object-cover"
-                        src="{{ asset('storage/' . auth()->user()->foto) }}" />
-                    @else
-                    <img alt="Perfil por defecto"
-                        class="w-full h-full object-cover"
-                        src="{{ asset('img/icon_default.jpg') }}" />
-                    @endif
-                </div>
-            </div>
-        </div>
-    </nav>
-    <!-- SideNavBar -->
-    <aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-sidebar-width bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline hidden md:flex flex-col p-4 space-y-2 overflow-y-auto">
-        <div class="p-4 border-b border-outline-variant mb-2">
-            <div class="flex items-center gap-3 mb-4">
-                @if(auth()->user()->foto && Storage::disk('public')->exists(auth()->user()->foto))
-                    <img src="{{ asset('storage/' . auth()->user()->foto) }}" alt="Avatar" class="w-10 h-10 rounded-full object-cover border-2 border-primary">
-                @else
-                    <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold">
-                        {{ strtoupper(substr(auth()->user()->first_name, 0, 1)) }}
-                    </div>
-                @endif
-                <div>
-                    <p class="font-bold text-on-surface text-body-sm">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</p>
-                    <p class="text-on-surface-variant text-[12px]">Vendedor</p>
-                </div>
-            </div>
-            <a href="{{ route('home') }}" class="w-full block text-center py-2 px-4 bg-[#003178] text-white rounded-xl font-bold text-body-sm transition-all hover:brightness-110">
-                Cambiar a Cliente
-            </a>
-        </div>
-        <nav class="flex-1 space-y-1">
-            <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('seller.panel') }}">
-                <span class="material-symbols-outlined mr-3">dashboard</span>
-                <span class="font-body-lg text-body-lg">Panel</span>
-            </a>
-            <a class="bg-secondary-container text-on-secondary-container rounded-xl font-bold flex items-center px-4 py-3" href="{{ route('seller.products.create') }}">
-                <span class="material-symbols-outlined mr-3">add</span>
-                <span class="font-body-lg text-body-lg">Crear Publicación</span>
-            </a>
-            <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('seller.tratos.index') }}">
-                <span class="material-symbols-outlined mr-3">handshake</span>
-                <span class="font-body-lg text-body-lg">Mis Tratos</span>
-            </a>
-            <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant flex items-center px-4 py-3 rounded-xl transition-all" href="{{ route('comprobantes.index') }}">
-                <span class="material-symbols-outlined mr-3">receipt_long</span>
-                <span class="font-body-lg text-body-lg">Mis Comprobantes</span>
-            </a>
-        </nav>
-        <div class="pt-4 border-t border-outline-variant">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="w-full text-error hover:bg-error-container rounded-lg flex items-center px-4 py-3 gap-3 transition-all">
-                    <span class="material-symbols-outlined">logout</span>
-                    <span class="font-body-lg">Cerrar Sesión</span>
-                </button>
-            </form>
-        </div>
-    </aside>
-    <!-- Main Content Canvas -->
-    <main class="md:ml-sidebar-width pt-24 pb-12 px-gutter min-h-screen">
+    @include('partials.seller-navbar')
+
+    <div class="flex pt-16 min-h-screen">
+
+        @include('partials.seller-sidebar', ['activeSellerTab' => 'create'])
+
+        <!-- Main Content Canvas -->
+        <main class="flex-1 pb-12 px-gutter min-h-screen">
         <div class="max-w-container-max mx-auto">
             <form action="{{ route('seller.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -404,45 +332,10 @@
                     </div>
             </form>
         </div>
-    </main>
-    <!-- Footer -->
-    <footer class="w-full mt-auto bg-inverse-surface dark:bg-surface-container-lowest">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-gutter py-12 max-w-container-max mx-auto">
-            <div class="md:col-span-1">
-                <span class="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary">MarketPlace Plus</span>
-                <p class="text-body-sm text-surface-variant dark:text-on-surface-variant mt-4">La plataforma líder para conectar compradores y vendedores de forma directa y segura.</p>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Enlaces Rápidos</h4>
-                <ul class="flex flex-col gap-3">
-                    <li><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('home') }}">Comprar producto</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('seller.tratos.index') }}">Mis tratos</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Rastrear pedido</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Soporte</h4>
-                <ul class="flex flex-col gap-3">
-                    <li><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Ayuda al cliente</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Sobre nosotros</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-white transition-colors" href="{{ route('proximamente') }}">Términos y condiciones</a></li>
-                </ul>
-            </div>
-            <div class="md:col-span-1">
-                <h4 class="text-label-caps font-label-caps mb-6 uppercase tracking-wider text-white">RECOMENDACIONES PARA TUS TRATOS</h4>
-                <div class="flex flex-col gap-4">
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-white" style="font-size: 20px;">check_circle</span>
-                        <p class="text-body-sm leading-tight text-white">Verifica la reputación del vendedor</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-white" style="font-size: 20px;">location_on</span>
-                        <p class="text-body-sm leading-tight text-white">Realiza tus tratos en lugares públicos</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+        </main>
+    </div>
+
+    @include('partials.footer')
     <script>
         // --- 1. LÓGICA DE IMÁGENES ---
         function removeImage(btn, imageName = null) {

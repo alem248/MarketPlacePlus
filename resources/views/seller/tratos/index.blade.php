@@ -4,135 +4,22 @@
 
 @section('content')
 @php
-    // Total de tratos del vendedor (todos los estados)
-    $totalTratos = $tratos->total();
-
-    // Conteos por estado para los filter chips
+    // Conteos por estado para los filter chips (independiente del filtro activo)
     $cEnDiscusion = $counts['en_discusion']     ?? 0;
     $cAprobado    = $counts['aprobado']          ?? 0;
     $cRecibido    = $counts['recibido']          ?? 0;
-    $cCancelado   = $counts['cancelado']         ?? 0;
+    $totalTratos  = $counts->sum(); // total real, no el de la página actual
+
+    $activeStatus = request('status'); // null = sin filtro
 @endphp
 
 <div class="bg-background text-on-surface font-body-lg">
 
-    {{-- ===================== TOP NAV (estilo vendedor) ===================== --}}
-    <header class="bg-surface-container-lowest border-b border-outline-variant sticky top-0 z-50 w-full">
-        <div class="flex items-center justify-between px-gutter h-16 max-w-container-max mx-auto">
+    @include('partials.seller-navbar')
 
-            {{-- Logo --}}
-            <a href="{{ route('home') }}"
-               class="font-headline-md text-headline-md font-black text-primary tracking-tight">
-                MarketPlace Plus
-            </a>
+    <div class="flex pt-16 min-h-screen">
 
-            {{-- Acciones de la derecha (estilo vendedor: notificación + config + perfil) --}}
-            <div class="flex items-center gap-4">
-                {{-- Notificaciones y ajustes --}}
-                <div class="flex items-center gap-1">
-                    <button class="p-2 rounded-full hover:bg-surface-container-low transition-colors text-primary">
-                        <span class="material-symbols-outlined">notifications</span>
-                    </button>
-                    <button class="p-2 rounded-full hover:bg-surface-container-low transition-colors text-primary">
-                        <span class="material-symbols-outlined">settings</span>
-                    </button>
-                </div>
-
-                {{-- Divisor + nombre + avatar --}}
-                <div class="flex items-center gap-3 pl-4 border-l border-outline-variant">
-                    <div class="text-right hidden md:block">
-                        <p class="text-label-caps font-bold text-on-surface">Vendedor</p>
-                        <p class="text-body-sm text-on-surface-variant">
-                            {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
-                        </p>
-                    </div>
-                    {{-- Avatar con inicial --}}
-                    <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary font-bold border border-outline-variant">
-                        {{ strtoupper(substr(auth()->user()->first_name, 0, 1)) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="flex max-w-container-max mx-auto min-h-[calc(100vh-64px)]">
-
-        {{-- ===================== SIDEBAR VENDEDOR ===================== --}}
-        <aside class="hidden lg:flex flex-col w-[280px] shrink-0 bg-surface-container-lowest border-r border-outline-variant sticky top-[64px] h-[calc(100vh-64px)] overflow-y-auto">
-
-            {{-- Perfil del vendedor --}}
-            <div class="px-6 py-8 flex flex-col items-start gap-3">
-                <div class="flex items-center gap-3">
-                    {{-- Avatar grande con inicial --}}
-                    <div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-on-primary text-xl font-bold border border-outline-variant">
-                        {{ strtoupper(substr(auth()->user()->first_name, 0, 1)) }}
-                    </div>
-                    <div>
-                        <h3 class="text-body-lg font-bold text-primary leading-tight">
-                            {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
-                        </h3>
-                        {{-- Indicador online --}}
-                        <p class="text-xs text-tertiary flex items-center gap-1 mt-0.5">
-                            <span class="w-2 h-2 rounded-full bg-tertiary inline-block"></span>
-                            Vendedor — Online
-                        </p>
-                    </div>
-                </div>
-
-                {{-- Cambiar a cliente: va al panel principal del comprador --}}
-                <a href="{{ route('home') }}"
-                   class="w-full mt-2 py-2 px-4 rounded-xl border-2 border-secondary text-secondary font-bold text-label-caps hover:bg-secondary-fixed/20 transition-colors flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined text-[18px]">swap_horiz</span>
-                    Cambiar a Cliente
-                </a>
-            </div>
-
-            {{-- Menú de navegación --}}
-            <nav class="flex-1 px-2 space-y-1">
-                <a href="{{ route('seller.panel') }}"
-                   class="flex items-center gap-3 mx-2 my-1 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all">
-                    <span class="material-symbols-outlined">dashboard</span>
-                    <span class="text-body-lg">Panel</span>
-                </a>
-
-                <a href="{{ route('seller.products.create') }}"
-                   class="flex items-center gap-3 mx-2 my-1 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all">
-                    <span class="material-symbols-outlined">add_box</span>
-                    <span class="text-body-lg">Crear Publicación</span>
-                </a>
-
-                {{-- Mis Tratos activo --}}
-                <a href="{{ route('seller.tratos.index') }}"
-                   class="flex items-center gap-3 mx-2 my-1 px-4 py-3 bg-primary text-on-primary font-bold rounded-xl shadow-md">
-                    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">handshake</span>
-                    <span class="text-body-lg">Mis Tratos</span>
-                </a>
-
-                <a href="{{ route('proximamente') }}"
-                   class="flex items-center gap-3 mx-2 my-1 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all">
-                    <span class="material-symbols-outlined">local_shipping</span>
-                    <span class="text-body-lg">Delivery</span>
-                </a>
-
-                <a href="{{ route('comprobantes.index') }}"
-                   class="flex items-center gap-3 mx-2 my-1 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all">
-                    <span class="material-symbols-outlined">receipt_long</span>
-                    <span class="text-body-lg">Mis Comprobantes</span>
-                </a>
-            </nav>
-
-            {{-- Cerrar sesión al fondo --}}
-            <div class="border-t border-outline-variant p-4">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit"
-                            class="w-full flex items-center gap-3 px-4 py-3 text-error font-semibold hover:bg-error-container/10 transition-all rounded-xl">
-                        <span class="material-symbols-outlined">logout</span>
-                        Cerrar sesión
-                    </button>
-                </form>
-            </div>
-        </aside>
+        @include('partials.seller-sidebar', ['activeSellerTab' => 'tratos'])
 
         {{-- ===================== CONTENIDO PRINCIPAL ===================== --}}
         <main class="flex-1 p-gutter bg-surface">
@@ -146,21 +33,29 @@
                     </p>
                 </header>
 
-                {{-- ===== FILTER CHIPS ===== --}}
+                {{-- ===== FILTER CHIPS (URL-based: ?status=...) ===== --}}
+                @php
+                    $chipBase = 'px-5 py-2 rounded-full font-label-caps text-label-caps whitespace-nowrap transition-colors';
+                    $chipOn   = 'bg-primary text-on-primary';
+                    $chipOff  = 'bg-surface-container-highest text-on-surface-variant hover:bg-outline-variant';
+                @endphp
                 <div class="flex gap-3 mb-8 overflow-x-auto pb-2">
-                    {{-- "Todos" siempre activo por ahora (el filtrado real se implementa después) --}}
-                    <button class="px-5 py-2 rounded-full bg-primary text-on-primary font-label-caps text-label-caps whitespace-nowrap">
+                    <a href="{{ route('seller.tratos.index') }}"
+                       class="{{ $chipBase }} {{ !$activeStatus ? $chipOn : $chipOff }}">
                         Todos ({{ $totalTratos }})
-                    </button>
-                    <button class="px-5 py-2 rounded-full bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps hover:bg-outline-variant transition-colors whitespace-nowrap">
+                    </a>
+                    <a href="{{ route('seller.tratos.index', ['status' => 'en_discusion']) }}"
+                       class="{{ $chipBase }} {{ $activeStatus === 'en_discusion' ? $chipOn : $chipOff }}">
                         En discusión ({{ $cEnDiscusion }})
-                    </button>
-                    <button class="px-5 py-2 rounded-full bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps hover:bg-outline-variant transition-colors whitespace-nowrap">
+                    </a>
+                    <a href="{{ route('seller.tratos.index', ['status' => 'aprobado']) }}"
+                       class="{{ $chipBase }} {{ $activeStatus === 'aprobado' ? $chipOn : $chipOff }}">
                         Aprobados ({{ $cAprobado }})
-                    </button>
-                    <button class="px-5 py-2 rounded-full bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps hover:bg-outline-variant transition-colors whitespace-nowrap">
+                    </a>
+                    <a href="{{ route('seller.tratos.index', ['status' => 'recibido']) }}"
+                       class="{{ $chipBase }} {{ $activeStatus === 'recibido' ? $chipOn : $chipOff }}">
                         Recibidos ({{ $cRecibido }})
-                    </button>
+                    </a>
                 </div>
 
                 {{-- ===== LISTADO DE TRATOS (tarjetas) ===== --}}
@@ -230,10 +125,12 @@
                                class="flex-grow md:flex-none px-6 py-2.5 bg-secondary-container text-on-primary font-bold rounded-lg hover:brightness-110 active:scale-95 transition-all shadow-sm text-center text-label-caps">
                                 Ver Detalles
                             </a>
-                            {{-- Botón de chat (visual por ahora) --}}
-                            <button class="p-2.5 border border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-container-high transition-colors active:scale-95">
+                            {{-- Acceso directo al chat dentro del detalle del trato --}}
+                            <a href="{{ route('seller.tratos.show', $trato) }}"
+                               class="p-2.5 border border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-container-high transition-colors active:scale-95"
+                               title="Ir al chat de este trato">
                                 <span class="material-symbols-outlined">chat</span>
-                            </button>
+                            </a>
                         </div>
                     </div>
 
@@ -285,55 +182,7 @@
         </main>
     </div>
 
-    {{-- ===================== FOOTER (mismo que el resto del proyecto) ===================== --}}
-    <footer class="w-full mt-gutter bg-inverse-surface">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-gutter py-12 max-w-container-max mx-auto">
-            <div class="md:col-span-1">
-                <span class="text-headline-md font-headline-md font-bold text-on-primary">MarketPlace Plus</span>
-                <p class="text-body-sm text-surface-variant mt-4">La plataforma líder para conectar compradores y vendedores de forma directa y segura.</p>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps text-on-primary mb-6">Enlaces Rápidos</h4>
-                <ul class="flex flex-col gap-3">
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('home') }}">Comprar producto</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('tratos.index') }}">Mis tratos</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Rastrear pedido</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps text-on-primary mb-6">Soporte</h4>
-                <ul class="flex flex-col gap-3">
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Ayuda al cliente</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Sobre nosotros</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Términos y condiciones</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps mb-6 uppercase tracking-wider text-white">Recomendaciones para tus tratos</h4>
-                <div class="flex flex-col gap-4 p-4 rounded-xl">
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white">verified_user</span>
-                        <p class="text-body-sm leading-tight text-white">Verifica la identidad del comprador</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white">location_on</span>
-                        <p class="text-body-sm leading-tight text-white">Realiza tus tratos en lugares públicos</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white">chat_bubble</span>
-                        <p class="text-body-sm leading-tight text-white">Usa WhatsApp para mayor seguridad</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white">security</span>
-                        <p class="text-body-sm leading-tight text-white">No compartas datos bancarios sensibles</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="border-t border-outline/30 py-6 px-gutter max-w-container-max mx-auto text-center">
-            <p class="text-body-sm text-surface-variant/60">Market Place Plus - eCommerce Template © 2026.</p>
-        </div>
-    </footer>
+    @include('partials.footer')
 
 </div>
 @endsection

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="light" lang="es" style="">
+<html class="light" lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -201,6 +201,11 @@
                    href="{{ route('admin.users.index') }}">
                     <span class="material-symbols-outlined">group</span>
                     <span class="font-body-lg">Gestionar Usuarios</span>
+                </a>
+                <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-xl flex items-center px-4 py-3 gap-3 transition-all"
+                   href="{{ route('admin.delivery.index') }}">
+                    <span class="material-symbols-outlined">local_shipping</span>
+                    <span class="font-body-lg">Deliveries</span>
                 </a>
             </nav>
             <div class="pt-4 border-t border-outline-variant">

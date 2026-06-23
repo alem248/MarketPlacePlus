@@ -6,116 +6,13 @@
 <div class="bg-background text-on-surface font-body-lg overflow-x-hidden">
 
     {{-- ===================== TOP NAV ===================== --}}
-    <header class="bg-surface-container-lowest border-b border-outline-variant top-0 w-full z-50 sticky">
-        <div class="flex items-center justify-between w-full max-w-container-max mx-auto px-margin-mobile py-4 gap-gutter">
-
-            {{-- Logo --}}
-            <a href="{{ route('home') }}"
-               class="text-headline-lg font-headline-lg text-primary tracking-tight shrink-0">
-                MarketPlace Plus
-            </a>
-
-            {{-- Buscador --}}
-            <div class="flex-1 max-w-2xl relative hidden md:block">
-                <input class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-6 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
-                       placeholder="¿Qué vamos a comprar hoy?" type="text">
-                <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-            </div>
-
-            {{-- Iconos de navegación --}}
-            <div class="flex items-center gap-6 text-primary">
-                <a href="{{ route('home') }}" class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
-                    <span class="material-symbols-outlined">home</span>
-                </a>
-                <a href="{{ route('proximamente') }}" class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
-                    <span class="material-symbols-outlined">favorite</span>
-                </a>
-                {{-- Handshake activo (lleno) porque estamos en Mis Tratos --}}
-                <a href="{{ route('tratos.index') }}" class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
-                    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">handshake</span>
-                </a>
-                {{-- Avatar con inicial del nombre --}}
-                <div class="p-1 border border-outline-variant rounded-full">
-                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary text-sm font-bold">
-                        {{ strtoupper(substr(auth()->user()->first_name, 0, 1)) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+    @include('partials.client-navbar')
 
     {{-- ===================== LAYOUT PRINCIPAL ===================== --}}
-    <div class="flex max-w-container-max mx-auto min-h-[calc(100vh-80px)]">
+    <div class="flex max-w-container-max mx-auto min-h-[calc(100vh-64px)]">
 
         {{-- ===================== SIDEBAR ===================== --}}
-        <aside class="hidden lg:flex flex-col p-6 gap-6 bg-surface-container-lowest border-r border-outline-variant w-[280px] shrink-0 sticky top-[80px] h-[calc(100vh-80px)] overflow-y-auto">
-
-            {{-- Foto y nombre del usuario --}}
-            <div class="flex flex-col items-center text-center gap-2">
-                <div class="relative w-24 h-24">
-                    {{-- Usamos inicial ya que no hay foto de perfil implementada aún --}}
-                    <div class="w-full h-full rounded-xl border-2 border-primary bg-primary flex items-center justify-center text-on-primary text-4xl font-bold">
-                        {{ strtoupper(substr(auth()->user()->first_name, 0, 1)) }}
-                    </div>
-                    {{-- Indicador de estado en línea --}}
-                    <div class="absolute bottom-1 right-1 w-4 h-4 bg-tertiary-container border-2 border-white rounded-full"></div>
-                </div>
-                <div>
-                    <h3 class="text-headline-md font-bold text-primary">
-                        {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
-                    </h3>
-                    <p class="text-body-sm text-on-surface-variant">Comprador</p>
-                </div>
-            </div>
-
-            {{-- Botón cambiar a modo vendedor --}}
-            <a href="{{ route('seller.panel') }}"
-               class="w-full bg-secondary-container text-on-secondary-container font-bold py-3 rounded-lg flex items-center justify-center gap-2 shadow-sm hover:opacity-90 transition-all">
-                <span class="material-symbols-outlined">sync</span>
-                Cambiar a Vendedor
-            </a>
-
-            {{-- Menú de navegación lateral --}}
-            <nav class="flex flex-col gap-1">
-                {{-- Panel del comprador: va al home (catálogo principal del comprador) --}}
-                <a href="{{ route('home') }}"
-                   class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all rounded-lg">
-                    <span class="material-symbols-outlined">dashboard</span>
-                    <span class="font-medium">Panel</span>
-                </a>
-
-                {{-- Mis Tratos activo --}}
-                <a href="{{ route('tratos.index') }}"
-                   class="flex items-center gap-4 px-4 py-3 bg-primary text-on-primary font-bold rounded-lg shadow-md">
-                    <span class="material-symbols-outlined">handshake</span>
-                    <span class="font-bold">Mis Tratos</span>
-                </a>
-
-                <a href="{{ route('proximamente') }}"
-                   class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all rounded-lg">
-                    <span class="material-symbols-outlined">local_shipping</span>
-                    <span class="font-medium">Delivery</span>
-                </a>
-
-                <a href="{{ route('comprobantes.index') }}"
-                   class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all rounded-lg">
-                    <span class="material-symbols-outlined">receipt_long</span>
-                    <span class="font-medium">Mis Comprobantes</span>
-                </a>
-            </nav>
-
-            {{-- Cerrar sesión al fondo del sidebar --}}
-            <div class="mt-auto pt-6 border-t border-outline-variant">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit"
-                            class="w-full flex items-center gap-4 px-4 py-3 text-error font-semibold hover:bg-error-container/10 transition-all rounded-lg">
-                        <span class="material-symbols-outlined">logout</span>
-                        Cerrar sesión
-                    </button>
-                </form>
-            </div>
-        </aside>
+        @include('partials.client-sidebar', ['activeClientTab' => 'tratos'])
 
         {{-- ===================== CONTENIDO PRINCIPAL ===================== --}}
         <main class="flex-1 p-gutter bg-surface-bright">
@@ -140,47 +37,22 @@
                 </div>
 
                 {{-- Barra de progreso de estados (decorativa — muestra el flujo completo) --}}
+                {{-- Guía visual del flujo de compra (informativo, no indica estado actual) --}}
                 <div class="flex-1 max-w-lg w-full">
                     <p class="text-center text-label-caps font-label-caps text-on-surface-variant mb-6 tracking-widest">
-                        -- ESTADOS DE COMPRAS --
+                        -- FLUJO DE COMPRA --
                     </p>
                     <div class="relative flex items-center justify-between px-4">
-                        {{-- Línea base gris de fondo --}}
-                        <div class="absolute h-0.5 w-[calc(100%-32px)] bg-surface-container-high top-1/2 -translate-y-1/2 z-0 left-4"></div>
-                        {{-- Línea de progreso naranja (75% = hasta "Aprobado") --}}
-                        <div class="absolute h-0.5 w-[75%] bg-secondary top-1/2 -translate-y-1/2 z-0 left-4"></div>
+                        <div class="absolute h-0.5 w-[calc(100%-32px)] bg-secondary-container/40 top-1/2 -translate-y-1/2 z-0 left-4"></div>
 
-                        {{-- Paso 1: Pedido Realizado --}}
+                        @foreach([['assignment','Pedido'],['forum','Discusión'],['verified','Aprobado'],['inventory_2','Recibido']] as $step)
                         <div class="relative z-10 flex flex-col items-center gap-2">
-                            <div class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center">
-                                <span class="material-symbols-outlined text-[18px]">assignment</span>
+                            <div class="w-8 h-8 rounded-full bg-secondary-container/30 text-secondary flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[18px]">{{ $step[0] }}</span>
                             </div>
-                            <span class="text-[10px] font-bold text-center uppercase whitespace-nowrap">Pedido realizado</span>
+                            <span class="text-[10px] font-bold text-center uppercase whitespace-nowrap text-on-surface-variant">{{ $step[1] }}</span>
                         </div>
-
-                        {{-- Paso 2: En Discusión --}}
-                        <div class="relative z-10 flex flex-col items-center gap-2">
-                            <div class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center">
-                                <span class="material-symbols-outlined text-[18px]">forum</span>
-                            </div>
-                            <span class="text-[10px] font-bold text-center uppercase whitespace-nowrap">En discusión</span>
-                        </div>
-
-                        {{-- Paso 3: Aprobado (resaltado como estado actual) --}}
-                        <div class="relative z-10 flex flex-col items-center gap-2">
-                            <div class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center">
-                                <span class="material-symbols-outlined text-[18px]">check_box</span>
-                            </div>
-                            <span class="text-[10px] font-bold text-center uppercase whitespace-nowrap text-secondary">Aprobado</span>
-                        </div>
-
-                        {{-- Paso 4: Recibido (pendiente, opaco) --}}
-                        <div class="relative z-10 flex flex-col items-center gap-2 opacity-30">
-                            <div class="w-8 h-8 rounded-full bg-outline-variant flex items-center justify-center">
-                                <span class="material-symbols-outlined text-[18px]">inventory_2</span>
-                            </div>
-                            <span class="text-[10px] font-bold text-center uppercase whitespace-nowrap">Recibido</span>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -243,12 +115,11 @@
                                             </div>
                                         @endif
                                         <div>
-                                            {{-- Mostramos los primeros 80 caracteres de la descripción --}}
                                             <p class="text-body-sm font-semibold mb-1">
-                                                {{ Str::limit($trato->product->description, 80) }}
+                                                {{ $trato->product->title }}
                                             </p>
                                             <span class="text-[11px] text-on-surface-variant font-medium">
-                                                SKU: {{ $trato->sku ?? 'N/A' }}
+                                                {{ Str::limit($trato->product->description, 60) }}
                                             </span>
                                         </div>
                                     </div>
@@ -326,55 +197,7 @@
         </main>
     </div>
 
-    {{-- ===================== FOOTER ===================== --}}
-    <footer class="w-full mt-gutter bg-inverse-surface">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-gutter py-12 max-w-container-max mx-auto">
-            <div class="md:col-span-1">
-                <span class="text-headline-md font-headline-md font-bold text-on-primary">MarketPlace Plus</span>
-                <p class="text-body-sm text-surface-variant mt-4">La plataforma líder para conectar compradores y vendedores de forma directa y segura.</p>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps text-on-primary mb-6">Enlaces Rápidos</h4>
-                <ul class="flex flex-col gap-3">
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('home') }}">Comprar producto</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('tratos.index') }}">Mis tratos</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Rastrear pedido</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps text-on-primary mb-6">Soporte</h4>
-                <ul class="flex flex-col gap-3">
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Ayuda al cliente</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Sobre nosotros</a></li>
-                    <li><a class="text-body-sm text-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Términos y condiciones</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps mb-6 uppercase tracking-wider text-white">Recomendaciones para tus tratos</h4>
-                <div class="flex flex-col gap-4 p-4 rounded-xl">
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white">verified_user</span>
-                        <p class="text-body-sm leading-tight text-white">Verifica la reputación del vendedor</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white">location_on</span>
-                        <p class="text-body-sm leading-tight text-white">Realiza tus tratos en lugares públicos</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white">chat_bubble</span>
-                        <p class="text-body-sm leading-tight text-white">Usa WhatsApp para mayor seguridad</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white">security</span>
-                        <p class="text-body-sm leading-tight text-white">No compartas datos bancarios sensibles</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="border-t border-outline/30 py-6 px-gutter max-w-container-max mx-auto text-center">
-            <p class="text-body-sm text-surface-variant/60">Market Place Plus - eCommerce Template © 2026.</p>
-        </div>
-    </footer>
+    @include('partials.footer')
 
 </div>
 @endsection

@@ -156,140 +156,18 @@
 </head>
 
 <body class="text-on-background">
-    <!-- TopNavBar -->
-    <header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline sticky top-0 z-50">
-        <div class="flex justify-between items-center w-full px-margin-mobile md:px-gutter py-2 max-w-container-max mx-auto h-16">
-            <div class="flex items-center gap-6">
-                <span class="text-headline-md font-headline-md font-bold text-primary dark:text-inverse-primary cursor-pointer">MarketPlace Plus</span>
-                <div class="hidden md:flex items-center bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant w-96">
-                    <span class="material-symbols-outlined text-outline mr-2" data-icon="search">search</span>
-                    <input class="bg-transparent border-none focus:ring-0 text-body-sm w-full" placeholder="¿Qué vas a comprar hoy?" type="text">
-                </div>
-            </div>
-            <nav class="flex items-center gap-6">
-                <div class="hidden md:flex gap-4">
-                    <a href="{{ route('home') }}" class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-caps font-label-caps flex items-center gap-1 active:scale-95 duration-150">
-                        <span class="material-symbols-outlined text-[20px]" data-icon="home">home</span>
-                    </a>
-                    <a href="{{ route('proximamente') }}" class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-caps font-label-caps flex items-center gap-1 active:scale-95 duration-150">
-                        <span class="material-symbols-outlined text-[20px]" data-icon="favorite">favorite</span>
-                    </a>
-                    <a href="{{ route('tratos.index') }}" class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-caps font-label-caps flex items-center gap-1 active:scale-95 duration-150">
-                        <span class="material-symbols-outlined text-[20px]" data-icon="handshake">handshake</span>
-                    </a>
-                </div>
-                <div class="flex items-center gap-3 border-l pl-6 border-outline-variant">
-                    @auth
-                    <img alt="User Profile" class="w-8 h-8 rounded-full border border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKE6DBzVhu_JwP93s-Ym6TVG7tOYSGuYclbZnEH-KDA37hRFacmAPd2A9WnHtIyjWBvGVMTO90Xk0RM3qIpTyB32f6oNhOviuZpzZUm3q1dq-0fbhidDoCkZiThytJL3XYG8DXQ6HZ0KM8TFaM_B74c-Xii2wyl3P_ARGbncPmp0xp6x--QNEqbJQ7LOpDwNXxG4M_d2NoEbPheULCfl7-bxfCYlc2sJTtpV2iWJMZvSg8-y7NLvcpnX0P2tvTnPSFZzdk2PhJyHw">
-                    <span class="hidden md:block text-label-caps font-label-caps text-primary">
-                        {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
-                    </span>
-                    @else
-                    <a href="{{ route('login') }}" class="flex items-center gap-2 text-body-md font-semibold text-primary hover:underline">
-                        <span class="material-symbols-outlined text-base">account_circle</span>
-                        Invitado (Para ver esta zona, inicia sesión)
-                    </a>
-                    @endauth
-                </div>
-            </nav>
-        </div>
-    </header>
+    @include('partials.client-navbar')
     <div class="max-w-container-max mx-auto flex">
-        <!-- SideNavBar -->
-        <aside class="hidden lg:flex flex-col h-[calc(100vh-64px)] w-sidebar-width p-base gap-gutter bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline sticky top-16 overflow-y-auto sidebar-scroll">
-            @auth
-            <div class="flex flex-col items-center gap-3 mb-4">
-                <div class="relative">
-                    @if(!empty(auth()->user()->foto))
-                    <img alt="Avatar del Comprador" class="w-24 h-24 rounded-full object-cover border-2 border-primary" src="{{ asset('storage/' . auth()->user()->foto) }}">
-                    @else
-                    <img alt="Avatar por defecto" class="w-24 h-24 rounded-full object-cover border-2 border-primary" src="{{ asset('img/icon_default.jpg') }}">
-                    @endif
-                    <div class="absolute bottom-1 right-1 w-5 h-5 bg-tertiary-fixed rounded-full border-2 border-surface-container-lowest"></div>
-                </div>
-                <div class="text-center">
-                    <h2 class="text-headline-md font-headline-md font-bold text-primary">
-                        {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
-                    </h2>
-                    <p class="text-body-sm text-outline">Cliente</p>
-                </div>
-            </div>
-            @else
-            <div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant text-center mb-4 custom-shadow">
-                <span class="material-symbols-outlined text-[40px] text-secondary mb-2 inline-block">rocket_launch</span>
-                <h3 class="font-headline-md text-on-surface mb-1 text-sm font-bold">¡Únete a la comunidad!</h3>
-                <p class="text-body-sm text-on-surface-variant mb-4">
-                    Regístrate para publicar productos, gestionar tus compras y conectar de forma segura.
-                </p>
-                <div class="space-y-2">
-                    <a href="{{ route('register') }}" class="block w-full py-2 bg-primary text-on-primary font-semibold rounded-lg text-body-sm hover:brightness-110 transition-all">
-                        Crear cuenta nueva
-                    </a>
-                    <a href="{{ route('login') }}" class="block w-full py-2 bg-surface-container border border-outline-variant text-on-surface font-semibold rounded-lg text-body-sm hover:bg-surface-container-high transition-all">
-                        Ingresar
-                    </a>
-                </div>
-            </div>
-            @endauth
-            <a href="{{ route('seller.panel') }}" class="w-full block text-center py-3 px-4 bg-[#003178] text-white rounded-2xl font-bold transition-all hover:brightness-110">
-                Cambiar a Vendedor
-            </a>
-            <nav class="flex flex-col gap-1">
-                <a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container font-bold rounded-xl transition-all translate-x-1 duration-200" href="{{ route('home') }}">
-                    <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-                    <span class="text-body-lg font-body-lg">Panel</span>
-                </a>
-                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="{{ route('tratos.index') }}">
-                    <span class="material-symbols-outlined" data-icon="handshake">handshake</span>
-                    <span class="text-body-lg font-body-lg">Mis Tratos</span>
-                </a>
-                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="{{ route('proximamente') }}">
-                    <span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
-                    <span class="text-body-lg font-body-lg">Delivery</span>
-                </a>
-                <a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-xl transition-all" href="{{ route('comprobantes.index') }}">
-                    <span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
-                    <span class="text-body-lg font-body-lg">Mis Comprobantes</span>
-                </a>
-                <div class="my-4 border-t border-outline-variant"></div>
-                <form action="{{ route('logout') }}" method="POST" class="w-full">
-                    @csrf
-                    <button type="submit" class="flex items-center gap-2 w-full px-4 py-2 text-body-sm text-error hover:bg-error/10 rounded-lg text-left">
-                        <span class="material-symbols-outlined text-base" data-icon="logout">logout</span>
-                        Cerrar sesión
-                    </button>
-                </form>
-                <form id="logout-form" action="{{ route('login') }}" method="POST" class="hidden">
-                    @csrf
-                </form>
-            </nav>
-            <!-- Publicidad Widget: usa el segundo banner activo de la base de datos -->
-            @php
-                $sideBanner  = $banners->get(1);
-                $sideImgSrc  = null;
-                if ($sideBanner?->image_path) {
-                    $sideImgSrc = Str::startsWith($sideBanner->image_path, 'http')
-                        ? $sideBanner->image_path
-                        : Storage::url($sideBanner->image_path);
-                }
-            @endphp
-            <div class="mt-auto rounded-xl overflow-hidden relative group min-h-[180px] bg-inverse-surface text-on-primary">
-                @if($sideImgSrc)
-                    <img alt="{{ $sideBanner->title }}"
-                         class="absolute inset-0 w-full h-full object-cover object-center opacity-50 group-hover:scale-110 transition-transform duration-700"
-                         src="{{ $sideImgSrc }}">
-                @endif
-                <div class="relative z-10 p-4 flex flex-col h-full min-h-[180px]">
-                    <span class="text-[10px] font-bold uppercase tracking-widest opacity-70">Publicidad</span>
-                    <h3 class="text-headline-md font-bold mt-1">{{ $sideBanner?->title ?? 'Oferta Especial' }}</h3>
-                    <p class="text-body-sm mt-2 opacity-80">Nuevos modelos Nike Air ya disponibles.</p>
-                    <a href="{{ $sideBanner?->link_url ?? '#' }}" target="_blank" rel="noopener"
-                       class="mt-4 self-start px-4 py-1.5 border border-white rounded-full text-label-caps hover:bg-white hover:text-primary transition-colors">
-                        Ver más
-                    </a>
-                </div>
-            </div>
-        </aside>
+        @php
+            $sideBanner = $banners->get(1);
+            $sideImgSrc = null;
+            if ($sideBanner?->image_path) {
+                $sideImgSrc = Str::startsWith($sideBanner->image_path, 'http')
+                    ? $sideBanner->image_path
+                    : Storage::url($sideBanner->image_path);
+            }
+        @endphp
+        @include('partials.client-sidebar', ['activeClientTab' => 'panel', 'sideBanner' => $sideBanner, 'sideImgSrc' => $sideImgSrc])
         <!-- Main Content -->
         <main class="flex-1 min-w-0 p-4 md:p-gutter">
             <!-- Hero Banner: usa el primer banner activo de la base de datos -->
@@ -327,10 +205,11 @@
                 <h2 class="text-headline-md font-headline-md text-primary">Catálogo Destacado</h2>
                 <div class="flex items-center gap-2">
                     <span class="text-body-sm text-outline">Ordenar por:</span>
-                    <select class="bg-surface-container-low border-none text-body-sm rounded-lg focus:ring-primary py-1 px-3">
-                        <option>Más recientes</option>
-                        <option>Menor precio</option>
-                        <option>Mayor precio</option>
+                    <select onchange="const u=new URL(window.location);u.searchParams.set('sort',this.value);u.searchParams.delete('page');window.location=u"
+                            class="bg-surface-container-low border-none text-body-sm rounded-lg focus:ring-primary py-1 px-3">
+                        <option value="latest"     {{ request('sort','latest')==='latest'     ? 'selected' : '' }}>Más recientes</option>
+                        <option value="price_asc"  {{ request('sort')==='price_asc'           ? 'selected' : '' }}>Menor precio</option>
+                        <option value="price_desc" {{ request('sort')==='price_desc'          ? 'selected' : '' }}>Mayor precio</option>
                     </select>
                 </div>
             </div>
@@ -382,56 +261,7 @@
             </div>
         </main>
     </div>
-    <!-- Footer -->
-    <footer class="w-full mt-gutter bg-inverse-surface dark:bg-surface-container-lowest">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-gutter py-12 max-w-container-max mx-auto">
-            <div class="md:col-span-1">
-                <span class="text-headline-md font-headline-md font-bold text-on-primary dark:text-primary">MarketPlace Plus</span>
-                <p class="text-body-sm text-surface-variant dark:text-on-surface-variant mt-4">La plataforma líder para conectar compradores y vendedores de forma directa y segura.</p>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Enlaces Rápidos</h4>
-                <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('home') }}">Comprar producto</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('tratos.index') }}">Mis tratos</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Rastrear pedido</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-label-caps font-label-caps text-on-primary dark:text-primary mb-6">Soporte</h4>
-                <ul class="flex flex-col gap-3">
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Ayuda al cliente</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Sobre nosotros</a></li>
-                    <li class=""><a class="text-body-sm text-surface-variant dark:text-on-surface-variant hover:text-on-primary transition-colors" href="{{ route('proximamente') }}">Términos y condiciones</a></li>
-                </ul>
-            </div>
-
-            <div class="md:col-span-1">
-                <h4 class="text-label-caps font-label-caps mb-6 uppercase tracking-wider text-white">Recomendaciones para tus tratos</h4>
-                <div class="flex flex-col gap-4 p-4 rounded-xl">
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white" data-icon="verified_user">verified_user</span>
-                        <p class="text-body-sm leading-tight text-white">Verifica la reputación del vendedor</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white" data-icon="location_on">location_on</span>
-                        <p class="text-body-sm leading-tight text-white">Realiza tus tratos en lugares públicos</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white" data-icon="chat_bubble">chat_bubble</span>
-                        <p class="text-body-sm leading-tight text-white">Usa WhatsApp para mayor seguridad</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-base text-white" data-icon="security">security</span>
-                        <p class="text-body-sm leading-tight text-white">No compartas datos bancarios sensibles</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="border-t border-outline/30 py-6 px-gutter max-w-container-max mx-auto text-center">
-            <p class="text-body-sm text-surface-variant/60">Market Place Plus - eCommerce Template © 2026. Design by Templatecookie</p>
-        </div>
-    </footer>
+    @include('partials.footer')
     <script>
         // Micro-interactions and effects
         document.querySelectorAll('.product-card-hover').forEach(card => {

@@ -107,6 +107,10 @@
         }
         body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
 
+        .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+        .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 10px; }
+
         /* Badge "Próximamente" */
         .btn-soon {
             position: relative;
