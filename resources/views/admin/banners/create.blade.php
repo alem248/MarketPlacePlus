@@ -13,13 +13,13 @@
     <h1 class="font-headline-lg text-headline-lg text-on-surface mb-8">Nuevo Banner</h1>
 
     @if($errors->any())
-        <div class="mb-6 p-4 bg-error-container text-on-error-container rounded-xl space-y-1">
-            @foreach($errors->all() as $e)
-                <p class="text-body-sm flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[16px]">error</span>{{ $e }}
-                </p>
-            @endforeach
-        </div>
+    <div class="mb-6 p-4 bg-error-container text-on-error-container rounded-xl space-y-1">
+        @foreach($errors->all() as $e)
+        <p class="text-body-sm flex items-center gap-2">
+            <span class="material-symbols-outlined text-[16px]">error</span>{{ $e }}
+        </p>
+        @endforeach
+    </div>
     @endif
 
     <form action="{{ route('admin.banners.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
@@ -46,15 +46,32 @@
                 class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg">
         </div>
 
-        <div>
-            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">IMAGEN DEL BANNER</label>
-            <label class="border-2 border-dashed border-outline-variant rounded-xl p-8 text-center hover:bg-surface-container-low transition-colors cursor-pointer group block">
-                <span class="material-symbols-outlined text-4xl text-outline-variant group-hover:text-primary transition-colors">cloud_upload</span>
-                <p class="mt-2 font-body-lg font-bold text-on-surface">Haz clic para subir</p>
-                <p class="text-on-surface-variant text-sm">JPG, WebP, PNG — Máx. 5MB — Ideal: 1200×450px</p>
-                <input type="file" name="image" accept="image/*" class="hidden">
-            </label>
-        </div>
+        <section class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
+            <div class="flex items-center gap-2 mb-4 text-primary">
+                <span class="material-symbols-outlined">photo_library</span>
+                <h2 class="font-headline-md text-headline-md">Imagen del Banner</h2>
+            </div>
+
+            <p id="banner-error-msg" class="hidden text-red-600 text-sm font-bold mb-4 bg-red-50 p-3 rounded-lg border border-red-200">
+                Archivo no compatible, solo utilice los formatos disponibles (JPG, PNG).
+            </p>
+
+            <div id="banner-gallery-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <label id="banner-upload-box" for="banner-image-input" class="border-2 border-dashed border-outline-variant rounded-xl aspect-square flex flex-col items-center justify-center text-center hover:bg-surface-container-low transition-colors cursor-pointer group p-4 relative overflow-hidden">
+                    <input type="file" id="banner-image-input" name="image" accept="image/jpeg, image/png" class="hidden">
+
+                    <div id="upload-preview" class="hidden absolute inset-0 w-full h-full">
+                        <img id="preview-img" class="w-full h-full object-cover" src="">
+                    </div>
+
+                    <div id="upload-instructions" class="flex flex-col items-center justify-center">
+                        <span id="banner-upload-icon" class="material-symbols-outlined text-3xl text-outline-variant group-hover:text-primary transition-colors">cloud_upload</span>
+                        <p id="banner-upload-text" class="mt-2 text-xs font-bold text-on-surface">Subir banner</p>
+                        <p id="banner-upload-subtext" class="text-on-surface-variant text-[10px] mt-0.5">JPG, PNG (Max. 5MB)<br>Ideal: 1200×450px</p>
+                    </div>
+                </label>
+            </div>
+        </section>
 
         <div class="flex gap-4 pt-4">
             <a href="{{ route('admin.banners.index') }}"
@@ -68,4 +85,35 @@
         </div>
     </form>
 </div>
+<script>
+    document.getElementById('banner-image-input').addEventListener('change', function(event) {
+        const errorMsg = document.getElementById('banner-error-msg');
+        const allowedTypes = ['image/jpeg', 'image/png'];
+        const preview = document.getElementById('upload-preview');
+        const previewImg = document.getElementById('preview-img');
+        const instructions = document.getElementById('upload-instructions');
+        
+        if (this.files.length > 0) {
+            const file = this.files[0];
+            
+            if (!allowedTypes.includes(file.type)) {
+                errorMsg.classList.remove('hidden');
+                this.value = '';
+                preview.classList.add('hidden');
+                instructions.classList.remove('hidden');
+                return;
+            }
+            
+            errorMsg.classList.add('hidden');
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                preview.classList.remove('hidden');
+                instructions.classList.add('hidden');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 @endsection

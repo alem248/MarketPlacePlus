@@ -53,26 +53,47 @@
             <label for="is_active" class="font-body-lg cursor-pointer">Banner activo (visible en la tienda)</label>
         </div>
 
-        {{-- Imagen actual --}}
-        @if($banner->image_path)
-        <div>
-            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">IMAGEN ACTUAL</label>
-            <img src="{{ asset('storage/' . $banner->image_path) }}" alt="{{ $banner->title }}"
-                 class="w-full max-h-48 object-cover rounded-xl border border-outline-variant">
-        </div>
-        @endif
+        {{-- Nueva Sección Multimedia Adaptada --}}
+        <section class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
+            <div class="flex items-center gap-2 mb-4 text-primary">
+                <span class="material-symbols-outlined">photo_library</span>
+                <h2 class="font-headline-md text-headline-md">Multimedia</h2>
+            </div>
 
-        <div>
-            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">
-                {{ $banner->image_path ? 'REEMPLAZAR IMAGEN (opcional)' : 'IMAGEN DEL BANNER' }}
-            </label>
-            <label class="border-2 border-dashed border-outline-variant rounded-xl p-6 text-center hover:bg-surface-container-low transition-colors cursor-pointer group block">
-                <span class="material-symbols-outlined text-3xl text-outline-variant group-hover:text-primary transition-colors">cloud_upload</span>
-                <p class="mt-1 font-body-sm font-bold text-on-surface">Haz clic para cambiar la imagen</p>
-                <p class="text-on-surface-variant text-sm">JPG, WebP, PNG — Máx. 5MB</p>
-                <input type="file" name="image" accept="image/*" class="hidden">
-            </label>
-        </div>
+            <p id="edit-banner-error-msg" class="hidden text-red-600 text-sm font-bold mb-4 bg-red-50 p-3 rounded-lg border border-red-200">
+                Archivo no compatible, solo utilice los formatos disponibles (JPG, PNG).
+            </p>
+
+            {{-- Imagen actual --}}
+            @if($banner->image_path)
+            <div class="mb-6">
+                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">IMAGEN ACTUAL</label>
+                <img src="{{ asset('storage/' . $banner->image_path) }}" alt="{{ $banner->title }}"
+                     class="w-full max-h-48 object-cover rounded-xl border border-outline-variant">
+            </div>
+            @endif
+
+            <div>
+                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">
+                    {{ $banner->image_path ? 'REEMPLAZAR IMAGEN (opcional)' : 'IMAGEN DEL BANNER' }}
+                </label>
+                <div class="grid grid-cols-1 gap-4">
+                    <label for="edit-banner-image-input" class="border-2 border-dashed border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center text-center hover:bg-surface-container-low transition-colors cursor-pointer group relative overflow-hidden">
+                        <input type="file" id="edit-banner-image-input" name="image" accept="image/jpeg, image/png" class="hidden">
+                        
+                        <div id="edit-upload-preview" class="hidden absolute inset-0 w-full h-full">
+                            <img id="edit-preview-img" class="w-full h-full object-cover" src="">
+                        </div>
+
+                        <div id="edit-upload-instructions" class="flex flex-col items-center justify-center">
+                            <span class="material-symbols-outlined text-4xl text-outline-variant group-hover:text-primary transition-colors">cloud_upload</span>
+                            <p class="mt-2 font-body-lg font-bold text-on-surface">Haz clic para cambiar la imagen</p>
+                            <p class="text-on-surface-variant text-sm mt-1">JPG, PNG (Max. 5MB)<br>Ideal: 1200×450px</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
 
         <div class="flex gap-4 pt-4">
             <a href="{{ route('admin.banners.index') }}"
@@ -86,4 +107,36 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.getElementById('edit-banner-image-input').addEventListener('change', function(event) {
+        const errorMsg = document.getElementById('edit-banner-error-msg');
+        const allowedTypes = ['image/jpeg', 'image/png'];
+        const preview = document.getElementById('edit-upload-preview');
+        const previewImg = document.getElementById('edit-preview-img');
+        const instructions = document.getElementById('edit-upload-instructions');
+        
+        if (this.files.length > 0) {
+            const file = this.files[0];
+            
+            if (!allowedTypes.includes(file.type)) {
+                errorMsg.classList.remove('hidden');
+                this.value = '';
+                preview.classList.add('hidden');
+                instructions.classList.remove('hidden');
+                return;
+            }
+            
+            errorMsg.classList.add('hidden');
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                preview.classList.remove('hidden');
+                instructions.classList.add('hidden');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 @endsection
