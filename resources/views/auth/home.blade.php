@@ -158,6 +158,13 @@
 <body class="text-on-background">
     @include('partials.client-navbar')
     <div class="max-w-container-max mx-auto flex">
+        {{-- ============================================================
+             ZONA DE PUBLICIDAD #2 — BANNER LATERAL (SIDEBAR)
+             Muestra el segundo banner activo de la base de datos (banners[1]).
+             Se pasa al sidebar via $sideBanner y se renderiza en:
+             resources/views/partials/client-sidebar.blade.php
+             Se gestiona desde el panel admin en: Admin > Banners.
+        ============================================================ --}}
         @php
             $sideBanner = $banners->get(1);
             $sideImgSrc = null;
@@ -170,6 +177,12 @@
         @include('partials.client-sidebar', ['activeClientTab' => 'panel', 'sideBanner' => $sideBanner, 'sideImgSrc' => $sideImgSrc])
         <!-- Main Content -->
         <main class="flex-1 min-w-0 p-4 md:p-gutter">
+            {{-- ============================================================
+                 ZONA DE PUBLICIDAD #1 — BANNER PRINCIPAL (HERO BANNER)
+                 Muestra el primer banner activo de la base de datos (banners[0]).
+                 Se gestiona desde el panel admin en: Admin > Banners.
+                 Aquí aparece la imagen de fondo, título y botón "Comprar Ahora".
+            ============================================================ --}}
             <!-- Hero Banner: usa el primer banner activo de la base de datos -->
             @php
                 $heroBanner   = $banners->get(0);
