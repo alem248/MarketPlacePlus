@@ -5,6 +5,11 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Delivery - Market Place Plus</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('img/icon.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/icon.png') }}">
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -49,8 +54,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
     </style>
-</head>
-<body class="bg-background text-on-surface">
+</head><body class="bg-background text-on-surface">
 
     @include('partials.seller-navbar')
 

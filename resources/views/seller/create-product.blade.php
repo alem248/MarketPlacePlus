@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Crear Publicación - Market Place Plus</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('img/icon.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/icon.png') }}">
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
@@ -145,7 +149,6 @@
         }
     </script>
 </head>
-
 <body class="bg-background text-on-surface min-h-screen flex flex-col">
     @include('partials.seller-navbar')
     <div class="flex flex-1 pt-16">

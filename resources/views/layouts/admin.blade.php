@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin') | Market Place Plus</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('img/icon.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/icon.png') }}">
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">

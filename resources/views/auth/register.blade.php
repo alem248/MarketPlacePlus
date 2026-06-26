@@ -5,6 +5,11 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Registro | MarketPlace Plus</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('img/icon.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/icon.png') }}">
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
@@ -141,7 +146,6 @@
         }
     </style>
 </head>
-
 <body class="bg-surface text-on-surface flex flex-col min-h-screen">
     <!-- Simple Top Bar for Registration (Suppressed Nav) -->
     <header class="w-full bg-surface-container-lowest border-b border-outline-variant py-4 px-6 md:px-gutter">

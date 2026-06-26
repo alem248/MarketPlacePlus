@@ -29,19 +29,20 @@
         <div>
             <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">ZONA DE PUBLICIDAD <span class="text-error">*</span></label>
             <div class="grid grid-cols-2 gap-3">
+                @php $currentZone = old('zone', 'hero'); @endphp
                 <label class="flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all
-                    {{ old('zone', 'hero') === 'hero' ? 'border-primary bg-primary/5' : 'border-outline-variant hover:border-primary/40' }}">
+                    {{ $currentZone === 'hero' ? 'border-primary bg-primary/5' : 'border-outline-variant hover:border-primary/40' }}">
                     <input type="radio" name="zone" value="hero" class="accent-primary"
-                        {{ old('zone', 'hero') === 'hero' ? 'checked' : '' }} required>
+                        {{ $currentZone === 'hero' ? 'checked' : '' }} required>
                     <div>
                         <p class="font-bold text-on-surface text-body-sm">Banner Principal</p>
                         <p class="text-[11px] text-on-surface-variant mt-0.5">Zona hero, sobre el catálogo</p>
                     </div>
                 </label>
                 <label class="flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all
-                    {{ old('zone') === 'sidebar' ? 'border-primary bg-primary/5' : 'border-outline-variant hover:border-primary/40' }}">
+                    {{ $currentZone === 'sidebar' ? 'border-primary bg-primary/5' : 'border-outline-variant hover:border-primary/40' }}">
                     <input type="radio" name="zone" value="sidebar" class="accent-primary"
-                        {{ old('zone') === 'sidebar' ? 'checked' : '' }}>
+                        {{ $currentZone === 'sidebar' ? 'checked' : '' }}>
                     <div>
                         <p class="font-bold text-on-surface text-body-sm">Banner Lateral</p>
                         <p class="text-[11px] text-on-surface-variant mt-0.5">Zona sidebar, panel izquierdo</p>
@@ -54,7 +55,7 @@
         </div>
 
         <div>
-            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">TÍTULO DEL BANNER</label>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">TÍTULO DEL BANNER <span class="text-error">*</span></label>
             <input name="title" type="text" value="{{ old('title') }}" required
                 class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg"
                 placeholder="Ej: Campaña de Verano 2026">
@@ -82,30 +83,45 @@
                 class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg">
         </div>
 
+        {{-- Estado activo/inactivo --}}
+        <div class="flex items-center gap-3 p-4 bg-surface-container rounded-xl">
+            <input type="hidden" name="is_active" value="0">
+            <input type="checkbox" id="is_active" name="is_active" value="1"
+                   {{ old('is_active', true) ? 'checked' : '' }}
+                   class="w-5 h-5 accent-primary cursor-pointer">
+            <label for="is_active" class="font-body-lg cursor-pointer">Banner activo (visible en la tienda)</label>
+        </div>
+
+        {{-- Sección Multimedia con el diseño de Editar --}}
         <section class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
             <div class="flex items-center gap-2 mb-4 text-primary">
                 <span class="material-symbols-outlined">photo_library</span>
                 <h2 class="font-headline-md text-headline-md">Imagen del Banner</h2>
             </div>
 
-            <p id="banner-error-msg" class="hidden text-red-600 text-sm font-bold mb-4 bg-red-50 p-3 rounded-lg border border-red-200">
+            <p id="create-banner-error-msg" class="hidden text-red-600 text-sm font-bold mb-4 bg-red-50 p-3 rounded-lg border border-red-200">
                 Archivo no compatible, solo utilice los formatos disponibles (JPG, PNG).
             </p>
 
-            <div id="banner-gallery-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                <label id="banner-upload-box" for="banner-image-input" class="border-2 border-dashed border-outline-variant rounded-xl aspect-square flex flex-col items-center justify-center text-center hover:bg-surface-container-low transition-colors cursor-pointer group p-4 relative overflow-hidden">
-                    <input type="file" id="banner-image-input" name="image" accept="image/jpeg, image/png" class="hidden">
-
-                    <div id="upload-preview" class="hidden absolute inset-0 w-full h-full">
-                        <img id="preview-img" class="w-full h-full object-cover" src="">
-                    </div>
-
-                    <div id="upload-instructions" class="flex flex-col items-center justify-center">
-                        <span id="banner-upload-icon" class="material-symbols-outlined text-3xl text-outline-variant group-hover:text-primary transition-colors">cloud_upload</span>
-                        <p id="banner-upload-text" class="mt-2 text-xs font-bold text-on-surface">Subir banner</p>
-                        <p id="banner-upload-subtext" class="text-on-surface-variant text-[10px] mt-0.5">JPG, PNG (Max. 5MB)<br>Ideal: 1200×450px</p>
-                    </div>
+            <div>
+                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">
+                    IMAGEN DEL BANNER <span class="text-error">*</span>
                 </label>
+                <div class="grid grid-cols-1 gap-4">
+                    <label for="create-banner-image-input" class="border-2 border-dashed border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center text-center hover:bg-surface-container-low transition-colors cursor-pointer group relative overflow-hidden">
+                        <input type="file" id="create-banner-image-input" name="image" accept="image/jpeg, image/png" class="hidden" required>
+                        
+                        <div id="create-upload-preview" class="hidden absolute inset-0 w-full h-full">
+                            <img id="create-preview-img" class="w-full h-full object-cover" src="">
+                        </div>
+
+                        <div id="create-upload-instructions" class="flex flex-col items-center justify-center">
+                            <span class="material-symbols-outlined text-4xl text-outline-variant group-hover:text-primary transition-colors">cloud_upload</span>
+                            <p class="mt-2 font-body-lg font-bold text-on-surface">Haz clic para subir la imagen</p>
+                            <p class="text-on-surface-variant text-sm mt-1">JPG, PNG (Max. 5MB)<br>Ideal: 1200×450px</p>
+                        </div>
+                    </label>
+                </div>
             </div>
         </section>
 
@@ -121,13 +137,14 @@
         </div>
     </form>
 </div>
+
 <script>
-    document.getElementById('banner-image-input').addEventListener('change', function(event) {
-        const errorMsg = document.getElementById('banner-error-msg');
+    document.getElementById('create-banner-image-input').addEventListener('change', function(event) {
+        const errorMsg = document.getElementById('create-banner-error-msg');
         const allowedTypes = ['image/jpeg', 'image/png'];
-        const preview = document.getElementById('upload-preview');
-        const previewImg = document.getElementById('preview-img');
-        const instructions = document.getElementById('upload-instructions');
+        const preview = document.getElementById('create-upload-preview');
+        const previewImg = document.getElementById('create-preview-img');
+        const instructions = document.getElementById('create-upload-instructions');
         
         if (this.files.length > 0) {
             const file = this.files[0];

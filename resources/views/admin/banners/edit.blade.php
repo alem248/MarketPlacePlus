@@ -90,7 +90,7 @@
             <label for="is_active" class="font-body-lg cursor-pointer">Banner activo (visible en la tienda)</label>
         </div>
 
-        {{-- Nueva Sección Multimedia Adaptada --}}
+        {{-- Sección Multimedia --}}
         <section class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
             <div class="flex items-center gap-2 mb-4 text-primary">
                 <span class="material-symbols-outlined">photo_library</span>
@@ -105,7 +105,12 @@
             @if($banner->image_path)
             <div class="mb-6">
                 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">IMAGEN ACTUAL</label>
-                <img src="{{ asset('storage/' . $banner->image_path) }}" alt="{{ $banner->title }}"
+                @php
+                    $imgSrc = Str::startsWith($banner->image_path, 'http') 
+                        ? $banner->image_path 
+                        : asset('storage/' . $banner->image_path);
+                @endphp
+                <img src="{{ $imgSrc }}" alt="{{ $banner->title }}"
                      class="w-full max-h-48 object-cover rounded-xl border border-outline-variant">
             </div>
             @endif

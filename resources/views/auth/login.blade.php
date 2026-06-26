@@ -5,6 +5,11 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Iniciar Sesión | MarketPlace Plus</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('img/icon.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/icon.png') }}">
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
@@ -142,7 +147,6 @@
         }
     </style>
 </head>
-
 <body class="bg-background text-on-surface font-body-lg overflow-x-hidden">
     <main class="min-h-screen flex flex-col md:flex-row items-center justify-center px-margin-mobile md:px-gutter hero-pattern">
         <!-- Left Side: Branding & Tagline -->
