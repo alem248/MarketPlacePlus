@@ -17,12 +17,16 @@
 
 <div class="space-y-6">
     @forelse($banners as $banner)
+    @php
+        $isEffectivelyActive = $banner->is_active && $banner->zone;
+        $zoneLabel = $banner->zone === 'hero' ? 'Hero' : 'Sidebar';
+    @endphp
     <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-md transition-shadow group
-        {{ !$banner->is_active ? 'opacity-70 border-dashed bg-surface-container/30' : '' }}">
+        {{ !$isEffectivelyActive ? 'opacity-70 border-dashed bg-surface-container/30' : '' }}">
         <div class="flex flex-col lg:flex-row items-stretch p-4 gap-6">
 
             <div class="w-full lg:w-80 h-40 bg-surface-container rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant relative
-                {{ !$banner->is_active ? 'grayscale' : '' }}">
+                {{ !$isEffectivelyActive ? 'grayscale' : '' }}">
                 @php
                     $imgSrc = Str::startsWith($banner->image_path ?? '', ['http://', 'https://'])
                         ? $banner->image_path
@@ -36,7 +40,7 @@
                     </div>
                 @endif
                 <div class="absolute top-2 left-2">
-                    @if($banner->is_active)
+                    @if($banner->is_active && $banner->zone)
                         <span class="bg-tertiary-container text-on-tertiary-container px-2 py-1 rounded text-[10px] font-bold uppercase shadow-sm">Activo</span>
                     @else
                         <span class="bg-surface-container-highest text-on-surface-variant px-2 py-1 rounded text-[10px] font-bold uppercase">Inactivo</span>
@@ -46,9 +50,26 @@
 
             <div class="flex-1 flex flex-col justify-between py-2">
                 <div>
-                    <h3 class="font-headline-md {{ $banner->is_active ? 'text-on-surface' : 'text-on-surface-variant' }} mb-2">
-                        {{ $banner->title }}
-                    </h3>
+                    <div class="flex items-center gap-2 mb-2 flex-wrap">
+                        <h3 class="font-headline-md {{ $banner->is_active ? 'text-on-surface' : 'text-on-surface-variant' }}">
+                            {{ $banner->title }}
+                        </h3>
+                        @if($banner->zone)
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase
+                                {{ $banner->zone === 'hero'
+                                    ? 'bg-primary/10 text-primary'
+                                    : 'bg-secondary/10 text-secondary' }}">
+                                {{ $banner->zone === 'hero' ? 'Hero Principal' : 'Lateral Sidebar' }}
+                            </span>
+                        @else
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-outline-variant text-on-surface-variant">
+                                Sin zona — editar para asignar
+                            </span>
+                        @endif
+                    </div>
+                    @if($banner->description)
+                        <p class="text-body-sm text-on-surface-variant mb-2 italic">{{ $banner->description }}</p>
+                    @endif
                     <div class="flex flex-col gap-2">
                         @if($banner->link_url)
                         <div class="flex items-center text-on-surface-variant text-body-sm gap-2">
@@ -66,35 +87,49 @@
                 </div>
 
                 <div class="flex items-center gap-3 mt-4">
-                    @if($banner->is_active)
-                        <a href="{{ route('admin.banners.edit', $banner) }}"
-                            class="flex-1 lg:flex-none px-4 py-2 bg-surface-container-high text-on-surface font-bold rounded-lg hover:bg-outline-variant transition-colors flex items-center justify-center gap-2">
-                            <span class="material-symbols-outlined text-[20px]">edit</span>
-                            Editar Enlace
-                        </a>
+                    <a href="{{ route('admin.banners.edit', $banner) }}"
+                        class="px-4 py-2 bg-surface-container-high text-on-surface font-bold rounded-lg hover:bg-outline-variant transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">edit</span>
+                        Editar
+                    </a>
+
+                    @if($isEffectivelyActive)
                         <form action="{{ route('admin.banners.update', $banner) }}" method="POST" class="inline">
                             @csrf @method('PUT')
-                            <input type="hidden" name="title"     value="{{ $banner->title }}">
-                            <input type="hidden" name="link_url"  value="{{ $banner->link_url }}">
-                            <input type="hidden" name="is_active" value="0">
+                            <input type="hidden" name="title"       value="{{ $banner->title }}">
+                            <input type="hidden" name="description" value="{{ $banner->description }}">
+                            <input type="hidden" name="link_url"    value="{{ $banner->link_url }}">
+                            <input type="hidden" name="zone"        value="{{ $banner->zone }}">
+                            <input type="hidden" name="is_active"   value="0">
                             <button type="submit"
-                                class="flex-1 lg:flex-none px-4 py-2 text-error font-bold border border-error/20 hover:bg-error/5 rounded-lg transition-colors flex items-center gap-2">
+                                class="px-4 py-2 text-error font-bold border border-error/20 hover:bg-error/5 rounded-lg transition-colors flex items-center gap-2">
                                 <span class="material-symbols-outlined text-[20px]">block</span>
                                 Desactivar
                             </button>
                         </form>
-                    @else
+                    @elseif($banner->zone)
+                        {{-- Inactivo pero con zona: puede reactivarse --}}
                         <form action="{{ route('admin.banners.update', $banner) }}" method="POST" class="inline">
                             @csrf @method('PUT')
-                            <input type="hidden" name="title"     value="{{ $banner->title }}">
-                            <input type="hidden" name="link_url"  value="{{ $banner->link_url }}">
-                            <input type="hidden" name="is_active" value="1">
+                            <input type="hidden" name="title"       value="{{ $banner->title }}">
+                            <input type="hidden" name="description" value="{{ $banner->description }}">
+                            <input type="hidden" name="link_url"    value="{{ $banner->link_url }}">
+                            <input type="hidden" name="zone"        value="{{ $banner->zone }}">
+                            <input type="hidden" name="is_active"   value="1">
                             <button type="submit"
-                                class="px-4 py-2 bg-primary/10 text-primary font-bold rounded-lg hover:bg-primary/20 transition-colors flex items-center gap-2">
+                                class="px-4 py-2 bg-primary/10 text-primary font-bold rounded-lg hover:bg-primary/20 transition-colors flex items-center gap-2"
+                                onclick="return confirm('¿Activar este banner? El actual en la zona {{ $zoneLabel }} se desactivará.')">
                                 <span class="material-symbols-outlined text-[20px]">play_arrow</span>
-                                Reactivar
+                                Activar
                             </button>
                         </form>
+                    @else
+                        {{-- Sin zona: debe editarse primero --}}
+                        <a href="{{ route('admin.banners.edit', $banner) }}"
+                            class="px-4 py-2 bg-secondary/10 text-secondary font-bold rounded-lg hover:bg-secondary/20 transition-colors flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[20px]">tune</span>
+                            Asignar zona
+                        </a>
                     @endif
                 </div>
             </div>
@@ -138,8 +173,8 @@
             <p class="text-body-sm text-on-surface-variant">Todos los enlaces deben apuntar a secciones internas del Marketplace para mantener al usuario.</p>
         </div>
         <div class="flex flex-col gap-2">
-            <span class="font-bold text-primary">Cantidad</span>
-            <p class="text-body-sm text-on-surface-variant">Recomendamos no tener más de 5 banners rotando para asegurar una carga rápida.</p>
+            <span class="font-bold text-primary">Zonas y límite</span>
+            <p class="text-body-sm text-on-surface-variant">Hay 2 zonas: <strong>Hero Principal</strong> (sobre el catálogo) y <strong>Lateral Sidebar</strong>. Solo 1 banner activo por zona — al activar uno nuevo, el anterior se desactiva automáticamente.</p>
         </div>
     </div>
 </div>

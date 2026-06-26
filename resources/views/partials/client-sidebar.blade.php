@@ -148,11 +148,15 @@
             <div class="relative z-10 p-4 flex flex-col h-full min-h-[180px]">
                 <span class="text-[10px] font-bold uppercase tracking-widest opacity-70">Publicidad</span>
                 <h3 class="text-headline-md font-bold mt-1">{{ $sideBanner->title ?? 'Oferta Especial' }}</h3>
-                <p class="text-body-sm mt-2 opacity-80">Nuevos modelos ya disponibles.</p>
-                <a href="{{ $sideBanner->link_url ?? '#' }}" target="_blank" rel="noopener"
+                @if(!empty($sideBanner->description))
+                    <p class="text-body-sm mt-2 opacity-80">{{ $sideBanner->description }}</p>
+                @endif
+                @if($sideBanner->link_url)
+                <a href="{{ $sideBanner->link_url }}" target="_blank" rel="noopener"
                    class="mt-4 self-start px-4 py-1.5 border border-white rounded-full text-label-caps hover:bg-white hover:text-primary transition-colors">
                     Ver más
                 </a>
+                @endif
             </div>
         </div>
     @endisset
