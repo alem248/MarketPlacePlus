@@ -152,6 +152,60 @@
             transform: translateY(-4px);
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
         }
+
+        /* Estilos para el modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 28rem;
+            width: 100%;
+            margin: 0 1rem;
+            padding: 1.5rem;
+            animation: modalFadeIn 0.4s ease-out;
+        }
+
+        .modal-content.dark {
+            background-color: #1f2937;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes modalFadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.95) translateY(10px);
+            }
+        }
+
+        .modal-fade-out {
+            animation: modalFadeOut 0.3s ease-out forwards;
+        }
     </style>
 </head>
 
@@ -265,6 +319,127 @@
         </main>
     </div>
     @include('partials.footer')
+
+<!-- MODAL  -->
+@auth
+    @php
+        $disabledComment = auth()->user()->comments()
+            ->where('is_active', false)
+            ->whereNotNull('admin_message')
+            ->latest('updated_at')
+            ->first();
+    @endphp
+
+    @if($disabledComment)
+        <div id="moderationModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content" id="modalContent">
+                <!-- Icono -->
+                <div class="flex justify-center mb-4">
+                    <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-red-600 text-4xl">notification_important</span>
+                    </div>
+                </div>
+
+                <!-- Título -->
+                <h3 class="text-xl font-bold text-center text-gray-900 mb-2">
+                    ⚠️ Comentario Deshabilitado
+                </h3>
+
+                <!-- Mensaje -->
+                <p class="text-center text-gray-600 text-sm mb-4">
+                    Tu comentario ha sido deshabilitado por el administrador por incumplir las normas de la plataforma.
+                </p>
+
+                <!-- Comentario del usuario -->
+                <div class="bg-gray-50 rounded-lg p-3 mb-4">
+                    <p class="text-xs text-gray-500 mb-1">Tu comentario:</p>
+                    <p class="text-sm text-gray-700 italic">
+                        "{{ Str::limit($disabledComment->content, 100) }}"
+                    </p>
+                </div>
+
+                <!-- Motivo del administrador -->
+                <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-5">
+                    <p class="text-xs text-red-600 font-semibold mb-1">Motivo de la desactivación:</p>
+                    <p class="text-sm text-red-700">
+                        {{ $disabledComment->admin_message }}
+                    </p>
+                </div>
+
+                <!-- Botón -->
+                <button onclick="closeModerationModal()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-200">
+                    Entendido
+                </button>
+
+                <!-- Fecha de moderación -->
+                <p class="text-center text-xs text-gray-400 mt-3">
+                    Moderado el: {{ $disabledComment->updated_at->format('d/m/Y H:i') }}
+                </p>
+            </div>
+        </div>
+
+        <script>
+            // Clave para guardar en localStorage
+            const MODAL_KEY = 'moderation_modal_shown_{{ auth()->id() }}';
+
+            // Función para cerrar el modal y guardar en localStorage
+            function closeModerationModal() {
+                const modal = document.getElementById('moderationModal');
+                const content = document.getElementById('modalContent');
+                
+                // Guardar en localStorage que el usuario ya vio el modal
+                localStorage.setItem(MODAL_KEY, 'true');
+                
+                // Aplicar animación de salida
+                content.classList.add('modal-fade-out');
+                
+                // Esperar a que termine la animación y ocultar
+                setTimeout(function() {
+                    modal.style.display = 'none';
+                }, 300);
+            }
+
+            // Función para mostrar el modal solo si no se ha mostrado antes
+            function showModalOnce() {
+                const modal = document.getElementById('moderationModal');
+                
+                // Verificar si ya se mostró antes
+                const alreadyShown = localStorage.getItem(MODAL_KEY);
+                
+                if (!alreadyShown) {
+                    // Mostrar el modal
+                    modal.style.display = 'flex';
+                }
+            }
+
+            // Cerrar con tecla ESC
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    const modal = document.getElementById('moderationModal');
+                    if (modal && modal.style.display !== 'none') {
+                        closeModerationModal();
+                    }
+                }
+            });
+
+            // Cerrar al hacer clic fuera del modal
+            document.addEventListener('DOMContentLoaded', function() {
+                const modal = document.getElementById('moderationModal');
+                if (modal) {
+                    modal.addEventListener('click', function(event) {
+                        if (event.target === this) {
+                            closeModerationModal();
+                        }
+                    });
+                }
+                
+                // Mostrar el modal solo una vez
+                showModalOnce();
+            });
+        </script>
+    @endif
+@endauth
+
     <script>
         // Micro-interactions and effects
         document.querySelectorAll('.product-card-hover').forEach(card => {
@@ -283,8 +458,6 @@
             });
         });
     </script>
-
-
 </body>
 
 </html>
