@@ -158,15 +158,7 @@
 <body class="text-on-background">
     @include('partials.client-navbar')
     <div class="max-w-container-max mx-auto flex">
-        {{-- ============================================================
-             ZONA DE PUBLICIDAD #2 — BANNER LATERAL (SIDEBAR)
-             Muestra el segundo banner activo de la base de datos (banners[1]).
-             Se pasa al sidebar via $sideBanner y se renderiza en:
-             resources/views/partials/client-sidebar.blade.php
-             Se gestiona desde el panel admin en: Admin > Banners.
-        ============================================================ --}}
         @php
-            $sideBanner = $banners->get(1);
             $sideImgSrc = null;
             if ($sideBanner?->image_path) {
                 $sideImgSrc = Str::startsWith($sideBanner->image_path, 'http')
@@ -174,45 +166,43 @@
                     : Storage::url($sideBanner->image_path);
             }
         @endphp
-        @include('partials.client-sidebar', ['activeClientTab' => 'panel', 'sideBanner' => $sideBanner, 'sideImgSrc' => $sideImgSrc])
+        @include('partials.client-sidebar', ['activeClientTab' => 'panel', 'sideBanner' => $sideBanner ?? null, 'sideImgSrc' => $sideImgSrc])
         <!-- Main Content -->
         <main class="flex-1 min-w-0 p-4 md:p-gutter">
-            {{-- ============================================================
-                 ZONA DE PUBLICIDAD #1 — BANNER PRINCIPAL (HERO BANNER)
-                 Muestra el primer banner activo de la base de datos (banners[0]).
-                 Se gestiona desde el panel admin en: Admin > Banners.
-                 Aquí aparece la imagen de fondo, título y botón "Comprar Ahora".
-            ============================================================ --}}
-            <!-- Hero Banner: usa el primer banner activo de la base de datos -->
             @php
-                $heroBanner   = $banners->get(0);
-                $heroImgSrc   = null;
+                $heroImgSrc = null;
                 if ($heroBanner?->image_path) {
                     $heroImgSrc = Str::startsWith($heroBanner->image_path, 'http')
                         ? $heroBanner->image_path
                         : Storage::url($heroBanner->image_path);
                 }
-                $heroLink = $heroBanner?->link_url ?? '#';
             @endphp
-            <section class="mb-10 rounded-2xl overflow-hidden bg-primary-container relative h-[300px] md:h-[400px] flex items-center">
+            @if($heroBanner)
+            <section class="mb-10 rounded-2xl overflow-hidden relative h-[300px] md:h-[400px] flex items-center bg-inverse-surface">
+                {{-- Imagen del banner a plena visibilidad con overlay oscuro para legibilidad --}}
                 @if($heroImgSrc)
                     <img alt="{{ $heroBanner->title }}"
-                         class="absolute inset-0 w-full h-full object-cover opacity-30"
+                         class="absolute inset-0 w-full h-full object-cover"
                          src="{{ $heroImgSrc }}">
+                    <div class="absolute inset-0 bg-black/50"></div>
                 @endif
                 <div class="relative z-10 px-8 md:px-16 max-w-2xl">
-                    <span class="inline-block px-3 py-1 bg-secondary-container text-on-secondary text-label-caps rounded-full mb-4">Lanzamiento 2026</span>
-                    <h1 class="text-headline-lg-mobile md:text-headline-lg text-on-primary mb-4 leading-tight">
-                        {{ $heroBanner?->title ?? 'MarketPlace Plus' }}
+                    <h1 class="text-headline-lg-mobile md:text-headline-lg text-white mb-4 leading-tight">
+                        {{ $heroBanner->title }}
                     </h1>
-                    <p class="text-body-lg text-primary-fixed-dim mb-8">Experimenta la innovación con los nuevos equipos de alta gama disponibles para trato directo.</p>
-                    <a href="{{ $heroLink }}" target="_blank" rel="noopener"
+                    @if($heroBanner->description)
+                        <p class="text-body-lg text-white/80 mb-8">{{ $heroBanner->description }}</p>
+                    @endif
+                    @if($heroBanner->link_url)
+                    <a href="{{ $heroBanner->link_url }}" target="_blank" rel="noopener"
                        class="px-8 py-3 bg-secondary-container text-on-secondary font-bold rounded-xl inline-flex items-center gap-2 hover:shadow-lg transition-shadow">
-                        Comprar Ahora
+                        Ver más
                         <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
                     </a>
+                    @endif
                 </div>
             </section>
+            @endif
             <!-- Product Grid -->
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-headline-md font-headline-md text-primary">Catálogo Destacado</h2>

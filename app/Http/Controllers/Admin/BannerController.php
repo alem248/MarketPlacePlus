@@ -23,11 +23,16 @@ class BannerController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title'    => ['required', 'string', 'max:150'],
-            'link_url' => ['nullable', 'string', 'max:255'],
-            'end_date' => ['nullable', 'date'],
-            'image'    => ['nullable', 'image', 'max:5120'],
+            'title'       => ['required', 'string', 'max:150'],
+            'description' => ['nullable', 'string', 'max:255'],
+            'zone'        => ['required', 'in:hero,sidebar'],
+            'link_url'    => ['nullable', 'string', 'max:255'],
+            'end_date'    => ['nullable', 'date'],
+            'image'       => ['nullable', 'image', 'max:5120'],
         ]);
+
+        // Desactiva el banner que ya ocupa esa zona
+        Banner::where('zone', $data['zone'])->where('is_active', true)->update(['is_active' => false]);
 
         if ($request->hasFile('image')) {
             $data['image_path'] = $request->file('image')->store('banners', 'public');
@@ -37,8 +42,9 @@ class BannerController extends Controller
 
         Banner::create($data);
 
+        $zoneName = $data['zone'] === 'hero' ? 'Principal (Hero)' : 'Lateral (Sidebar)';
         return redirect()->route('admin.banners.index')
-            ->with('success', 'Banner creado correctamente.');
+            ->with('success', "Banner creado y activado en zona {$zoneName}.");
     }
 
     public function edit(Banner $banner)
@@ -49,12 +55,32 @@ class BannerController extends Controller
     public function update(Request $request, Banner $banner)
     {
         $data = $request->validate([
-            'title'     => ['required', 'string', 'max:150'],
-            'link_url'  => ['nullable', 'string', 'max:255'],
-            'end_date'  => ['nullable', 'date'],
-            'is_active' => ['nullable', 'boolean'],
-            'image'     => ['nullable', 'image', 'max:5120'],
+            'title'       => ['required', 'string', 'max:150'],
+            'description' => ['nullable', 'string', 'max:255'],
+            'zone'        => ['nullable', 'in:hero,sidebar'],
+            'link_url'    => ['nullable', 'string', 'max:255'],
+            'end_date'    => ['nullable', 'date'],
+            'is_active'   => ['nullable', 'boolean'],
+            'image'       => ['nullable', 'image', 'max:5120'],
         ]);
+
+        $newIsActive = $request->boolean('is_active');
+        // Mantiene la zona existente si el form no la envía (formularios inline)
+        $newZone = $data['zone'] ?? $banner->zone;
+
+        // No se puede activar un banner sin zona asignada
+        if ($newIsActive && !$newZone) {
+            return redirect()->route('admin.banners.edit', $banner)
+                ->with('error', 'Debes asignar una zona (Hero o Sidebar) antes de activar este banner.');
+        }
+
+        // Si se activa este banner, desactiva cualquier otro en la misma zona
+        if ($newIsActive && $newZone) {
+            Banner::where('zone', $newZone)
+                ->where('is_active', true)
+                ->where('id', '!=', $banner->id)
+                ->update(['is_active' => false]);
+        }
 
         if ($request->hasFile('image')) {
             if ($banner->image_path) {
@@ -63,7 +89,8 @@ class BannerController extends Controller
             $data['image_path'] = $request->file('image')->store('banners', 'public');
         }
 
-        $data['is_active'] = $request->boolean('is_active');
+        $data['is_active'] = $newIsActive;
+        $data['zone']      = $newZone;
         unset($data['image']);
 
         $banner->update($data);
@@ -74,7 +101,6 @@ class BannerController extends Controller
 
     public function destroy(Banner $banner)
     {
-        // Soft delete: solo desactivar el banner, no eliminar datos
         $banner->suspend();
 
         return redirect()->route('admin.banners.index')

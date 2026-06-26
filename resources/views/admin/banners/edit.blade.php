@@ -25,10 +25,47 @@
     <form action="{{ route('admin.banners.update', $banner) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf @method('PUT')
 
+        {{-- Selector de zona --}}
+        <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">ZONA DE PUBLICIDAD</label>
+            <div class="grid grid-cols-2 gap-3">
+                @php $currentZone = old('zone', $banner->zone ?? 'hero'); @endphp
+                <label class="flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all
+                    {{ $currentZone === 'hero' ? 'border-primary bg-primary/5' : 'border-outline-variant hover:border-primary/40' }}">
+                    <input type="radio" name="zone" value="hero" class="accent-primary"
+                        {{ $currentZone === 'hero' ? 'checked' : '' }}>
+                    <div>
+                        <p class="font-bold text-on-surface text-body-sm">Banner Principal</p>
+                        <p class="text-[11px] text-on-surface-variant mt-0.5">Zona hero, sobre el catálogo</p>
+                    </div>
+                </label>
+                <label class="flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all
+                    {{ $currentZone === 'sidebar' ? 'border-primary bg-primary/5' : 'border-outline-variant hover:border-primary/40' }}">
+                    <input type="radio" name="zone" value="sidebar" class="accent-primary"
+                        {{ $currentZone === 'sidebar' ? 'checked' : '' }}>
+                    <div>
+                        <p class="font-bold text-on-surface text-body-sm">Banner Lateral</p>
+                        <p class="text-[11px] text-on-surface-variant mt-0.5">Zona sidebar, panel izquierdo</p>
+                    </div>
+                </label>
+            </div>
+            <p class="text-body-sm text-on-surface-variant mt-2">
+                Si ya hay un banner activo en esa zona, se desactivará automáticamente.
+            </p>
+        </div>
+
         <div>
             <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">TÍTULO DEL BANNER</label>
             <input name="title" type="text" value="{{ old('title', $banner->title) }}" required
                 class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg">
+        </div>
+
+        <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">DESCRIPCIÓN CORTA</label>
+            <input name="description" type="text" value="{{ old('description', $banner->description) }}"
+                class="w-full p-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary bg-white font-body-lg"
+                placeholder="Ej: Nuevos modelos disponibles con garantía incluida">
+            <p class="text-body-sm text-on-surface-variant mt-1">Texto que aparece bajo el título en la tienda (máx. 255 caracteres)</p>
         </div>
 
         <div>

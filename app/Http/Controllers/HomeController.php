@@ -44,11 +44,10 @@ class HomeController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
 
-        $banners = Banner::where('is_active', true)
-            ->orderBy('created_at')
-            ->get();
+        $heroBanner = Banner::where('is_active', true)->where('zone', 'hero')->first();
+        $sideBanner = Banner::where('is_active', true)->where('zone', 'sidebar')->first();
 
-        return view('auth.home', compact('products', 'banners'));
+        return view('auth.home', compact('products', 'heroBanner', 'sideBanner'));
     }
 
     public function search(Request $request)
