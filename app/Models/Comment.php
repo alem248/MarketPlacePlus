@@ -16,6 +16,7 @@ class Comment extends Model
         'content',
         'rating',
         'is_active',
+        'admin_message', // Agregado
     ];
 
     protected $casts = [
@@ -33,15 +34,21 @@ class Comment extends Model
         return $this->belongsTo(Product::class);
     }
 
-    // ─── Soft Delete Methods ────────────────────────────────────────────────────
+    // ─── Métodos de estado actualizados ──────────────────────────────────────────
 
-    public function hide(): void
+    public function hide(string $reason = null): void
     {
-        $this->update(['is_active' => false]);
+        $this->update([
+            'is_active' => false,
+            'admin_message' => $reason
+        ]);
     }
 
     public function show(): void
     {
-        $this->update(['is_active' => true]);
+        $this->update([
+            'is_active' => true,
+            'admin_message' => null // Limpiamos el mensaje al reactivar
+        ]);
     }
 }
