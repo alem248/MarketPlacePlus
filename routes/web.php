@@ -135,6 +135,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
     // Ruta extra para cambiar el estado desde JS:
     Route::post('/products/{product}/status', [AdminProductController::class, 'updateStatus'])->name('products.updateStatus');
+    
 
     // Dentro del grupo admin
 Route::post('/products/{product}/suspend', [AdminProductController::class, 'suspend'])->name('products.suspend');
@@ -155,6 +156,9 @@ Route::post('/products/{product}/suspend', [AdminProductController::class, 'susp
     Route::get('/comments', [AdminCommentController::class, 'index'])->name('comments.index');
     Route::patch('/comments/{comment}/toggle', [AdminCommentController::class, 'toggle'])->name('comments.toggle');
 
+    Route::patch('/comments/{comment}/disable-with-reason', [AdminCommentController::class, 'disableWithReason'])->name('comments.disable-with-reason');
+    Route::patch('/comments/{comment}/enable', [AdminCommentController::class, 'enable'])->name('comments.enable');
+    
     // Gestión de Deliveries
     Route::get('/delivery', [AdminDeliveryController::class, 'index'])->name('delivery.index');
     Route::get('/delivery/{delivery}', [AdminDeliveryController::class, 'show'])->name('delivery.show');
