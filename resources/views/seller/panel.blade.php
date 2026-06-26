@@ -252,73 +252,41 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Mis Comentarios Section (Restored Styles) -->
+                    <!-- Mis Comentarios — datos reales de la base de datos -->
                     <div class="space-y-6">
                         <div class="flex justify-between items-center">
                             <h2 class="font-headline-lg text-headline-lg text-on-surface">Mis Comentarios</h2>
-                            <button class="text-primary font-bold hover:underline">Ver todos</button>
+                            @if($sellerComments->isNotEmpty())
+                                <span class="text-body-sm text-on-surface-variant">{{ $sellerComments->count() }} más recientes</span>
+                            @endif
                         </div>
                         <div class="space-y-4">
-                            <!-- Testimonial 1 -->
+                            @forelse($sellerComments as $comment)
                             <div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-2xl hover:shadow-md transition-shadow">
                                 <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-bold text-on-surface">Carlos Ruiz</h4>
+                                    <div>
+                                        <h4 class="font-bold text-on-surface">
+                                            {{ $comment->user->first_name }} {{ $comment->user->last_name }}
+                                        </h4>
+                                        <p class="text-[11px] text-on-surface-variant mt-0.5">
+                                            {{ $comment->product->title }} · {{ $comment->created_at->diffForHumans() }}
+                                        </p>
+                                    </div>
                                     <div class="flex text-secondary-container">
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <span class="material-symbols-outlined text-sm"
+                                                style="font-variation-settings: '{{ $i <= $comment->rating ? 'FILL' : '' }}' 1;">star</span>
+                                        @endfor
                                     </div>
                                 </div>
-                                <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"Excelente vendedor, el producto llegó en perfectas condiciones y el trato fue muy profesional. Totalmente recomendado."</p>
+                                <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"{{ $comment->content }}"</p>
                             </div>
-                            <!-- Testimonial 2 -->
-                            <div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-2xl hover:shadow-md transition-shadow">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-bold text-on-surface">Lucía Torres</h4>
-                                    <div class="flex text-secondary-container">
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm">star</span>
-                                    </div>
-                                </div>
-                                <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"Muy buena comunicación. Hubo un pequeño retraso en el envío pero siempre estuvo pendiente. El iPhone está impecable."</p>
+                            @empty
+                            <div class="p-8 text-center text-on-surface-variant border border-dashed border-outline-variant rounded-2xl">
+                                <span class="material-symbols-outlined text-4xl mb-2 block">rate_review</span>
+                                <p class="font-body-sm">Aún no tienes reseñas. Aparecerán aquí cuando los compradores califiquen tus productos.</p>
                             </div>
-                            <!-- Testimonial 3 -->
-                            <div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-2xl hover:shadow-md transition-shadow">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-bold text-on-surface">Marco Peña</h4>
-                                    <div class="flex text-secondary-container">
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                    </div>
-                                </div>
-                                <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"La MacBook Air funciona de maravilla. El empaque era muy seguro. Gran experiencia de compra."</p>
-                            </div>
-                            <!-- Testimonial 4 -->
-                            <div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-2xl hover:shadow-md transition-shadow">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-bold text-on-surface">Sofía Mendoza</h4>
-                                    <div class="flex text-secondary-container">
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                                    </div>
-                                </div>
-                                <p class="text-on-surface-variant text-body-sm leading-relaxed italic">"Puntual y honesto. Me explicó todo sobre la garantía del equipo. Volveré a comprarle sin duda."</p>
-                            </div>
-                            <!-- Testimonial 5 -->
-
-                            <!-- Testimonial 6 -->
-
+                            @endforelse
                         </div>
                     </div>
                 </div>
