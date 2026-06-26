@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Comment;
 use App\Models\Product;
 use App\Models\Trato;
 
@@ -84,7 +85,15 @@ class ProductController extends Controller
             ->take(6)
             ->get();
 
-        return view('seller.panel', compact('products', 'suspendedProduct', 'reactivatedProduct', 'pendingTratos'));
+        // 4. Comentarios recibidos en los productos del vendedor (solo activos, más recientes primero)
+        $sellerComments = Comment::whereHas('product', fn($q) => $q->where('user_id', auth()->id()))
+            ->where('is_active', true)
+            ->with(['user', 'product'])
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('seller.panel', compact('products', 'suspendedProduct', 'reactivatedProduct', 'pendingTratos', 'sellerComments'));
     }
 
     public function edit($id)
