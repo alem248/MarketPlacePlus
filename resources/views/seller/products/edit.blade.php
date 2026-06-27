@@ -232,15 +232,35 @@
                             </div>
 
                             <div id="gallery-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                                @foreach((array)$product->image_path as $image)
-                                <div class="aspect-square rounded-xl overflow-hidden border border-outline-variant relative group existing-image">
-                                    <img class="w-full h-full object-cover" src="{{ asset('storage/' . $image) }}">
-                                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button type="button" onclick="removeImage(this, '{{ $image }}')" class="bg-error text-on-error p-2 rounded-full shadow-lg">
-                                            <span class="material-symbols-outlined">delete</span>
-                                        </button>
+                                @php
+                                    // Decodificar el JSON de image_path
+                                    $images = is_string($product->image_path) 
+                                        ? json_decode($product->image_path, true) 
+                                        : (array) $product->image_path;
+                                    
+                                    // Si es un string simple, convertirlo a array
+                                    if (!is_array($images)) {
+                                        $images = [$images];
+                                    }
+                                @endphp
+
+                                @foreach($images as $image)
+                                    @if($image)
+                                    <div class="aspect-square rounded-xl overflow-hidden border border-outline-variant relative group image-wrapper existing-image">
+                                        @php
+                                            // Determinar si es URL externa o local
+                                            $imgSrc = Str::startsWith($image, 'http') 
+                                                ? $image 
+                                                : asset('storage/' . $image);
+                                        @endphp
+                                        <img class="w-full h-full object-cover" src="{{ $imgSrc }}" alt="Imagen del producto">
+                                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button type="button" onclick="removeImage(this, '{{ $image }}')" class="bg-error text-on-error p-2 rounded-full shadow-lg">
+                                                <span class="material-symbols-outlined">delete</span>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                    @endif
                                 @endforeach
 
                                 <label id="upload-box" for="image-input" class="border-2 border-dashed border-outline-variant rounded-xl aspect-square flex flex-col items-center justify-center text-center hover:bg-surface-container-low transition-colors cursor-pointer group p-4">
@@ -263,10 +283,12 @@
                                 </div>
                                 <div>
                                     <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">ESTADO</label>
-                                    <div class="flex gap-2">
-                                        <button class="flex-1 py-3 px-4 rounded-lg border-2 border-primary bg-primary-fixed text-primary font-bold">Usado</button>
-                                        <button class="flex-1 py-3 px-4 rounded-lg border-2 border-outline-variant text-on-surface-variant font-bold hover:bg-surface-container-high transition-colors">Nuevo</button>
-                                    </div>
+                                    <select name="condition" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary">
+                                        <option value="Nuevo" {{ old('condition', $product->condition) == 'Nuevo' ? 'selected' : '' }}>Nuevo</option>
+                                        <option value="Como nuevo" {{ old('condition', $product->condition) == 'Como nuevo' ? 'selected' : '' }}>Como nuevo</option>
+                                        <option value="Buen estado" {{ old('condition', $product->condition) == 'Buen estado' ? 'selected' : '' }}>Buen estado</option>
+                                        <option value="Usado" {{ old('condition', $product->condition) == 'Usado' ? 'selected' : '' }}>Usado</option>
+                                    </select>
                                 </div>
                             </div>
                         </section>
@@ -288,9 +310,19 @@
 
                         <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-lg border border-outline-variant group">
                             <div class="relative h-64">
+                                @php
+                                    // Obtener la primera imagen para la vista previa
+                                    $firstImage = is_string($product->image_path) 
+                                        ? json_decode($product->image_path, true)[0] ?? null 
+                                        : (is_array($product->image_path) ? $product->image_path[0] ?? null : $product->image_path);
+                                    
+                                    $previewSrc = $firstImage 
+                                        ? (Str::startsWith($firstImage, 'http') ? $firstImage : asset('storage/' . $firstImage))
+                                        : asset('images/default-product.jpg');
+                                @endphp
                                 <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     id="preview-img"
-                                    src="{{ asset('storage/' . ($product->image_path[0] ?? 'default.jpg')) }}" />
+                                    src="{{ $previewSrc }}" />
                                 <div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
                                     <span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
                                     <span class="text-label-caps font-bold">4.9</span>
@@ -309,7 +341,7 @@
                                 </div>
 
                                 <h4 class="font-headline-md text-headline-md text-on-surface mb-2 leading-tight" id="preview-title">
-                                    {{ $product->title ?? 'Smartphone Samsung Galaxy S23 Ultra' }}
+                                    {{ $product->title ?? 'Nombre del Producto' }}
                                 </h4>
 
                                 <div class="flex items-baseline gap-2 mb-4">
@@ -335,6 +367,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
             </form>
         </div>
         </main>
@@ -354,7 +387,12 @@
                 input.value = imageName;
                 form.appendChild(input);
             }
-            btn.closest('.image-wrapper').remove();
+            
+            // Eliminar el elemento contenedor
+            const wrapper = btn.closest('.image-wrapper');
+            if (wrapper) {
+                wrapper.remove();
+            }
         }
 
         document.getElementById('image-input').addEventListener('change', function(e) {
@@ -370,13 +408,13 @@
                     const div = document.createElement('div');
                     div.className = "aspect-square rounded-xl overflow-hidden border border-outline-variant relative group image-wrapper";
                     div.innerHTML = `
-                    <img src="${event.target.result}" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button type="button" onclick="removeImage(this)" class="bg-error text-on-error p-2 rounded-full shadow-lg">
-                            <span class="material-symbols-outlined">delete</span>
-                        </button>
-                    </div>
-                `;
+                        <img src="${event.target.result}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button type="button" onclick="removeImage(this)" class="bg-error text-on-error p-2 rounded-full shadow-lg">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    `;
                     gallery.insertBefore(div, uploadBox);
                 }
                 reader.readAsDataURL(file);
@@ -403,6 +441,11 @@
         ['form-title', 'form-category', 'form-location', 'form-price'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.addEventListener('input', updatePreview);
+        });
+
+        // Actualizar preview al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePreview();
         });
     </script>
     @if(session('success'))

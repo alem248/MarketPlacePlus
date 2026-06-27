@@ -211,6 +211,22 @@
         .modal-fade-out {
             animation: modalFadeOut 0.3s ease-out forwards;
         }
+
+        /* Estilos para el modal de edición */
+        .state-transition {
+            animation: stateFade 0.3s ease;
+        }
+
+        @keyframes stateFade {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body class="text-on-background">
@@ -324,125 +340,285 @@
     </div>
     @include('partials.footer')
 
-<!-- MODAL  -->
-@auth
-    @php
-        $disabledComment = auth()->user()->comments()
-            ->where('is_active', false)
-            ->whereNotNull('admin_message')
-            ->latest('updated_at')
-            ->first();
-    @endphp
+    <!-- MODAL CON EDICIÓN INTEGRADA -->
+    @auth
+        @php
+            $disabledComment = auth()->user()->comments()
+                ->where('is_active', false)
+                ->whereNotNull('admin_message')
+                ->latest('updated_at')
+                ->first();
+        @endphp
 
-    @if($disabledComment)
-        <div id="moderationModal" class="modal-overlay" style="display: none;">
-            <div class="modal-content" id="modalContent">
-                <!-- Icono -->
-                <div class="flex justify-center mb-4">
-                    <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-red-600 text-4xl">notification_important</span>
+        @if($disabledComment)
+            <!-- ========================================== -->
+            <!-- MODAL PRINCIPAL                            -->
+            <!-- ========================================== -->
+            <div id="moderationModal" class="modal-overlay" style="display: none;">
+                <div class="modal-content" id="modalContent">
+                    
+                    <!-- ========================================== -->
+                    <!-- ESTADO 1: ALERTA (visible por defecto)    -->
+                    <!-- ========================================== -->
+                    <div id="alert-state">
+                        <!-- Icono -->
+                        <div class="flex justify-center mb-4">
+                            <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-red-600 text-4xl">notification_important</span>
+                            </div>
+                        </div>
+
+                        <!-- Título -->
+                        <h3 class="text-xl font-bold text-center text-gray-900 mb-2">
+                            ⚠️ Comentario Deshabilitado
+                        </h3>
+
+                        <!-- Mensaje -->
+                        <p class="text-center text-gray-600 text-sm mb-4">
+                            Tu comentario ha sido deshabilitado por el administrador por incumplir las normas de la plataforma.
+                        </p>
+
+                        <!-- Comentario del usuario -->
+                        <div class="bg-gray-50 rounded-lg p-3 mb-4">
+                            <p class="text-xs text-gray-500 mb-1">Tu comentario:</p>
+                            <p class="text-sm text-gray-700 italic">
+                                "{{ Str::limit($disabledComment->content, 100) }}"
+                            </p>
+                        </div>
+
+                        <!-- Motivo del administrador -->
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-5">
+                            <p class="text-xs text-red-600 font-semibold mb-1">Motivo de la desactivación:</p>
+                            <p class="text-sm text-red-700">
+                                {{ $disabledComment->admin_message }}
+                            </p>
+                        </div>
+
+                        <!-- ⚠️ ADVERTENCIA ⚠️ -->
+                        <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-3 mb-5">
+                            <div class="flex items-start gap-2">
+                                <span class="material-symbols-outlined text-yellow-600 text-xl">warning</span>
+                                <div>
+                                    <p class="text-sm font-semibold text-yellow-800">
+                                        📢 Para poder solucionar esto:
+                                    </p>
+                                    <p class="text-sm text-yellow-700 mt-1">
+                                        Edita tu comentario siguiendo las normas de la plataforma. 
+                                        <strong>Caso contrario, podrías ser baneado o suspendido</strong>.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="flex flex-col gap-3">
+                            <!-- Botón para abrir edición -->
+                            <button onclick="openEditMode()" 
+                                    class="w-full bg-primary hover:brightness-110 text-on-primary font-semibold py-2.5 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined">edit</span>
+                                Editar Comentario
+                            </button>
+
+                            <!-- Botón para cerrar -->
+                            <button onclick="closeModerationModal()" 
+                                    class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2.5 px-4 rounded-lg transition-all duration-200">
+                                Entendido, lo revisaré después
+                            </button>
+                        </div>
+
+                        <!-- Fecha de moderación -->
+                        <p class="text-center text-xs text-gray-400 mt-3">
+                            Moderado el: {{ $disabledComment->updated_at->format('d/m/Y H:i') }}
+                        </p>
                     </div>
+
+                    <!-- ========================================== -->
+                    <!-- ESTADO 2: EDICIÓN (oculto por defecto)    -->
+                    <!-- ========================================== -->
+                    <div id="edit-state" style="display: none;">
+                        <!-- Icono -->
+                        <div class="flex justify-center mb-4">
+                            <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary text-4xl">edit</span>
+                            </div>
+                        </div>
+
+                        <!-- Título -->
+                        <h3 class="text-xl font-bold text-center text-gray-900 mb-2">
+                            ✏️ Editar Comentario
+                        </h3>
+
+                        <!-- Mensaje -->
+                        <p class="text-center text-gray-600 text-sm mb-4">
+                            Corrige tu comentario para que cumpla con las normas de la plataforma.
+                        </p>
+
+                        <!-- Formulario de edición -->
+                        <form id="editCommentForm" action="{{ route('user.comments.update', $disabledComment) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+
+                            <!-- Motivo del administrador (resumen) -->
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-2 mb-4">
+                                <p class="text-xs text-red-600 font-semibold">Motivo:</p>
+                                <p class="text-xs text-red-700">{{ $disabledComment->admin_message }}</p>
+                            </div>
+
+                            <!-- Textarea para editar -->
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Nuevo comentario <span class="text-red-500">*</span>
+                                </label>
+                                <textarea 
+                                    id="editContent"
+                                    name="content" 
+                                    rows="4" 
+                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    placeholder="Escribe tu nuevo comentario..."
+                                    required
+                                >{{ $disabledComment->content }}</textarea>
+                                <p class="text-xs text-gray-500 mt-1">Mínimo 5 caracteres. Máximo 500 caracteres.</p>
+                            </div>
+
+                            <!-- Calificación (si existe) -->
+                            @if($disabledComment->rating)
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Calificación
+                                </label>
+                                <div class="flex gap-1">
+                                    @for($i=1; $i<=5; $i++)
+                                        <label class="cursor-pointer text-3xl transition-colors hover:text-yellow-400">
+                                            <input type="radio" name="rating" value="{{ $i }}" 
+                                                   {{ $i == $disabledComment->rating ? 'checked' : '' }}
+                                                   class="hidden peer">
+                                            <span class="peer-checked:text-yellow-400 {{ $i <= $disabledComment->rating ? 'text-yellow-400' : 'text-gray-300' }}">★</span>
+                                        </label>
+                                    @endfor
+                                </div>
+                            </div>
+                            @endif
+
+                            <!-- Botones -->
+                            <div class="flex gap-3">
+                                <button type="button" onclick="closeEditMode()" 
+                                        class="flex-1 py-3 text-center border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                                    Cancelar
+                                </button>
+                                <button type="submit" 
+                                        class="flex-1 py-3 bg-primary text-on-primary rounded-lg hover:brightness-110 transition flex items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined">send</span>
+                                    Enviar a Moderación
+                                </button>
+                            </div>
+
+                            <p class="text-xs text-gray-500 text-center mt-3">
+                                Al enviar, tu comentario será revisado nuevamente por el administrador.
+                            </p>
+                        </form>
+                    </div>
+
                 </div>
-
-                <!-- Título -->
-                <h3 class="text-xl font-bold text-center text-gray-900 mb-2">
-                    ⚠️ Comentario Deshabilitado
-                </h3>
-
-                <!-- Mensaje -->
-                <p class="text-center text-gray-600 text-sm mb-4">
-                    Tu comentario ha sido deshabilitado por el administrador por incumplir las normas de la plataforma.
-                </p>
-
-                <!-- Comentario del usuario -->
-                <div class="bg-gray-50 rounded-lg p-3 mb-4">
-                    <p class="text-xs text-gray-500 mb-1">Tu comentario:</p>
-                    <p class="text-sm text-gray-700 italic">
-                        "{{ Str::limit($disabledComment->content, 100) }}"
-                    </p>
-                </div>
-
-                <!-- Motivo del administrador -->
-                <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-5">
-                    <p class="text-xs text-red-600 font-semibold mb-1">Motivo de la desactivación:</p>
-                    <p class="text-sm text-red-700">
-                        {{ $disabledComment->admin_message }}
-                    </p>
-                </div>
-
-                <!-- Botón -->
-                <button onclick="closeModerationModal()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-200">
-                    Entendido
-                </button>
-
-                <!-- Fecha de moderación -->
-                <p class="text-center text-xs text-gray-400 mt-3">
-                    Moderado el: {{ $disabledComment->updated_at->format('d/m/Y H:i') }}
-                </p>
             </div>
-        </div>
 
-        <script>
-            // Clave para guardar en localStorage
-            const MODAL_KEY = 'moderation_modal_shown_{{ auth()->id() }}';
-
-            // Función para cerrar el modal y guardar en localStorage
-            function closeModerationModal() {
-                const modal = document.getElementById('moderationModal');
-                const content = document.getElementById('modalContent');
-                
-                // Guardar en localStorage que el usuario ya vio el modal
-                localStorage.setItem(MODAL_KEY, 'true');
-                
-                // Aplicar animación de salida
-                content.classList.add('modal-fade-out');
-                
-                // Esperar a que termine la animación y ocultar
-                setTimeout(function() {
-                    modal.style.display = 'none';
-                }, 300);
-            }
-
-            // Función para mostrar el modal solo si no se ha mostrado antes
-            function showModalOnce() {
-                const modal = document.getElementById('moderationModal');
-                
-                // Verificar si ya se mostró antes
-                const alreadyShown = localStorage.getItem(MODAL_KEY);
-                
-                if (!alreadyShown) {
-                    // Mostrar el modal
-                    modal.style.display = 'flex';
-                }
-            }
-
-            // Cerrar con tecla ESC
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape') {
+            <script>
+                // Mostrar el modal siempre (sin localStorage)
+                document.addEventListener('DOMContentLoaded', function() {
                     const modal = document.getElementById('moderationModal');
-                    if (modal && modal.style.display !== 'none') {
-                        closeModerationModal();
+                    if (modal) {
+                        modal.style.display = 'flex';
                     }
-                }
-            });
+                });
 
-            // Cerrar al hacer clic fuera del modal
-            document.addEventListener('DOMContentLoaded', function() {
-                const modal = document.getElementById('moderationModal');
-                if (modal) {
-                    modal.addEventListener('click', function(event) {
-                        if (event.target === this) {
-                            closeModerationModal();
-                        }
-                    });
+                // Cambiar al estado de edición
+                function openEditMode() {
+                    const alertState = document.getElementById('alert-state');
+                    const editState = document.getElementById('edit-state');
+                    
+                    alertState.style.opacity = '0';
+                    setTimeout(() => {
+                        alertState.style.display = 'none';
+                        editState.style.display = 'block';
+                        editState.classList.add('state-transition');
+                        setTimeout(() => {
+                            editState.classList.remove('state-transition');
+                        }, 300);
+                    }, 300);
                 }
-                
-                // Mostrar el modal solo una vez
-                showModalOnce();
-            });
-        </script>
-    @endif
-@endauth
+
+                // Volver al estado de alerta
+                function closeEditMode() {
+                    const alertState = document.getElementById('alert-state');
+                    const editState = document.getElementById('edit-state');
+                    
+                    editState.style.opacity = '0';
+                    setTimeout(() => {
+                        editState.style.display = 'none';
+                        alertState.style.display = 'block';
+                        alertState.classList.add('state-transition');
+                        setTimeout(() => {
+                            alertState.classList.remove('state-transition');
+                        }, 300);
+                    }, 300);
+                }
+
+                // Cerrar el modal completamente
+                function closeModerationModal() {
+                    const modal = document.getElementById('moderationModal');
+                    modal.style.opacity = '0';
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                    }, 300);
+                }
+
+                // Cerrar con tecla ESC
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape') {
+                        const modal = document.getElementById('moderationModal');
+                        if (modal && modal.style.display !== 'none') {
+                            // Si está en modo edición, volver a alerta
+                            const editState = document.getElementById('edit-state');
+                            if (editState.style.display !== 'none') {
+                                closeEditMode();
+                            } else {
+                                closeModerationModal();
+                            }
+                        }
+                    }
+                });
+
+                // Cerrar al hacer clic fuera del modal
+                document.addEventListener('DOMContentLoaded', function() {
+                    const modal = document.getElementById('moderationModal');
+                    if (modal) {
+                        modal.addEventListener('click', function(event) {
+                            if (event.target === this) {
+                                const editState = document.getElementById('edit-state');
+                                if (editState.style.display !== 'none') {
+                                    closeEditMode();
+                                } else {
+                                    closeModerationModal();
+                                }
+                            }
+                        });
+                    }
+
+                    // Validación del formulario
+                    const form = document.getElementById('editCommentForm');
+                    if (form) {
+                        form.addEventListener('submit', function(event) {
+                            const content = document.getElementById('editContent');
+                            if (content.value.trim().length < 5) {
+                                event.preventDefault();
+                                content.classList.add('border-red-500');
+                                alert('El comentario debe tener al menos 5 caracteres.');
+                            }
+                        });
+                    }
+                });
+            </script>
+        @endif
+    @endauth
 
     <script>
         // Micro-interactions and effects
@@ -463,5 +639,4 @@
         });
     </script>
 </body>
-
 </html>

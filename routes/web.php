@@ -82,6 +82,11 @@ Route::middleware(['auth'])->group(function () {
     // Guardar calificación y comentario del comprador al vendedor (solo estado 'recibido')
     Route::post('/tratos/{trato}/calificar', [CommentController::class, 'store'])->name('tratos.calificar');
 
+    // editar comentario
+    Route::get('/comentarios/{comment}/editar', [CommentController::class, 'edit'])->name('user.comments.edit');
+    Route::put('/comentarios/{comment}', [CommentController::class, 'update'])->name('user.comments.update');
+
+
     // Foto de perfil
     Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.photo.update');
 
